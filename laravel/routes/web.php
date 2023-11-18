@@ -16,3 +16,13 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('homepage');
 });
+
+/*
+    Error View
+    (Pastikan di paling bawah routenya :D )
+*/
+
+// Paling bawah
+Route::get('/{any}',function(){
+    return view('error.404');
+});

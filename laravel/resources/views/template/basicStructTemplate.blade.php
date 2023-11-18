@@ -6,7 +6,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     @yield('title')
     @stack('style')
-    <link rel="stylesheet" href="{{asset('template.css')}}">
+    <link rel="stylesheet" href="{{asset('styles.css')}}">
 </head>
 <body>
     @yield('container')

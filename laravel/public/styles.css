@@ -34,3 +34,9 @@
     border-color: var(--bg-gray-light);
     color: var(--bg-gray-light);
 }
+.user-logo:hover{
+    background-color: var(--bg-gray-dark);
+    transform: scale(1.2,1.2);
+    transition-delay: 0.1s;
+    transition-duration: 0.5s;
+}
