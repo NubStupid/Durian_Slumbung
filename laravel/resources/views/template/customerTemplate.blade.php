@@ -9,33 +9,37 @@
         <div class="container-fluid">
         <img class="navbar-brand" src="{{asset('assets/navbar/LogoDurianSlumbung.png')}}" style="max-width:8vw; max-height:auto;">
         @php
-            $activeHome = "";
-            $activeProduct = "";
-            $activeWisata ="";
-            $activeAbout = "";
+            $activeHome = "";       $hrefHome ="/";
+            $activeProduct = "";    $hrefProduct ="/product";
+            $activeWisata ="";      $hrefWisata ="/wisata";
+            $activeAbout = "";      $hrefAbout = "/about";
             if($title == "Home"){
                 $activeHome = "active";
+                $hrefHome = "#";
             }else if($title == "Product"){
-
+                $activeProduct = "active";
+                $hrefProduct = "#";
             }else if($title == "Wisata"){
-
+                $activeWisata = "active";
+                $hrefWisata = "#";
             }else if($title == "About"){
-
+                $activeAbout = "active";
+                $hrefAbout = "#";
             }
         @endphp
         <div class="d-flex justify-content-center" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item mx-2">
-                    <a class="nav-link text-white {{$activeHome}}" aria-current="page" href="#">Home</a>
+                    <a class="nav-link text-white {{$activeHome}}" aria-current="page" href={{url($hrefHome)}}>Home</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link text-white" aria-current="page" href="#">Products</a>
+                    <a class="nav-link text-white" aria-current="page" href={{url($hrefProduct)}}>Products</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link text-white" aria-current="page" href="#">Wisata</a>
+                    <a class="nav-link text-white" aria-current="page" href={{url($hrefWisata)}}>Wisata</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link text-white" aria-current="page" href="#">About</a>
+                    <a class="nav-link text-white" aria-current="page" href={{url($hrefAbout)}}>About</a>
                 </li>
             </ul>
         </div>
@@ -99,28 +103,28 @@
                 <div class="row">
                     <div class="col">
                         <div class="d-flex justify-content-center my-1">
-                            <a class="nav-link text-light <?= $activeHome ?>" aria-current="page" href="home.php">Home</a>
+                            <a class="nav-link text-light <?= $activeHome ?>" aria-current="page" href={{url($hrefHome)}}>Home</a>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <div class="d-flex justify-content-center my-1">
-                            <a class="nav-link text-light <?= $activeProduct ?>" href="dapur-durian.php">Dapur Durian</a>
+                            <a class="nav-link text-light <?= $activeProduct ?>" href={{url($hrefProduct)}}>Products</a>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <div class="d-flex justify-content-center my-1">
-                            <a class="nav-link text-light <?= $activeWisata ?>" href="about-us.php"> About Us</a>
+                            <a class="nav-link text-light <?= $activeWisata ?>" href={{url($hrefWisata)}}>Wisata</a>
                         </div>
                     </div>
                 </div>
                 <div class="row">
                     <div class="col">
                         <div class="d-flex justify-content-center my-1">
-                            <a class="nav-link text-light <?= $activeAbout ?>" href="about-us.php"> About Us</a>
+                            <a class="nav-link text-light <?= $activeAbout ?>" href={{url($hrefAbout)}}>About</a>
                         </div>
                     </div>
                 </div>
