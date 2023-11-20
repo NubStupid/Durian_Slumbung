@@ -33,13 +33,13 @@
                     <a class="nav-link text-white {{$activeHome}}" aria-current="page" href={{url($hrefHome)}}>Home</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link text-white" aria-current="page" href={{url($hrefProduct)}}>Products</a>
+                    <a class="nav-link text-white {{$activeProduct}}" aria-current="page" href={{url($hrefProduct)}}>Products</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link text-white" aria-current="page" href={{url($hrefWisata)}}>Wisata</a>
+                    <a class="nav-link text-white {{$activeWisata}}" aria-current="page" href={{url($hrefWisata)}}>Wisata</a>
                 </li>
                 <li class="nav-item mx-2">
-                    <a class="nav-link text-white" aria-current="page" href={{url($hrefAbout)}}>About</a>
+                    <a class="nav-link text-white {{$activeAbout}}" aria-current="page" href={{url($hrefAbout)}}>About</a>
                 </li>
             </ul>
         </div>

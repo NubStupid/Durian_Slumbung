@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\PageController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,6 +17,9 @@ use App\Http\Controllers\user\UserController;
 Route::get('/', function () {
     return view('homepage');
 });
+Route::get('/product',[PageController::class,'loadProductsView']) ;
+
+// testing
 Route::get('/testDatabase',[UserController::class,"getCustomer"]);
 Route::get('/testTambah',[UserController::class,"loadFormTambah"]);
 Route::post('/testTambah',[UserController::class,"tambah"]);

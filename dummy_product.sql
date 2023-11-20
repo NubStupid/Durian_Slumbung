@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Nov 20, 2023 at 06:13 AM
+-- Generation Time: Nov 20, 2023 at 04:13 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -150,32 +150,6 @@ CREATE TABLE `order_items` (
   `price` decimal(10,2) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
---
--- Dumping data for table `order_items`
---
-
-INSERT INTO `order_items` (`order_item_id`, `order_id`, `product_id`, `quantity`, `price`) VALUES
-(1, 1, 1, 1, '999.99'),
-(2, 2, 2, 2, '39.98'),
-(3, 3, 3, 3, '74.97'),
-(4, 4, 4, 1, '599.99'),
-(5, 5, 5, 5, '199.95'),
-(6, 6, 6, 2, '74.98'),
-(7, 7, 7, 1, '29.98'),
-(8, 8, 8, 3, '149.97'),
-(9, 9, 9, 2, '99.96'),
-(10, 10, 10, 1, '74.97'),
-(11, 11, 11, 4, '119.96'),
-(12, 12, 12, 1, '999.90'),
-(13, 13, 13, 3, '29.97'),
-(14, 14, 14, 2, '99.96'),
-(15, 15, 15, 1, '199.92'),
-(16, 16, 16, 6, '359.82'),
-(17, 17, 17, 1, '29.99'),
-(18, 18, 18, 2, '39.96'),
-(19, 19, 19, 1, '24.99'),
-(20, 20, 20, 1, '999.99');
-
 -- --------------------------------------------------------
 
 --
@@ -186,35 +160,31 @@ CREATE TABLE `products` (
   `product_id` int(11) NOT NULL,
   `name` varchar(255) NOT NULL,
   `price` decimal(10,2) NOT NULL,
-  `category_id` int(11) DEFAULT NULL
+  `category_id` int(11) DEFAULT NULL,
+  `qty` int(11) NOT NULL,
+  `rating` int(11) NOT NULL,
+  `description` varchar(255) NOT NULL,
+  `img_url` varchar(255) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `products`
 --
 
-INSERT INTO `products` (`product_id`, `name`, `price`, `category_id`) VALUES
-(1, 'Laptop', '999.99', 1),
-(2, 'T-shirt', '19.99', 2),
-(3, 'Programming Book', '29.99', 3),
-(4, 'Smartphone', '599.99', 1),
-(5, 'Jeans', '39.99', 2),
-(6, 'Web Development Book', '24.99', 3),
-(7, 'Blender', '79.99', 4),
-(8, 'Running Shoes', '59.99', 5),
-(9, 'Mystery Novel', '19.99', 6),
-(10, 'Soccer Ball', '24.99', 7),
-(11, 'Gardening Tools Set', '49.99', 8),
-(12, 'LEGO Set', '39.99', 9),
-(13, 'Shampoo', '9.99', 10),
-(14, 'Car Battery', '89.99', 11),
-(15, 'Diamond Ring', '499.99', 12),
-(16, 'Movie DVD', '14.99', 13),
-(17, 'Vinyl Record', '29.99', 14),
-(18, 'Pet Food', '12.99', 15),
-(19, 'Notebook', '5.99', 16),
-(20, 'Fitness Tracker', '39.99', 17),
-(21, 'Joken', '-5.00', 1);
+INSERT INTO `products` (`product_id`, `name`, `price`, `category_id`, `qty`, `rating`, `description`, `img_url`) VALUES
+(1, 'Jonathan Kenrick\'s Laptop', '1000.00', 18, 15, 3, 'KWNDQP:OWNKDIWQNDOPWQNDwpqd', 'https://picsum.photos/id/125/200/300'),
+(2, 'Jane\'s Smartphone', '500.00', 12, 10, 4, 'A sleek smartphone with advanced features.', 'https://picsum.photos/id/126/200/300'),
+(3, 'Gaming Console', '300.00', 8, 20, 5, 'Next-gen gaming console for immersive gaming experience.', 'https://picsum.photos/id/127/200/300'),
+(4, 'Wireless Headphones', '80.00', 15, 50, 4, 'Enjoy music without the hassle of wires.', 'https://picsum.photos/id/128/200/300'),
+(5, 'Coffee Maker', '50.00', 10, 25, 4, 'Brew your favorite coffee with ease.', 'https://picsum.photos/id/129/200/300'),
+(6, 'Fitness Tracker', '120.00', 5, 15, 4, 'Monitor your health and stay active.', 'https://picsum.photos/id/130/200/300'),
+(7, 'Digital Camera', '250.00', 7, 12, 4, 'Capture moments with high-quality photos.', 'https://picsum.photos/id/131/200/300'),
+(8, 'Portable Speaker', '70.00', 15, 40, 4, 'Listen to music on the go with this portable speaker.', 'https://picsum.photos/id/132/200/300'),
+(9, 'Laptop Stand', '30.00', 18, 50, 3, 'Improve ergonomics with this adjustable laptop stand.', 'https://picsum.photos/id/133/200/300'),
+(10, 'Bluetooth Mouse', '20.00', 18, 30, 4, 'Wireless mouse for convenient computing.', 'https://picsum.photos/id/134/200/300'),
+(11, 'External Hard Drive', '120.00', 14, 18, 5, 'Expand your storage capacity with this external hard drive.', 'https://picsum.photos/id/135/200/300'),
+(12, 'Desktop Monitor', '200.00', 13, 8, 4, 'Large monitor for immersive computing experience.', 'https://picsum.photos/id/136/200/300'),
+(13, 'Graphic Tablet', '150.00', 11, 10, 4, 'Ideal for digital artists and illustrators.', 'https://picsum.photos/id/137/200/300');
 
 --
 -- Indexes for dumped tables
