@@ -15,7 +15,8 @@ return [
     |
     */
 
-    'default' => env('DB_CONNECTION', 'mysql'),
+    // 'default' => env('DB_CONNECTION', 'mysql'),
+    'default' => env('DB_CONNECTION', 'connect_Customer'),
 
     /*
     |--------------------------------------------------------------------------
@@ -62,7 +63,44 @@ return [
                 PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
             ]) : [],
         ],
-
+        'connect_Durian' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_DURIAN', '127.0.0.1'),
+            'port' => env('DB_PORT_DURIAN', '3306'),
+            'database' => env('DB_DATABASE_DURIAN', 'forge'),
+            'username' => env('DB_USERNAME_DURIAN', 'forge'),
+            'password' => env('DB_PASSWORD_DURIAN', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
+        'connect_Customer' => [
+            'driver' => 'mysql',
+            'url' => env('DATABASE_URL'),
+            'host' => env('DB_HOST_CUSTOMER', '127.0.0.1'),
+            'port' => env('DB_PORT_CUSTOMER', '3306'),
+            'database' => env('DB_DATABASE_CUSTOMER', 'forge'),
+            'username' => env('DB_USERNAME_CUSTOMER', 'forge'),
+            'password' => env('DB_PASSWORD_CUSTOMER', ''),
+            'unix_socket' => env('DB_SOCKET', ''),
+            'charset' => 'utf8mb4',
+            'collation' => 'utf8mb4_unicode_ci',
+            'prefix' => '',
+            'prefix_indexes' => true,
+            'strict' => true,
+            'engine' => null,
+            'options' => extension_loaded('pdo_mysql') ? array_filter([
+                PDO::MYSQL_ATTR_SSL_CA => env('MYSQL_ATTR_SSL_CA'),
+            ]) : [],
+        ],
         'pgsql' => [
             'driver' => 'pgsql',
             'url' => env('DATABASE_URL'),

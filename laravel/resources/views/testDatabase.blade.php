@@ -1,0 +1,67 @@
+<table>
+    <tr>
+        <th>Customer_id</th>
+        <th>First_name</th>
+        <th>Last_name</th>
+        <th>Email</th>
+    </tr>
+    @foreach ($customers as $customer )
+        <tr>
+            <td>{{$customer->customer_id}}</td>
+            <td>{{$customer->first_name}}</td>
+            <td>{{$customer->last_name}}</td>
+            <td>{{$customer->email}}</td>
+        </tr>
+    @endforeach
+</table>
+<hr>
+<table>
+    <tr>
+        <th>Customer_id</th>
+        <th>First_name</th>
+        <th>Last_name</th>
+        <th>Email</th>
+    </tr>
+    @foreach ($budi as $customer )
+        <tr>
+            <td>{{$customer->customer_id}}</td>
+            <td>{{$customer->first_name}}</td>
+            <td>{{$customer->last_name}}</td>
+            <td>{{$customer->email}}</td>
+        </tr>
+    @endforeach
+</table>
+<hr>
+<table>
+    <tr>
+        <th>Product_id</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Category</th>
+    </tr>
+    @foreach ($products as $product )
+        <tr>
+            <td>{{$product->product_id}}</td>
+            <td>{{$product->name}}</td>
+            <td>{{$product->price}}</td>
+            <td>{{$product->category_name}}</td>
+        </tr>
+    @endforeach
+</table>
+<hr>
+<table>
+    <tr>
+        <th>Product_id</th>
+        <th>Name</th>
+        <th>Price</th>
+        <th>Category</th>
+    </tr>
+    @foreach ($allProducts as $product )
+        <tr>
+            <td>{{$product->product_id}}</td>
+            <td>{{$product->name}}</td>
+            <td>{{$product->price}}</td>
+            <td>{{$product->category_id}}</td>
+        </tr>
+    @endforeach
+</table>

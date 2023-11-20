@@ -1,7 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
-
+use App\Http\Controllers\user\UserController;
 /*
 |--------------------------------------------------------------------------
 | Web Routes
@@ -16,7 +16,11 @@ use Illuminate\Support\Facades\Route;
 Route::get('/', function () {
     return view('homepage');
 });
-
+Route::get('/testDatabase',[UserController::class,"getCustomer"]);
+Route::get('/testTambah',[UserController::class,"loadFormTambah"]);
+Route::post('/testTambah',[UserController::class,"tambah"]);
+Route::get('/testUbah/{id}',[UserController::class,"loadFormUbah"]);
+Route::post('/testUbah/{id}',[UserController::class,"ubah"]);
 /*
     Error View
     (Pastikan di paling bawah routenya :D )
