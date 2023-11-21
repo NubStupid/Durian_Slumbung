@@ -18,6 +18,7 @@ Route::get('/', function () {
     return view('homepage');
 });
 Route::get('/product',[PageController::class,'loadProductsView']) ;
+Route::post('/product',[PageController::class, "searchProduct"]);
 
 // testing
 Route::get('/testDatabase',[UserController::class,"getCustomer"]);
