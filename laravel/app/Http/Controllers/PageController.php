@@ -62,6 +62,9 @@ class PageController extends Controller
         $step = $maxPrice/10;
         //Get all categories
         $categories = $this->getAllCategory();
+        // Get carousel items
+        // TBC
+
         return view('products',['products'=>$products,'maxPrice'=>$maxPrice,'step'=>$step,'categories'=>$categories]);
     }
     public function searchProduct(Request $req){
@@ -99,6 +102,30 @@ class PageController extends Controller
         }
     }
 
+    //Detail Product
+    public function getSimilarProduct($id,$category_id){
+        $get3SimilarProduct = DB::connection('connect_Customer')->table('products');
+        $get3SimilarProduct = $get3SimilarProduct->select(["*"]);
+        $get3SimilarProduct = $get3SimilarProduct->where('products.product_id',"!=",$id);
+        if($category_id!=""){
+            $get3SimilarProduct = $get3SimilarProduct->where("products.category_id","=",$category_id);
+        }
+        $get3SimilarProduct = $get3SimilarProduct->orderby("products.rating","desc");
+        $get3SimilarProduct = $get3SimilarProduct->take(3);
+        $get3SimilarProduct = $get3SimilarProduct->get();
+        if(count($get3SimilarProduct)==0){
+            $get3SimilarProduct = $this->getSimilarProduct($id,"");
+        }
+        return $get3SimilarProduct;
 
+    }
+    public function viewProduct(int $id){
+        $productViewed = DB::connection('connect_Customer')->table('products');
+        $productViewed = $productViewed->select(["*"]);
+        $productViewed = $productViewed->where('products.product_id',"=",$id);
+        $productViewed = $productViewed->first();
+        $get3SimilarProduct = $this->getSimilarProduct($id,$productViewed->category_id);
+        return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct]);
+    }
 
 }

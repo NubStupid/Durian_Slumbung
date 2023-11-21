@@ -77,3 +77,21 @@
 
 }
 
+.active-star {
+    font-size: 2em;
+    color: gold;
+    cursor: pointer;
+    transition: color 0.3s;
+}
+
+.active-star:hover,
+.active-star.active {
+    color: goldenrod;
+}
+
+.comment-section{
+    max-height: 20vh; /* Set your desired max height */
+    overflow-y: auto;
+    border: 1px solid #000000; /* Optional: Add border for styling */
+    padding: 10px; /* Optional: Add padding for spacing */
+}
