@@ -48,18 +48,21 @@
         </div>
 
         <div class="d-flex me-3 align-items-center">
-            {{-- Guest --}}
-            {{-- <a href="{{}}" class="btn bg-gray-light border border-2">Login</a> --}}
+            @if($user == null)
 
-            {{-- Kalau udah log in --}}
-            {{-- Shopping Cart --}}
-            <a href="" class="me-4 pe-2">
-                <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width:1.5vw; max-height:auto;">
-            </a>
-            {{-- Logo --}}
-            <a href="" class="bg-gray-light user-logo" style=" border-radius:50%">
-                <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width: 3vw; max-height:auto; border-radius:50%">
-            </a>
+                <a href="{{url('/login')}}" class="btn bg-gray-light border border-2">Login</a>
+
+            @else
+                {{-- Shopping Cart --}}
+                <a href="" class="me-4 pe-2">
+                    <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width:1.5vw; max-height:auto;">
+                </a>
+                {{-- Logo --}}
+                <a href="" class="bg-gray-light user-logo" style=" border-radius:50%">
+                    <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width: 3vw; max-height:auto; border-radius:50%">
+                </a>
+                
+            @endif
 
         </div>
         </div>
@@ -131,8 +134,8 @@
                         </div>
                     </div>
                 </div>
-                
-                
+
+
             </nav>
         </div>
 

@@ -64,8 +64,8 @@ class PageController extends Controller
         $categories = $this->getAllCategory();
         // Get carousel items
         // TBC
-
-        return view('products',['products'=>$products,'maxPrice'=>$maxPrice,'step'=>$step,'categories'=>$categories]);
+        $user = request()->attributes->get('user');
+        return view('products',['products'=>$products,'maxPrice'=>$maxPrice,'step'=>$step,'categories'=>$categories,'user'=>$user]);
     }
     public function searchProduct(Request $req){
         try {
@@ -125,11 +125,13 @@ class PageController extends Controller
         $productViewed = $productViewed->where('products.product_id',"=",$id);
         $productViewed = $productViewed->first();
         $get3SimilarProduct = $this->getSimilarProduct($id,$productViewed->category_id);
-        return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct]);
+        $user = request()->attributes->get('user');
+        return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct,'user'=>$user]);
     }
 
     // Wisata
     public function loadWisataView(){
-        return view('wisata');
+        $user = request()->attributes->get('user');
+        return view('wisata',['user'=>$user]);
     }
 }

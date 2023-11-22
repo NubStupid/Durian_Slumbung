@@ -22,11 +22,11 @@ class AuthController extends Controller
                 ->where('username', $username)
                 ->where('password', $password)
                 ->first();
-            
+
             if($user){
                 session()->put('username', $username);
                 session()->put('role', "user");
-                return redirect('homepage');
+                return redirect('/');
             }
             else{
                 return redirect('login')->with("pesan","Gagal Login!");
