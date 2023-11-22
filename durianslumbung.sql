@@ -75,6 +75,14 @@ create table wisata(
 
 -- );
 
+create table cart(
+    cart_id int primary key auto_increment,
+    product_id int references product(product_id),
+    price decimal(10,2),
+    qty int(5),
+    username varchar(50) references user(username)
+);
+
 INSERT INTO `categories` (`category_id`, `name`) VALUES
 (1, 'Electronics'),
 (2, 'Clothing'),
