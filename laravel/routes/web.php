@@ -20,6 +20,9 @@ Route::get('/', function () {
 Route::get('/product',[PageController::class,'loadProductsView']) ;
 Route::post('/product',[PageController::class, "searchProduct"]);
 Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
+
+Route::get('/wisata',[PageController::class,'loadWisataView']);
+
 // testing
 Route::get('/testDatabase',[UserController::class,"getCustomer"]);
 Route::get('/testTambah',[UserController::class,"loadFormTambah"]);

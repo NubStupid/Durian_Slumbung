@@ -28,6 +28,9 @@
 .bg-gray-light{
     background-color: var(--bg-gray-light);
 }
+.bg-gray-light.bg-opacity-50{
+    --bg-gray-light: rgba(217, 217, 217, 0.6);
+}
 .bg-gray-dark{
     background-color: var(--bg-gray-dark);
 }
@@ -94,4 +97,9 @@
     overflow-y: auto;
     border: 1px solid #000000; /* Optional: Add border for styling */
     padding: 10px; /* Optional: Add padding for spacing */
+}
+
+.img-transition{
+    position: relative;
+    transition: transform 0.3s ease, width 1s linear;
 }

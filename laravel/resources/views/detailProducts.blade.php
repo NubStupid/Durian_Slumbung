@@ -11,9 +11,9 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 @endpush
 @section('content')
-    <div class="row my-5"></div>
+    <div class="row my-4"></div>
     <div class="container-md">
-        <h1 class="ps-3 mb-3">Detail Product</h1>
+        <h1 class="ps-3 mb-5">Detail Product</h1>
 
 
 

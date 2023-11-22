@@ -128,4 +128,8 @@ class PageController extends Controller
         return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct]);
     }
 
+    // Wisata
+    public function loadWisataView(){
+        return view('wisata');
+    }
 }
