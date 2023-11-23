@@ -14,7 +14,7 @@
         <div class="row">
             <div class="col-9 fs-2 fw-semibold me-5">&ensp;&ensp;&ensp;&ensp;Products on sale</div>
             <div class="col-2 me-5 d-flex justify-content-end dropdown">
-                <button class="btn bg-blue-dark text-dark fw-semibold dropdown-toggle fs-4 z-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="dropdownToggle()">
+                <button class="btn bg-blue-dark text-dark fw-semibold dropdown-toggle fs-4 z-2" type="button" data-bs-toggle="dropdown" aria-expanded="false" onclick="">
                   Filter Products
                 </button>
                 <ul class="dropdown-menu p-4 bg-white-smoke dropdown-anim z-1" style="min-width:100%;">
