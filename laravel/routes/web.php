@@ -17,26 +17,27 @@ use App\Http\Middleware\Guest;
 |
 */
 
-// Route::get('/', function () {
-//     return view('homepage');
-// });
+Route::get('/', function () {
+    return view('homepage');
+})->name('home');
 
 // Route Utama Login
 
 // Login Cek
-Route::get('/login',function(){
-    return view('login');
-});
-Route::post('/login', [AuthController::class, "cekLogin"]);
-Route::post('/register', [AuthController::class, "cekRegister"]);
+// Route::get('/login',function(){
+//     return view('login');
+// });
+// Route::post('/login', [AuthController::class, "cekLogin"]);
+// Route::post('/register', [AuthController::class, "cekRegister"]);
+Route::post('/login/{type}',[AuthController::class,"checkCredentials"])->name('loginUser');
 
 // Remember Me
 Route::get('/login', function () {
     return view('login');
-})->middleware([Guest::class]);
+})->middleware([Guest::class])->name('login');
 Route::get('/register', function () {
-    return view('register');
-})->middleware([Guest::class]);
+    return view('login',['register'=>'1']);
+})->middleware([Guest::class])->name('register');
 
 // Route::get('/homepage', function () {
     //     return view('homepage');
