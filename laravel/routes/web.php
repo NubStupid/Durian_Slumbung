@@ -17,36 +17,37 @@ use App\Http\Middleware\Guest;
 |
 */
 
-// Route::get('/', function () {
-//     return view('homepage');
-// });
+Route::get('/', function () {
+    return view('homepage');
+})->name('home');
 
 // Route Utama Login
-Route::get('/', function () { 
-    return redirect('/login');
-});
 
 // Login Cek
-Route::get('/login',function(){
-    return view('login');
-});
-Route::post('/login', [AuthController::class, "cekLogin"]);
-Route::post('/register', [AuthController::class, "cekRegister"]);
+// Route::get('/login',function(){
+//     return view('login');
+// });
+// Route::post('/login', [AuthController::class, "cekLogin"]);
+// Route::post('/register', [AuthController::class, "cekRegister"]);
+Route::post('/login/{type}',[AuthController::class,"checkCredentials"])->name('loginUser');
 
 // Remember Me
 Route::get('/login', function () {
     return view('login');
-})->middleware([Guest::class]);
+})->middleware([Guest::class])->name('login');
 Route::get('/register', function () {
-    return view('register');
-})->middleware([Guest::class]);
+    return view('login',['register'=>'1']);
+})->middleware([Guest::class])->name('register');
 
-Route::get('/product',[PageController::class,'loadProductsView']) ;
+// Route::get('/homepage', function () {
+    //     return view('homepage');
+    // });
 
-// Semua Route Admin kalau mau di prefix jg bisa
-Route::middleware('authen:admin')->group(function () {
-    // Route::prefix('admin')->group(function () {
-        Route::get('/testDatabase',[UserController::class,"getCustomer"]);
+
+    // Semua Route Admin kalau mau di prefix jg bisa
+    Route::middleware('authen:admin')->group(function () {
+        // Route::prefix('admin')->group(function () {
+            Route::get('/testDatabase',[UserController::class,"getCustomer"]);
         Route::get('/testTambah',[UserController::class,"loadFormTambah"]);
         Route::post('/testTambah',[UserController::class,"tambah"]);
         Route::get('/testUbah/{id}',[UserController::class,"loadFormUbah"]);
@@ -54,15 +55,24 @@ Route::middleware('authen:admin')->group(function () {
         Route::get('/adminhomepage', function(){
             return view('adminhomepage');
         });
-    // });
-});
-
-// Semua Route User
-Route::middleware('authen:user')->group(function () {
-    Route::get('/homepage', function () {
-        return view('homepage');
+        // });
     });
-});
+
+    // Semua Route User
+    Route::middleware('role:user')->group(function(){
+        Route::get('/', function () {
+            $user = request()->attributes->get('user');
+            return view('homepage', ['user' => $user]);
+        });
+        Route::get('/product',[PageController::class,'loadProductsView']) ;
+        Route::post('/product',[PageController::class, "searchProduct"]);
+
+        Route::get('/wisata',[PageController::class,'loadWisataView']);
+
+    });
+    Route::middleware(['authen:user','role:user'])->group(function () {
+        Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
+    });
 
 // Logout (Session dorrr)
 Route::get('/logout', function (Request $request) {
