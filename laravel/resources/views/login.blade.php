@@ -51,15 +51,15 @@
                 <h1>LOGIN</h1>
                 <form method="POST">
                     @csrf
-                    Username : <input type="text" name="username" id="username"><br>
-                    Password : <input type="text" name="password" id="password"><br>
-                    <input type="submit" value="Login">
+                    Username : <input type="text" name="username" id="username" class="loginButton"><br>
+                    Password : <input type="text" name="password" id="password" class="loginButton"><br>
+                    <input type="submit" value="Login" class="loginButton">
                 </form>
                 @if(session()->has('pesan'))
                     <strong style="color:red">{{session()->get('pesan')}}</strong>
                 @endif
-                belum punya akun ? sini sm abang <input type="button" onclick="regisClick()" value="Register"/><br>
-                <input type="button" onclick="location.href='{{ url('logout')}}';" value="Logout" />
+                belum punya akun ? sini sm abang <input type="button" onclick="regisClick()" value="Register" class="loginButton"/><br>
+                <input type="button" onclick="location.href='{{ url('logout')}}';" value="Logout" class="loginButton"/>
             </div>
 
 
@@ -67,16 +67,16 @@
                 <h1>Register</h1>
                     <form method="POST">
                         @csrf
-                        Username : <input type="text" name="username" id="username" value={{ old('username') }}><span style="color: red;">{{ $errors->first('username') }}</span><br>
-                        Password : <input type="text" name="password" id="password"><span style="color: red;">{{ $errors->first('password') }}</span><br>
-                        Confirm Password : <input type="text" name="confirm_password" id="confirm_password"><span style="color: red;">{{ $errors->first('confirm_password') }}</span><br>
-                        No Telp : <input type="text" name="notelp" id="notelp" value={{ old('notelp') }}><span style="color: red;">{{ $errors->first('notelp') }}</span><br>
-                        <input type="submit" value="Register">
+                        Username : <input type="text" name="username" id="username" value="{{ old('username') }}" class="regisButton"><span style="color: red;">{{ $errors->first('username') }}</span><br>
+                        Password : <input type="text" name="password" id="password" class="regisButton"><span style="color: red;" >{{ $errors->first('password') }}</span><br>
+                        Confirm Password : <input type="text" name="confirm_password" id="confirm_password" class="regisButton"><span style="color: red;">{{ $errors->first('confirm_password') }}</span><br>
+                        No Telp : <input type="text" name="notelp" id="notelp" value="{{ old('notelp') }}" class="regisButton"><span style="color: red;">{{ $errors->first('notelp') }}</span><br>
+                        <input type="submit" value="Register" class="regisButton">
                     </form>
                     @if(session()->has('pesan'))
                         <strong style="color:red">{{session()->get('pesan')}}</strong>
                     @endif
-                    sudah punya akun ? sini sm abang <input type="button" onclick="loginClick()" value="Register"/><br>
+                    sudah punya akun ? sini sm abang <input type="button" onclick="loginClick()" value="Register" class="regisButton"/><br>
             </div>
 
 
@@ -112,6 +112,8 @@
         $('#overlay').one('transitionend', function() {
             // $('#overlay').toggleClass('moveLeft');
             // rightLoaded();
+            $(".regisButton").prop("disabled",true);
+            $(".loginButton").prop("disabled",false);
         });
     }
     function rightLoaded() {
@@ -129,6 +131,8 @@
         $('#overlay').one('transitionend', function() {
             // $('#overlay').toggleClass('moveRight');
             // leftLoaded();
+            $(".loginButton").prop("disabled",true);
+            $(".regisButton").prop("disabled",false);
         });
     }
 
