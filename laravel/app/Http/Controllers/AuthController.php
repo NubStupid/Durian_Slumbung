@@ -38,7 +38,7 @@ class AuthController extends Controller
             'username' => ["required", new cekusername()],
             'password' => 'required',
             'confirm_password' => 'required|same:password',
-            'notelp' => ["required", "max:11",'regex:/^[0-9]+$/']
+            'notelp' => ["required", "regex:/^0[0-9]{8,11}$/"]
         ];
         $messages = [
             "required" => ":attribute kosong",

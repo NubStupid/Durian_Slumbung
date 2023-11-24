@@ -5,18 +5,243 @@
         $title = "Login";
     @endphp
 @endsection
-
+@push('style')
+    <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
+    <style>
+    body{
+        overflow: hidden;
+    }
+    #leftscreen.visible{
+        opacity: 1;
+        transition: width 0.4s linear;
+    }
+    #leftscreen.hidden{
+        opacity: 0;
+    }
+    #rightscreen.visible{
+        opacity: 1;
+        transition: width 0.4s linear;
+    }
+    #rightscreen.hidden{
+        opacity: 0;
+    }
+    .moveLeft{
+        transform: translateX(150%);
+    }
+    .moveRight{
+        transform: translateX(0%);
+    }
+    </style>
+@endpush
 @section('content')
-<h1>LOGIN</h1>
-<form method="POST">
-    @csrf
-    Username : <input type="text" name="username" id="username"><br>
-    Password : <input type="text" name="password" id="password"><br>
-    <input type="submit" value="Login">
-</form>
-@if(session()->has('pesan'))
-    <strong style="color:red">{{session()->get('pesan')}}</strong>
-@endif
-belum punya akun ? sini sm abang <input type="button" onclick="location.href='{{ url('register')}}';" value="Register"/><br>
-<input type="button" onclick="location.href='{{ url('logout')}}';" value="Logout" />
+@php
+
+    $registerPanel = "";
+    if(isset($register)){
+        $registerPanel = "true";
+    }
+
+@endphp
+<div class="d-flex align-items-center" style="height:100vh;">
+    <div class="container-md">
+        <div class="row" style="position:relative; width:100%;">
+            <div class="overlay top-0 start-0 rounded-5 z-2" id="overlay">
+                <div class="row d-flex align-items-center justify-content-center"style="height:90vh; width:100%;">
+                    <div class="row fs-1 fw-semibold px-4 text-white text-center justify-content-center">
+                        <div class="row fs-2"><a href="{{url('/')}}" class="text-decoration-none text-white"><span id="arrow">←</span> Back to Homepage</a></div>
+                        <span class="align-items-center">
+                            <span id="text">Login into</span>
+                            <img class="navbar-brand" src="{{asset('assets/navbar/LogoDurianSlumbung.png')}}" style="max-width:10vw; max-height:auto;">
+                        </span>
+                    </div>
+                </div>
+
+            </div>
+            <div class="col-6 p-5 bg-green-secondary rounded-5 rounded-end" style="height:90vh;" id="leftscreen">
+                <div class="row">
+                    <div class="col-8">
+                        <div class="text-center fw-bold text-white py-4" style="font-size: 4rem">LOGIN</div>
+                        <form method="POST" action="{{ route('loginUser', ['type' => 'login']) }}">
+                        @csrf
+                            <div class="row ps-5">
+                                <div class="col-3 text-end">
+                                    <div class="row my-4 fw-semibold fs-4 text-white">Username :</div>
+                                    <div class="row my-4 fw-semibold fs-4 text-white">Password :</div>
+                                </div>
+                                <div class="col-7">
+                                    <div class="row my-4">
+                                        <input type="text" name="username" id="username" class="loginButton form-control"><br>
+                                    </div>
+                                    <div class="row my-4">
+                                        <input type="text" name="password" id="password" class="loginButton form-control"><br>
+                                    </div>
+                                </div>
+                            </div>
+                            <div class="row mb-3 d-flex justify-content-center">
+                                <div class="col-10 d-flex justify-content-center">
+                                    @if(session()->has('pesanLogin'))
+                                        <span class="alert alert-danger fs-5 text-center mb-3 text-white fw-bold" style="background-color: red;">{{session()->get('pesanLogin')}}</span>
+                                    @endif
+                                </div>
+                                <div class="row d-flex justify-content-center">
+                                    <input type="submit" value="Login" class="loginButton w-25 btn bg-green-body text-white fw-bold fs-5">
+                                </div>
+                            </div>
+                            <hr>
+                            <div class="row d-flex align-items-center my-3">
+                                <div class="col-8 d-flex justify-content-end text-white fw-semibold" id="">
+                                    Doesn't have an account? Make one!
+                                </div>
+                                <div class="col-2 ">
+                                    <input type="button" onclick="regisClick()" value="Register" class="loginButton btn bg-green-body text-white fw-bold"/><br>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                    <div class="col-4"></div>
+                </div>
+            </div>
+
+
+            <div class="col-6 px-5 py-1 bg-green-secondary rounded-5 rounded-start d-flex justify-content-end" style="height:90vh;" id="rightscreen">
+                <div class="row">
+                    <div class="col-11 me-5">
+                        <div class="text-center fw-bold text-white py-5" style="font-size: 4rem">Register</div>
+                        <form method="POST" action="{{route('loginUser',['type'=>'register'])}}">
+                            @csrf
+                            <div class="row pe-5 me-5">
+                                <div class="col-5">
+                                    <div class="row my-4 fw-semibold fs-5 text-white">Username :</div>
+                                    <div class="row mt-4 mb-2 fw-semibold fs-5 text-white">Password :</div>
+                                    <div class="row mt-4 mb-4 fw-semibold fs-5 text-white">Confirm Password :</div>
+                                    <div class="row mb-4 mt-4 fw-semibold fs-5 text-white">No Telp :</div>
+                                </div>
+                                <div class="col-6">
+                                    @if(session()->has('pesanRegister'))
+                                        <strong style="color:red">{{session()->get('pesanRegister')}}</strong>
+                                    @endif
+                                    {{-- <div class="row position-absolute">
+                                        @error('username')
+                                            <span style="color: red;">
+                                                {{$message}}
+                                            </span>
+                                        @enderror
+                                    </div> --}}
+                                    <div class="row my-3">
+                                        <input type="text" name="username" id="username" class="form-control regisButton"><br>
+                                    </div>
+                                    {{-- <div class="row  position-absolute">
+                                        @error('password')
+                                            <span style="color: red;" >
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div> --}}
+                                    <div class="row my-3">
+                                        <input type="text" name="password" id="password" class="form-control regisButton"><br>
+                                    </div>
+                                    {{-- <div class="row position-absolute">
+                                        @error('confirm_password')
+                                            <span style="color: red;">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div> --}}
+                                    <div class="row my-3">
+                                        <input type="text" name="confirm_password" id="confirm_password" class="regisButton form-control">
+                                    </div>
+                                    {{-- <div class="row position-absolute">
+                                        @error('notelp')
+                                            <span style="color: red;">
+                                                {{ $message }}
+                                            </span>
+                                        @enderror
+                                    </div> --}}
+                                    <div class="row my-2">
+                                        <input type="text" name="notelp" id="notelp" value="{{ old('notelp') }}" class="regisButton form-control">
+                                    </div>
+                                    <div class="row my-4">
+                                        <input type="submit" value="Register" class="regisButton btn bg-green-body text-white fs-5 fw-bold">
+                                    </div>
+                                    <div class="row d-flex align-items-end my-3">
+                                        <div class="col-8 d-flex justify-content-end text-white fw-semibold">
+                                            Doesn't have an account? Make one!
+                                        </div>
+                                        <div class="col-2 ">
+                                            <input type="button" onclick="loginClick()" value="Login" class="regisButton btn bg-green-body text-white fw-bold"/><br>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+</div>
 @endsection
+@push('script')
+<script>
+    $(document).ready(function () {
+        let panel = {!! json_encode($registerPanel) !!};
+        if(panel == ""){
+            leftLoaded();
+        }else{
+            rightLoaded();
+        }
+    });
+    function regisClick(){
+        $("#text").html("Register into");
+        $('#overlay').toggleClass('moveLeft');
+        rightLoaded();
+    }
+    function loginClick(){
+        $("#text").html("Login into");
+        $('#overlay').toggleClass('moveRight');
+        leftLoaded();
+    }
+    function leftLoaded(){
+        $('#leftscreen').removeClass('hidden col-6 col-2 col-10');
+        $('#rightscreen').removeClass('col-10 col-6');
+
+        $('#leftscreen').addClass('visible col-10');
+        $('#rightscreen').addClass('col-2');
+
+        $('#rightscreen').removeClass('visible');
+        $('#rightscreen').addClass('hidden');
+
+        $('#overlay').toggleClass('moveLeft');
+
+        $('#overlay').one('transitionend', function() {
+            // $('#overlay').toggleClass('moveLeft');
+            // rightLoaded();
+            $(".regisButton").prop("disabled",true);
+            $(".loginButton").prop("disabled",false);
+        });
+    }
+    function rightLoaded() {
+        $('#rightscreen').removeClass('hidden col-6 col-2 col-10');
+        $('#leftscreen').removeClass('col-10 col-6');
+
+        $('#rightscreen').addClass('visible col-10');
+        $('#leftscreen').addClass('col-2');
+
+
+        $('#leftscreen').removeClass('visible');
+        $('#leftscreen').addClass('hidden');
+        $('#overlay').toggleClass('moveRight');
+
+        $('#overlay').one('transitionend', function() {
+            // $('#overlay').toggleClass('moveRight');
+            // leftLoaded();
+            $(".loginButton").prop("disabled",true);
+            $(".regisButton").prop("disabled",false);
+        });
+    }
+
+</script>
+
+@endpush
