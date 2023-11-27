@@ -44,6 +44,21 @@
 @endphp
 <div class="d-flex align-items-center" style="height:100vh;">
     <div class="container-md">
+
+        @if(session('success_message'))
+        <div class="modal fade" id="RegisBerhasil" tabindex="-1" aria-labelledby="RegisBerhasil" aria-hidden="true">
+            <div class="modal-dialog modal-dialog-centered">
+              <div class="modal-content">
+                <div class="modal-body text-center">
+                    <img src="{{asset('assets/misc/check-green.gif')}}" class="my-2" alt="" width="max-content" height="70px">
+                  <h5 class="py-2">Registrasi Berhasil!</h5>
+                  <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Okay</button>
+                </div>
+              </div>
+            </div>
+        </div>  
+        @endif
+
         <div class="row" style="position:relative; width:100%;">
             <div class="overlay top-0 start-0 rounded-5 z-2" id="overlay">
                 <div class="row d-flex align-items-center justify-content-center"style="height:90vh; width:100%;">
@@ -55,7 +70,6 @@
                         </span>
                     </div>
                 </div>
-
             </div>
             <div class="col-6 p-5 bg-green-secondary rounded-5 rounded-end" style="height:90vh;" id="leftscreen">
                 <div class="row">
@@ -73,7 +87,7 @@
                                         <input type="text" name="username" id="username" class="loginButton form-control"><br>
                                     </div>
                                     <div class="row my-4">
-                                        <input type="text" name="password" id="password" class="loginButton form-control"><br>
+                                        <input type="password" name="password" id="password" class="loginButton form-control"><br>
                                     </div>
                                 </div>
                             </div>
@@ -138,7 +152,7 @@
                                         @enderror
                                     </div> --}}
                                     <div class="row my-3">
-                                        <input type="text" name="password" id="password" class="form-control regisButton"><br>
+                                        <input type="password" name="password" id="password" class="form-control regisButton"><br>
                                     </div>
                                     {{-- <div class="row position-absolute">
                                         @error('confirm_password')
@@ -148,7 +162,7 @@
                                         @enderror
                                     </div> --}}
                                     <div class="row my-3">
-                                        <input type="text" name="confirm_password" id="confirm_password" class="regisButton form-control">
+                                        <input type="password" name="confirm_password" id="confirm_password" class="regisButton form-control">
                                     </div>
                                     {{-- <div class="row position-absolute">
                                         @error('notelp')
@@ -187,6 +201,7 @@
 <script>
     $(document).ready(function () {
         let panel = {!! json_encode($registerPanel) !!};
+        showSuccessModal();
         if(panel == ""){
             leftLoaded();
         }else{
@@ -198,6 +213,9 @@
         $('#overlay').toggleClass('moveLeft');
         rightLoaded();
     }
+    function showSuccessModal() {
+            $('#RegisBerhasil').modal('show');
+        }
     function loginClick(){
         $("#text").html("Login into");
         $('#overlay').toggleClass('moveRight');

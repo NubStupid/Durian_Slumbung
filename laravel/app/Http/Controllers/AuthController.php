@@ -66,7 +66,7 @@ class AuthController extends Controller
                     "telp" => $req->notelp
                 ]
             );
-            return redirect('login');
+            return redirect('login')->with('success_message', 'Registration successful. Please login.');
         } else {
             return redirect(route('register'))->with("pesanRegister", "Gagal mendaftar")->withErrors($errors);
         }
