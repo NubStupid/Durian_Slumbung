@@ -7,5 +7,5 @@
 @endsection
 
 @section('content')
-<input type="button" onclick="location.href='{{ url('logout')}}';" value="Logout" />
+<input type="button" class="btn btn-danger" onclick="location.href='{{ url('logout')}}';" value="Logout" />
 @endsection

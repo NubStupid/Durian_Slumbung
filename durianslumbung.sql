@@ -22,7 +22,8 @@ create table product(
     category_id varchar(50) references category(category_id),
     qty int,
     description longtext,
-    img_url varchar(255)
+    img_url varchar(255),
+    rate int(1)
 );
 
 create table comment(
