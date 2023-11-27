@@ -35,7 +35,6 @@
 @endpush
 @section('content')
 @php
-
     $registerPanel = "";
     if(isset($register)){
         $registerPanel = "true";
@@ -56,7 +55,7 @@
                 </div>
               </div>
             </div>
-        </div>  
+        </div>
         @endif
 
         <div class="row" style="position:relative; width:100%;">
@@ -92,11 +91,12 @@
                                 </div>
                             </div>
                             <div class="row mb-3 d-flex justify-content-center">
-                                <div class="col-10 d-flex justify-content-center">
                                     @if(session()->has('pesanLogin'))
-                                        <span class="alert alert-danger fs-5 text-center mb-3 text-white fw-bold" style="background-color: red;">{{session()->get('pesanLogin')}}</span>
+                                        <div class="alert alert-warning alert-dismissible fade show w-50" role="alert">
+                                            {{session()->get('pesanLogin')}}
+                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                                        </div>
                                     @endif
-                                </div>
                                 <div class="row d-flex justify-content-center">
                                     <input type="submit" value="Login" class="loginButton w-25 btn bg-green-body text-white fw-bold fs-5">
                                 </div>
@@ -121,6 +121,12 @@
                 <div class="row">
                     <div class="col-11 me-5">
                         <div class="text-center fw-bold text-white py-5" style="font-size: 4rem">Register</div>
+                        @if(session()->has('pesanRegister'))
+                            <div class="alert alert-warning alert-dismissible fade show" role="alert">
+                                {{session()->get('pesanRegister')}}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
                         <form method="POST" action="{{route('loginUser',['type'=>'register'])}}">
                             @csrf
                             <div class="row pe-5 me-5">
@@ -131,9 +137,6 @@
                                     <div class="row mb-4 mt-4 fw-semibold fs-5 text-white">No Telp :</div>
                                 </div>
                                 <div class="col-6">
-                                    @if(session()->has('pesanRegister'))
-                                        <strong style="color:red">{{session()->get('pesanRegister')}}</strong>
-                                    @endif
                                     {{-- <div class="row position-absolute">
                                         @error('username')
                                             <span style="color: red;">
@@ -179,7 +182,7 @@
                                     </div>
                                     <div class="row d-flex align-items-end my-3">
                                         <div class="col-8 d-flex justify-content-end text-white fw-semibold">
-                                            Doesn't have an account? Make one!
+                                            Already have an account?
                                         </div>
                                         <div class="col-2 ">
                                             <input type="button" onclick="loginClick()" value="Login" class="regisButton btn bg-green-body text-white fw-bold"/><br>
