@@ -4,14 +4,10 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Session;
 
 class PageController extends Controller
 {
-
-
-
-
-
     //Products method
     public function loadMainProducts(){
         $products = DB::connection('connect_Customer')->table('products');
@@ -133,5 +129,15 @@ class PageController extends Controller
     public function loadWisataView(){
         $user = request()->attributes->get('user');
         return view('wisata',['user'=>$user]);
+    }
+
+    public function checkout()
+    {
+        $user = request()->attributes->get('user');
+
+        $checkout = [];
+        if(Session::has('checkout'))
+            $checkout = Session::get('checkout');
+        return view("checkout",['user'=>$user, 'checkout' => $checkout]);
     }
 }
