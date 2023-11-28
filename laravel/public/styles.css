@@ -54,6 +54,15 @@
     transform: scale(1.1,1.1);
     transition: transform 0.2s;
 }
+.btn.bg-green-primary:focus
+{
+    background-color: var(--bg-green-secondary);
+    border-color:var(--bg-green-light);
+    color:var(--bg-gray-light);
+    transition-duration: 0.2s;
+    transform: scale(1.1,1.1);
+    transition: transform 0.2s;
+}
 .form-control:hover{
     box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.3);
 }
@@ -61,6 +70,11 @@
     background-color: var(--bg-blue-light);
 }
 .btn.bg-blue-dark:hover{
+    background-color: var(--bg-blue-light);
+    border-color:var(--bg-gray-dark);
+    color:white;
+}
+.btn.bg-blue-dark:focus{
     background-color: var(--bg-blue-light);
     border-color:var(--bg-gray-dark);
     color:white;
@@ -119,3 +133,28 @@
     transform: scale(1.1,1.1);
     transition: transform 0.2s;
 }
+.btn.bg-green-body:focus{
+    background-color: var(--bg-green-light);
+    border-color: var(--bg-green-primary);
+    transition-duration: 0.2s;
+    transform: scale(1.1,1.1);
+    transition: transform 0.2s;
+}
+
+
+
+
+
+/* TAILWIND */
+
+.border-green-primary{
+    border-color: var(--bg-green-primary);
+}
+.border-green-secondary{
+    border-color: var(--bg-green-primary);
+}
+.border-green-body{
+    border-color: var(--bg-green-body);
+}
+
+

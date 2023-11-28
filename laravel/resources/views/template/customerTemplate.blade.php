@@ -41,9 +41,6 @@
                 <li class="nav-item mx-2">
                     <a class="nav-link text-white {{$activeAbout}}" aria-current="page" href={{url($hrefAbout)}}>About</a>
                 </li>
-                <li>
-                    <input type="button" onclick="location.href='{{ url('logout')}}';" value="Logout" />
-                </li>
             </ul>
         </div>
 

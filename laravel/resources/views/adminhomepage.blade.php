@@ -1,11 +1,9 @@
-@extends('template.loginregisterTemplate')
+@extends('template.adminTemplate')
 @section('title')
-    <title>Login</title>
-    @php
-        $title = "Login";
-    @endphp
+    <title>Admin Homepage</title>
 @endsection
 
 @section('content')
-<input type="button" onclick="location.href='{{ url('logout')}}';" value="Logout" />
+    <div class="grid grid-cols-2 gap-4 p-20">
+    </div>
 @endsection
