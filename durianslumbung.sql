@@ -23,7 +23,7 @@ create table product(
     qty int,
     description longtext,
     img_url varchar(255),
-    rate int(1)
+    rate decimal(5,2)
 );
 
 create table comment(
@@ -44,7 +44,7 @@ create table rating(
 create table likes(
     likes_id int primary key auto_increment,
     username varchar(50) references user(username),
-    product_id int references product(product_id)
+    comment_id int references comment(comment_id)
 );
 
 create table h_trans(
@@ -55,6 +55,7 @@ create table h_trans(
 
 create table d_trans(
     d_trans_id int primary key auto_increment,
+    qty int(5),
     total decimal(10,2) not null,
     h_trans_id int references h_trans(h_trans_id),
     product_id int references product(product_id)
@@ -62,7 +63,8 @@ create table d_trans(
 
 create table admin(
     username varchar(50) primary key,
-    password varchar(50)
+    password varchar(50),
+    role varchar(1)
 );
 
 create table wisata(
@@ -83,6 +85,10 @@ create table cart(
     qty int(5),
     username varchar(50) references user(username)
 );
+
+insert into user (username, password, telp, poin) VALUES
+('ferdi','ferdi123','08123456789',0),
+('tasya','tasya123','08198765432',0);
 
 INSERT INTO `categories` (`category_id`, `name`) VALUES
 (1, 'Electronics'),
@@ -118,5 +124,47 @@ INSERT INTO `product` (`product_id`, `name`, `price`, `category_id`, `qty`, `des
 (9, 'Laptop Stand', '30.00', 18, 50, 'Improve ergonomics with this adjustable laptop stand.', 'https://picsum.photos/id/133/200/300'),
 (10, 'Bluetooth Mouse', '20.00', 18, 30, 'Wireless mouse for convenient computing.', 'https://picsum.photos/id/134/200/300'),
 (11, 'External Hard Drive', '120.00', 14, 18, 'Expand your storage capacity with this external hard drive.', 'https://picsum.photos/id/135/200/300'),
-(12, 'Desktop Monitor', '200.00', 13, 8, 'Large monitor for immersive computing experience.', 'https://picsum.photos/id/136/200/300'),
-(13, 'Graphic Tablet', '150.00', 11, 10, 'Ideal for digital artists and illustrators.', 'https://picsum.photos/id/137/200/300');
+(12, 'Desktop Monitor', '200.00', 13, 8, 'Large monitor for immersive computing experience.', 'https://picsum.photos/id/136/200/300');
+
+insert into comment(comment_id, message, username, product_id) VALUES
+('0','Test123456', 'ferdi', 1),
+('0','Test123456', 'tasya', 2),
+('0','Test123456', 'ferdi', 3),
+('0','Test123456', 'ferdi', 4),
+('0','Test123456', 'tasya', 5),
+('0','Test123456', 'ferdi', 6),
+('0','Test123456', 'ferdi', 7),
+('0','Test123456', 'tasya', 8),
+('0','Test123456', 'ferdi', 9),
+('0','Test123456', 'tasya', 12);
+
+insert into rating VALUES
+('0',5,'tasya',1),
+('0',4,'tasya',1),
+('0',5,'ferdi',10),
+('0',3,'tasya',9),
+('0',1,'ferdi',2),
+('0',3,'ferdi',1),
+('0',4,'ferdi',1);
+
+insert into likes VALUES
+('0', 'tasya', 1),
+('0', 'tasya', 3),
+('0', 'tasya', 4),
+('0', 'ferdi', 5),
+('0', 'ferdi', 2);
+
+insert into h_trans VALUES
+('0', 230000, 'tasya'),
+('0', 300000, 'ferdi');
+
+insert into d_trans VALUES
+('0', 2, 30000, 1, 5),
+('0', 2, 200000, 1, 3),
+('0', 4, 100000, 2, 2),
+('0', 3, 200000, 2, 6);
+
+insert into admin VALUES
+('blaba', 'hiu', 'a'),
+('blebe', 'bebek', 'a'),
+('mulyono', '123', 'm');
