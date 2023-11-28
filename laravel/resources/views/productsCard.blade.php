@@ -8,7 +8,11 @@
                 {{$products[$i-1]->name}}
             </div>
             <div class="col-3 d-flex align-items-center">
+                @if($products[$i-1]->rating != null)
                 {{$products[$i-1]->rating}}⭐
+                @else
+                    -⭐
+                @endif
             </div>
         </h5>
         <hr>

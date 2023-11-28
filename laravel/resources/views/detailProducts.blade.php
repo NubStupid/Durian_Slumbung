@@ -11,6 +11,11 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 @endpush
 @section('content')
+    {{-- <pre>
+        @php
+            print_r(Session::get("username"));
+        @endphp
+    </pre> --}}
     <div class="row my-4"></div>
     <div class="container-md">
         <h1 class="ps-3 mb-5">Detail Product</h1>
@@ -89,16 +94,17 @@
 @endsection
 @push('script')
 <script>
-    // let ratingValue = ;
     let ratingValue = 0;
 
     function rate(value) {
-        if(ratingValue = value){
+        if(ratingValue == value){
             // remove star sama record di db likes
+            removeAllActiveStars();
+        }else{
+            ratingValue = value;
+            //cek apakah ada di db kalau ga di insert kalau ada di update
+            updateStars();
         }
-        ratingValue = value;
-        //cek apakah ada di db kalau ga di insert kalau ada di update
-        updateStars();
     }
 
     function updateStars() {
@@ -107,5 +113,11 @@
             star.classList.toggle('active-star', index < ratingValue);
         });
     }
+    function removeAllActiveStars() {
+        const stars = document.querySelectorAll('.fa-star');
+        stars.forEach((star) => {
+            star.classList.remove('active-star');
+    });
+}
 </script>
 @endpush

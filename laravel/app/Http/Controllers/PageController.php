@@ -5,43 +5,48 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use App\Models\Products;
+use App\Models\Categories;
 
 class PageController extends Controller
 {
     //Products method
     public function loadMainProducts(){
-        $products = DB::connection('connect_Customer')->table('products');
+        // $products = DB::connection('connect_Customer')->table('products');
+        $products = Products::select(["*"]);
         $products = $products->select(["*"]);
-        $products = $products->orderby('products.rating','desc');
+        $products = $products->orderby('product.rate','desc');
         $products= $products->take(12);
         $products = $products->get();
         return $products;
     }
     public function loadSearchedProducts(string $str, int $maxPrice, int $minPrice, int $rated, string $category)
     {
-        $products = DB::connection('connect_Customer')->table('products');
-
-        $products->where('products.name', 'like', "%{$str}%")
-                ->where('products.price', '>=', $minPrice)
-                ->where('products.price', '<=', $maxPrice)
-                ->where('products.rating', '<=', $rated);
+        // $products = DB::connection('connect_Customer')->table('products');
+        $products = Products::select(["*"]);
+        $products->where('product.name', 'like', "%{$str}%")
+                ->where('product.price', '>=', $minPrice)
+                ->where('product.price', '<=', $maxPrice);
+                // ->where('product.rate', '<=', $rated);
 
         if ($category !== "") {
-            $products->where('products.category_id', '=', $category);
+            $products->where('product.category_id', '=', $category);
         }
 
-        $products->orderBy('products.rating', 'desc');
-
+        $products->orderBy('product.rate', 'desc');
+        // dd($products);
         return $products->get();
     }
     public function getMaxPrice(){
-        $maxPrice = DB::connection('connect_Customer')->table('products');
-        $maxPrice = $maxPrice->max('products.price');
+        // $maxPrice = DB::connection('connect_Customer')->table('products');
+        $maxPrice = Products::select(["*"]);
+        $maxPrice = $maxPrice->max('product.price');
         return $maxPrice;
     }
     public function getAllCategory(){
-        $categories = DB::connection('connect_Customer')->table('categories');
-        $categories = $categories->select(["*"]);
+        // $categories = DB::connection('connect_Customer')->table('categories');
+        // $categories = $categories->select(["*"]);
+        $categories = Categories::select(["*"]);
         $categories = $categories->get();
         return $categories;
     }
@@ -100,8 +105,9 @@ class PageController extends Controller
 
     //Detail Product
     public function getSimilarProduct($id,$category_id){
-        $get3SimilarProduct = DB::connection('connect_Customer')->table('products');
-        $get3SimilarProduct = $get3SimilarProduct->select(["*"]);
+        // $get3SimilarProduct = DB::connection('connect_Customer')->table('products');
+        // $get3SimilarProduct = $get3SimilarProduct->select(["*"]);
+        $get3SimilarProduct = Products::select(["*"]);
         $get3SimilarProduct = $get3SimilarProduct->where('products.product_id',"!=",$id);
         if($category_id!=""){
             $get3SimilarProduct = $get3SimilarProduct->where("products.category_id","=",$category_id);
@@ -116,10 +122,12 @@ class PageController extends Controller
 
     }
     public function viewProduct(int $id){
-        $productViewed = DB::connection('connect_Customer')->table('products');
-        $productViewed = $productViewed->select(["*"]);
-        $productViewed = $productViewed->where('products.product_id',"=",$id);
-        $productViewed = $productViewed->first();
+
+        // $productViewed = DB::connection('connect_Customer')->table('products');
+        // $productViewed = $productViewed->select(["*"]);
+        // $productViewed = $productViewed->where('products.product_id',"=",$id);
+        // $productViewed = $productViewed->first();
+        $productViewed = Products::select(["*"])->where('product_id',$id)->first();
         $get3SimilarProduct = $this->getSimilarProduct($id,$productViewed->category_id);
         $user = request()->attributes->get('user');
         return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct,'user'=>$user]);
