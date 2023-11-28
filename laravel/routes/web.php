@@ -69,6 +69,8 @@ Route::get('/register', function () {
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
 
+        Route::get('/checkout',[PageController::class,'checkout']);
+
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
@@ -81,6 +83,8 @@ Route::get('/logout', function (Request $request) {
 
     return redirect('login');
 });
+
+// Route::get('/checkout', 'checkout');
 
 // testing
 // Route::get('/testDatabase',[UserController::class,"getCustomer"]);
@@ -97,4 +101,4 @@ Route::get('/logout', function (Request $request) {
 // Paling bawah
 Route::get('/{any}',function(){
     return view('error.404');
-});
+})->name('not-found');
