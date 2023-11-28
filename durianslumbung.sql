@@ -69,7 +69,7 @@ create table admin(
 
 create table wisata(
     wisata_id int primary key auto_increment,
-    tgl_dipesan date not null,
+    tgl_dipesan date,
     sesi int(1),
     qty_orang int(2)
 );
@@ -168,3 +168,11 @@ insert into admin VALUES
 ('blaba', 'hiu', 'a'),
 ('blebe', 'bebek', 'a'),
 ('mulyono', '123', 'm');
+
+insert into cart VALUES
+('0', 1, 300000, 5, 'tasya'),
+('0', 2, 100000, 3, 'ferdi');
+
+insert into wisata (wisata_id, sesi, qty_orang) VALUES
+('0', 2, 50),
+('0', 1, 20);
