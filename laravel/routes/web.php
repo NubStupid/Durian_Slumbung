@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\PageController;
 use App\Http\Middleware\Guest;
+use Illuminate\Http\Request;
 
 /*
 |--------------------------------------------------------------------------
