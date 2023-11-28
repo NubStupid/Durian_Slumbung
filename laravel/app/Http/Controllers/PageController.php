@@ -108,11 +108,11 @@ class PageController extends Controller
         // $get3SimilarProduct = DB::connection('connect_Customer')->table('products');
         // $get3SimilarProduct = $get3SimilarProduct->select(["*"]);
         $get3SimilarProduct = Products::select(["*"]);
-        $get3SimilarProduct = $get3SimilarProduct->where('products.product_id',"!=",$id);
+        $get3SimilarProduct = $get3SimilarProduct->where('product.product_id',"!=",$id);
         if($category_id!=""){
-            $get3SimilarProduct = $get3SimilarProduct->where("products.category_id","=",$category_id);
+            $get3SimilarProduct = $get3SimilarProduct->where("product.category_id","=",$category_id);
         }
-        $get3SimilarProduct = $get3SimilarProduct->orderby("products.rating","desc");
+        $get3SimilarProduct = $get3SimilarProduct->orderby("product.rate","desc");
         $get3SimilarProduct = $get3SimilarProduct->take(3);
         $get3SimilarProduct = $get3SimilarProduct->get();
         if(count($get3SimilarProduct)==0){
