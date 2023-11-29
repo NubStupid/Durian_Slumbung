@@ -19,7 +19,7 @@ create table product(
     product_id varchar(5) primary key,
     name varchar(100), 
     price decimal(10,2),
-    category_id varchar(50) references category(category_id),
+    category_id varchar(5) references category(category_id),
     qty int,
     description longtext,
     img_url varchar(255),
@@ -30,24 +30,25 @@ create table comment(
     comment_id varchar(5) primary key,
     message longtext,
     username varchar(50) references user(username),
-    product_id int references product(product_id),
+    product_id varchar(5) references product(product_id),
     comment_created_at timestamp default current_timestamp
 );
 
 create table rating(
     rate int(1),
     username varchar(50) references user(username),
-    product_id int references product(product_id)
+    product_id varchar(5) references product(product_id)
 );
 
 create table likes(
     likes_id varchar(5) primary key,
     username varchar(50) references user(username),
-    comment_id int references comment(comment_id)
+    comment_id varchar(5) references comment(comment_id)
 );
 
 create table h_trans(
     h_trans_id varchar(5) primary key,
+    invoice_number varchar(20) not null,
     subtotal decimal(10,2) not null,
     username varchar(50) references user(username)
 );
@@ -56,8 +57,8 @@ create table d_trans(
     d_trans_id varchar(5) primary key,
     qty int(5),
     total decimal(10,2) not null,
-    h_trans_id int references h_trans(h_trans_id),
-    product_id int references product(product_id)
+    h_trans_id varchar(5) references h_trans(h_trans_id),
+    product_id varchar(5) references product(product_id)
 );
 
 create table admin(
@@ -79,7 +80,7 @@ create table wisata(
 
 create table cart(
     cart_id varchar(5) primary key,
-    product_id int references product(product_id),
+    product_id varchar(5) references product(product_id),
     price decimal(10,2),
     qty int(5),
     username varchar(50) references user(username)
@@ -116,16 +117,16 @@ VALUES
 -- Insert dummy data for the product table
 INSERT INTO product (product_id, name, price, category_id, qty, description, img_url, rate)
 VALUES
-    ('P0001', 'Smartphone', 499.99, 'C001', 100, 'High-end smartphone with great features.', 'phone.jpg', 4.5),
-    ('P0002', 'T-shirt', 19.99, 'C002', 200, 'Comfortable cotton T-shirt in various colors.', 'tshirt.jpg', 4.0),
-    ('P0003', 'Programming Book', 29.99, 'C003', 50, 'Learn programming from scratch.', 'book.jpg', 4.8),
-    ('P0004', 'Coffee Maker', 89.99, 'C004', 30, 'Brew your favorite coffee at home.', 'coffee.jpg', 4.2),
-    ('P0005', 'Board Game', 24.99, 'C005', 80, 'Fun for the whole family.', 'boardgame.jpg', 4.6),
-    ('P0006', 'Outdoor Tent', 149.99, 'C006', 15, 'Perfect for camping trips.', 'tent.jpg', 4.3),
-    ('P0007', 'Skin Care Set', 39.99, 'C007', 100, 'Keep your skin healthy and radiant.', 'skincare.jpg', 4.7),
-    ('P0008', 'Car Jump Starter', 79.99, 'C008', 50, 'Never worry about a dead battery.', 'jumpstarter.jpg', 4.4),
-    ('P0009', 'Vitamins', 19.99, 'C009', 120, 'Essential vitamins for a healthy life.', 'vitamins.jpg', 4.9),
-    ('P0010', 'Pet Toy Set', 14.99, 'C010', 150, 'Entertain your furry friends.', 'pettoys.jpg', 4.1);
+    ('P0001', 'Smartphone', 499.99, 'C0001', 100, 'High-end smartphone with great features.', 'phone.jpg', 4.5),
+    ('P0002', 'T-shirt', 19.99, 'C0002', 200, 'Comfortable cotton T-shirt in various colors.', 'tshirt.jpg', 4.0),
+    ('P0003', 'Programming Book', 29.99, 'C0003', 50, 'Learn programming from scratch.', 'book.jpg', 4.8),
+    ('P0004', 'Coffee Maker', 89.99, 'C0004', 30, 'Brew your favorite coffee at home.', 'coffee.jpg', 4.2),
+    ('P0005', 'Board Game', 24.99, 'C0005', 80, 'Fun for the whole family.', 'boardgame.jpg', 4.6),
+    ('P0006', 'Outdoor Tent', 149.99, 'C0006', 15, 'Perfect for camping trips.', 'tent.jpg', 4.3),
+    ('P0007', 'Skin Care Set', 39.99, 'C0007', 100, 'Keep your skin healthy and radiant.', 'skincare.jpg', 4.7),
+    ('P0008', 'Car Jump Starter', 79.99, 'C0008', 50, 'Never worry about a dead battery.', 'jumpstarter.jpg', 4.4),
+    ('P0009', 'Vitamins', 19.99, 'C0009', 120, 'Essential vitamins for a healthy life.', 'vitamins.jpg', 4.9),
+    ('P0010', 'Pet Toy Set', 14.99, 'C0010', 150, 'Entertain your furry friends.', 'pettoys.jpg', 4.1);
 
 -- Insert dummy data for the comment table
 INSERT INTO comment (comment_id, message, username, product_id)
@@ -170,7 +171,7 @@ VALUES
     ('L0010', 'user10', 'CM010');
 
 -- Insert dummy data for the h_trans table
-INSERT INTO h_trans (h_trans_id, subtotal, username)
+INSERT INTO h_trans (h_trans_id, invoice_number, subtotal, username)
 VALUES
     ('HT001', 719.98, 'user01'),
     ('HT002', 39.98, 'user02'),
