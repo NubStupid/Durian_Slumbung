@@ -107,7 +107,8 @@
 }
 
 .comment-section{
-    max-height: 20vh; /* Set your desired max height */
+    max-height: 25vh;
+    min-height:15vh; /* Set your desired max height */
     overflow-y: auto;
     border: 1px solid #000000; /* Optional: Add border for styling */
     padding: 10px; /* Optional: Add padding for spacing */
@@ -158,3 +159,6 @@
 }
 
 
+::-webkit-scrollbar {
+    display: none;
+}

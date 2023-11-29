@@ -5,9 +5,12 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+
+
 use App\Models\Products;
 use App\Models\Categories;
 use App\Models\Rating;
+use App\Models\Comment;
 
 class PageController extends Controller
 {
@@ -131,6 +134,11 @@ class PageController extends Controller
             return 0;
 
     }
+    public function getProductComments($product_id){
+        $comments = Comment::select(["*"])->where("product_id",$product_id)->get();
+        // dd($comments);
+        return $comments;
+    }
     public function viewProduct(int $id){
 
         // $productViewed = DB::connection('connect_Customer')->table('products');
@@ -141,7 +149,8 @@ class PageController extends Controller
         $get3SimilarProduct = $this->getSimilarProduct($id,$productViewed->category_id);
         $user = request()->attributes->get('user');
         $rating = $this->getRating($id);
-        return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct,'user'=>$user,'rating'=>$rating]);
+        $comments = $this->getProductComments($id);
+        return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct,'user'=>$user,'rating'=>$rating,'comments'=>$comments]);
     }
 
     // Wisata

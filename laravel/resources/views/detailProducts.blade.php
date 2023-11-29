@@ -11,13 +11,14 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 @endpush
 @section('content')
-    {{-- <pre>
+    <pre>
         @php
-            print_r(Session::get("username"));
-            print_r($product["product_id"]);
-            echo $rating;
+            // print_r(Session::get("username"));
+            // print_r($product["product_id"]);
+            // print_r($comments);
+            // echo $rating;
         @endphp
-    </pre> --}}
+    </pre>
     <div class="row my-4"></div>
     <div class="container-md">
         <h1 class="ps-3 mb-5">Detail Product</h1>
@@ -59,8 +60,15 @@
                 <div class="row my-2"></div>
                 <div class="row my-2">
                     <div class="fs-5 fw-semibold text-start">Comments : </div>
-                    <div class="comment-section rounded-4">
-                       dolorem exercitationem! Odit, beatae! Nulla magnam magni ipsum modi voluptatum minima quis aspernatur, accusantium nobis dolores, nostrum, consequuntur earum officiis voluptate mollitia ratione animi quod beatae dicta dolorem facilis? Vitae voluptatem dolor modi facere omnis sint tenetur suscipit animi velit doloremque neque sit iste temporibus sed tempore, aliquam quae pariatur recusandae distinctio voluptatum?
+                    <div class="row mt-2">
+                        <div class="col-9 p-2"><input type="text" name="comment" id="" class="form-control fs-5" placeholder="Comment"></div>
+                        <div class="col-3 p-2"><a href="" class="btn bg-blue-dark p-2 fw-semibold text-white">Comment</a></div>
+                    </div>
+                    <div class="comment-section rounded-2 overflow-x-hidden">
+                       {{-- dolorem exercitationem! Odit, beatae! Nulla magnam magni ipsum modi voluptatum minima quis aspernatur, accusantium nobis dolores, nostrum, consequuntur earum officiis voluptate mollitia ratione animi quod beatae dicta dolorem facilis? Vitae voluptatem dolor modi facere omnis sint tenetur suscipit animi velit doloremque neque sit iste temporibus sed tempore, aliquam quae pariatur recusandae distinctio voluptatum? --}}
+                        @foreach ($comments as $comment )
+                            @include('commentCard',['comment'=>$comment])
+                        @endforeach
                     </div>
                 </div>
             </div>
