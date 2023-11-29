@@ -102,4 +102,4 @@ Route::get('/logout', function (Request $request) {
 // Paling bawah
 Route::get('/{any}',function(){
     return view('error.404');
-})->name('not-found');
+});
