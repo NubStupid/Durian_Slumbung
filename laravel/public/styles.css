@@ -158,7 +158,3 @@
     border-color: var(--bg-green-body);
 }
 
-
-::-webkit-scrollbar {
-    display: none;
-}
