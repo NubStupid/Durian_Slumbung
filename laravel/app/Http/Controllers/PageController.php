@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use App\Models\Products;
 use App\Models\Categories;
+use App\Models\Rating;
 
 class PageController extends Controller
 {
@@ -26,8 +27,8 @@ class PageController extends Controller
         $products = Products::select(["*"]);
         $products->where('product.name', 'like', "%{$str}%")
                 ->where('product.price', '>=', $minPrice)
-                ->where('product.price', '<=', $maxPrice);
-                // ->where('product.rate', '<=', $rated);
+                ->where('product.price', '<=', $maxPrice)
+                ->where('product.rate', '<=', $rated);
 
         if ($category !== "") {
             $products->where('product.category_id', '=', $category);
@@ -115,10 +116,19 @@ class PageController extends Controller
         $get3SimilarProduct = $get3SimilarProduct->orderby("product.rate","desc");
         $get3SimilarProduct = $get3SimilarProduct->take(3);
         $get3SimilarProduct = $get3SimilarProduct->get();
-        if(count($get3SimilarProduct)==0){
+        if(count($get3SimilarProduct)==0 || count($get3SimilarProduct)<3){
             $get3SimilarProduct = $this->getSimilarProduct($id,"");
         }
         return $get3SimilarProduct;
+
+    }
+    public function getRating($id){
+        $username = Session::get('username');
+        $ratingObj = Rating::where('product_id',$id)->where('username',$username)->first();
+        if($ratingObj != null)
+            return $ratingObj->rate;
+        else
+            return 0;
 
     }
     public function viewProduct(int $id){
@@ -130,7 +140,8 @@ class PageController extends Controller
         $productViewed = Products::select(["*"])->where('product_id',$id)->first();
         $get3SimilarProduct = $this->getSimilarProduct($id,$productViewed->category_id);
         $user = request()->attributes->get('user');
-        return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct,'user'=>$user]);
+        $rating = $this->getRating($id);
+        return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct,'user'=>$user,'rating'=>$rating]);
     }
 
     // Wisata

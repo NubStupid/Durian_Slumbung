@@ -35,7 +35,8 @@ class AuthController extends Controller
             if($user){
                 session()->put('username', $username);
                 session()->put('role', "user");
-                return redirect()->intended('/');
+                // return redirect()->intended('/');
+                return redirect()->back();
             }
             else{
                 return redirect(route('login'))->with("pesanLogin", "Gagal Login!")->withInput();

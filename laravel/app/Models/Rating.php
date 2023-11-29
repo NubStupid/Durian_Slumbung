@@ -14,6 +14,8 @@ class Rating extends Model
     protected $primaryKey = "rating_id";
     public $incrementing = true;
     public $timestamps = false;
-    
 
+    protected $fillable = [
+        'rate','username','product_id'
+    ];
 }

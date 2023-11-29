@@ -6,14 +6,16 @@
     @endphp
 @endsection
 @push('style')
-{{-- <meta name="csrf-token" content="{{ csrf_token() }}">
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 @endpush
 @section('content')
     {{-- <pre>
         @php
             print_r(Session::get("username"));
+            print_r($product["product_id"]);
+            echo $rating;
         @endphp
     </pre> --}}
     <div class="row my-4"></div>
@@ -95,15 +97,52 @@
 @push('script')
 <script>
     let ratingValue = 0;
-
+    $(document).ready(function () {
+        ratingValue = {{$rating}};
+        updateStars();
+    });
     function rate(value) {
+        let product_id = {{$product["product_id"]}};
+        let username = '{{Session::get("username")}}';
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
         if(ratingValue == value){
             // remove star sama record di db likes
             removeAllActiveStars();
+            ratingValue =0;
+            $.post('/product/delete', {
+                username: username,
+                product_id: product_id,
+            }, function(response) {
+                // Handle the successful response
+                console.log(response);
+                // console.log("Berhasil");
+            })
+            .fail(function(error) {
+                // Handle errors
+                console.error('Error:', error);
+            });
         }else{
             ratingValue = value;
             //cek apakah ada di db kalau ga di insert kalau ada di update
             updateStars();
+            $.post('/product/like', {
+                username: username,
+                product_id: product_id,
+                rating: value
+            }, function(response) {
+                // Handle the successful response
+                // console.log(response);
+                // console.log("Berhasil");
+            })
+            .fail(function(error) {
+                // Handle errors
+                console.error('Error:', error);
+            });
         }
     }
 
