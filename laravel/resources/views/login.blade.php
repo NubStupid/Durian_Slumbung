@@ -74,6 +74,12 @@
                 <div class="row">
                     <div class="col-8">
                         <div class="text-center fw-bold text-white py-4" style="font-size: 4rem">LOGIN</div>
+                        @if(session()->has('pesanLogin'))
+                            <div class="alert alert-warning alert-dismissible fade show w-100" role="alert">
+                                {{session()->get('pesanLogin')}}
+                                <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+                            </div>
+                        @endif
                         <form method="POST" action="{{ route('loginUser', ['type' => 'login']) }}">
                         @csrf
                             <div class="row ps-5">
@@ -91,12 +97,6 @@
                                 </div>
                             </div>
                             <div class="row mb-3 d-flex justify-content-center">
-                                    @if(session()->has('pesanLogin'))
-                                        <div class="alert alert-warning alert-dismissible fade show w-50" role="alert">
-                                            {{session()->get('pesanLogin')}}
-                                            <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
-                                        </div>
-                                    @endif
                                 <div class="row d-flex justify-content-center">
                                     <input type="submit" value="Login" class="loginButton w-25 btn bg-green-body text-white fw-bold fs-5">
                                 </div>

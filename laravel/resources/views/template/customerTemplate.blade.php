@@ -13,6 +13,7 @@
             $activeProduct = "";    $hrefProduct ="/product";
             $activeWisata ="";      $hrefWisata ="/wisata";
             $activeAbout = "";      $hrefAbout = "/about";
+            $activeCart = "";       $hrefCart = "/cart";
             if($title == "Home"){
                 $activeHome = "active";
                 $hrefHome = "#";
@@ -51,14 +52,14 @@
 
             @else
                 {{-- Shopping Cart --}}
-                <a href="" class="me-4 pe-2">
+                <a href="{{url($hrefCart)}}" class="me-4 pe-2">
                     <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width:1.5vw; max-height:auto;">
                 </a>
                 {{-- Logo --}}
                 <a href="" class="bg-gray-light user-logo" style=" border-radius:50%">
                     <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width: 3vw; max-height:auto; border-radius:50%">
                 </a>
-                
+
             @endif
 
         </div>
