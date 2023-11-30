@@ -38,6 +38,26 @@
     .content {
         padding: 20px; /* Adjust padding as needed */
     }
+
+    .circle {
+        display: inline-block;
+        border-radius: 50%;
+        min-width: 20px;
+        min-height: 20px;
+        padding: 5px;
+        color: green;
+        text-align: center;
+        line-height: 1;
+        box-sizing: content-box;
+        white-space: nowrap;
+        border: 2px solid green;
+    }
+    button:disabled,
+        button[disabled]{
+            border: 1px solid #999999;
+            background-color: #cccccc;
+            color: #666666;
+        }
 </style>
 <script>
      function like(comment){
@@ -63,8 +83,6 @@
     <div class="container-md">
         <h1 class="ps-3 mb-5">Detail Product</h1>
 
-
-
         <div class="row my-2">
             <div class="col-3 mx-3">
                 <div class="row d-flex justify-content-center">
@@ -76,14 +94,12 @@
                 <span class="fw-semibold fs-4 p-3 mb-5">Description</span>
                 <p style="text-indent:3em;">{{$product->description}}</p><br>
                 <span class="fw-semibold fs-4 p-3">Price</span>
-                <p class ="fw-semibold"style="text-indent:1.5em;">Rp. {{intval($product->price)}},00</p><br>
+                <p class ="fw-semibold"style="text-indent:1.5em;">Rp. {{number_format($product->price,0,",",".")}}</p><br>
                 <span class="fw-semibold fs-4 ps-3">Qty</span>
                 <p style="text-indent:1.5em;"><span class="fw-semibold" id="qty">{{intval($product->qty)}} Pcs</span></p><br>
 
             </div>
         </div>
-
-
 
         <div class="row my-2">
             <div class="col-3 mx-3">
@@ -117,13 +133,22 @@
             <div class="col-8">
                 <div class="row fs-2 fw-semibold my-2">
                     <div class="col-1">Rp.</div>
-                    <div class="col-11"><span id="subtotal text-start">-</span></div>
+                    <div class="col-11"><span id="subtotal">0</span></div>
                 </div>
                 <hr>
                 <div class="row my-2">
                     <h5 class="ps-5 mb-3">Quantity to buy :</h5>
-                    <div class="col-9 d-flex justify-content-center ps-5">
-                        <input type="text" name="" id="qty" class="form-control p-2 fs-5" placeholder="Input Quantity">
+                    <div class="col-1 my-auto ps-5">
+                        <button class="circle py-auto decreaseQty" id="dec"><b>-</b></button>
+                    </div>
+                    <div class="col-1 d-flex justify-content-center ps-4 pe-0">
+                        <input type="text" name="" class="form-control p-2 fs-5 qty" placeholder="0" value="1" style="text-align:center;" onchange="cekbutton()">
+                    </div>
+                    <div class="col-1 my-auto pe-5">
+                        <button class="circle py-auto increaseQty" id="inc"><b>+</b></button>
+                    </div>
+                    <div class="col-6">
+
                     </div>
                     <div class="col-3 d-flex justify-content-center">
                         <a href="" class="btn bg-blue-dark p-2 text-white fs-5" style="width:5vw;">Buy</a>
@@ -131,7 +156,6 @@
                 </div>
             </div>
         </div>
-
 
         <div class="row my-5 text-center">
             <span class="fs-1 fw-semibold mt-5">You Might Also Like</span>
@@ -150,7 +174,98 @@
     $(document).ready(function () {
         ratingValue = {{$rating}};
         updateStars();
+        loadData();
+
+        $('.decreaseQty').click(function(e) {
+            e.preventDefault();
+            var qty = $('.qty').val();
+            var value = parseInt(qty);
+            value = isNaN(value) ? 0 : value;
+            if(value>1){
+                value--;
+                $('.qty').val(value);
+                let harga = {{$product->price}};
+                var subtotal = harga*value;
+                if (!isNaN(subtotal))
+                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
+            }
+            $( ".qty" ).trigger( "change" );
+        });
+        
+        
+        $('.increaseQty').click(function(e) {
+            
+            e.preventDefault();
+            var qty = $('.qty').val();
+            var value = parseInt(qty);
+            value = isNaN(value) ? 0 : value;
+            let maksqty = {{$product->qty}};
+            if(value<maksqty){
+                value++;
+                let harga = {{$product->price}};
+                var subtotal = harga*value;
+                if (!isNaN(subtotal))
+                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
+                
+                $('.qty').val(value);
+            }
+            $( ".qty" ).trigger( "change" );
+        });
+        $('.qty').on('input', function() {
+            var value = $(this).val();
+
+            value = value.replace(/[^\d-]/g, '');
+            let maksqty = {{$product->qty}};
+            var countMinus = (value.match(/-/g) || []).length;
+            if (countMinus > 1 || (countMinus === 1 && value.indexOf('-') !== 0)) {
+                value = value.replace(/-/g, '');
+            }
+            if(value<0){
+                value = 0;
+            }
+            else if(value>maksqty){
+                value = maksqty;
+            }
+            
+            $(this).val(value);
+        });
+        $('.qty').on('change', function (){
+            cekbutton();
+        });
     });
+
+    function loadData(){
+        var qty = $('.qty').val();
+        var value = parseInt(qty);
+        value = isNaN(value) ? 0 : value;
+        let harga = {{$product->price}};
+        let maksqty = {{$product->qty}};
+        var subtotal = harga*value;
+        if (!isNaN(subtotal))
+            document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
+
+        if (value === 1) {
+            $('.decreaseQty').prop('disabled', true);
+        } else {
+            $('.decreaseQty').prop('disabled', false);
+        }
+    }
+    function cekbutton(){
+        var qty = $('.qty').val();
+        var value = parseInt(qty);
+        value = isNaN(value) ? 0 : value;
+        let maksqty = {{$product->qty}};
+        if (value === 1) {
+            $('.decreaseQty').prop('disabled', true);
+        } else {
+            $('.decreaseQty').prop('disabled', false);
+        }
+        if (value === maksqty) {
+            $('.increaseQty').prop('disabled', true);
+        } else {
+            $('.increaseQty').prop('disabled', false);
+        }
+    }
     function rate(value) {
         let product_id = {{$product["product_id"]}};
         let username = '{{Session::get("username")}}';
@@ -206,9 +321,10 @@
         const stars = document.querySelectorAll('.fa-star');
         stars.forEach((star) => {
             star.classList.remove('active-star');
-    });
+        });
+    }
+    function addqty(){
 
-
-}
+    }
 </script>
 @endpush
