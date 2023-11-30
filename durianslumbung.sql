@@ -117,6 +117,7 @@ VALUES
 -- Insert dummy data for the product table
 INSERT INTO product (product_id, name, price, category_id, qty, description, img_url, rate)
 VALUES
+<<<<<<< Updated upstream
     ('P0001', 'Smartphone', 499.99, 'C0001', 100, 'High-end smartphone with great features.', 'phone.jpg', 4.5),
     ('P0002', 'T-shirt', 19.99, 'C0002', 200, 'Comfortable cotton T-shirt in various colors.', 'tshirt.jpg', 4.0),
     ('P0003', 'Programming Book', 29.99, 'C0003', 50, 'Learn programming from scratch.', 'book.jpg', 4.8),
@@ -127,6 +128,18 @@ VALUES
     ('P0008', 'Car Jump Starter', 79.99, 'C0008', 50, 'Never worry about a dead battery.', 'jumpstarter.jpg', 4.4),
     ('P0009', 'Vitamins', 19.99, 'C0009', 120, 'Essential vitamins for a healthy life.', 'vitamins.jpg', 4.9),
     ('P0010', 'Pet Toy Set', 14.99, 'C0010', 150, 'Entertain your furry friends.', 'pettoys.jpg', 4.1);
+=======
+    ('P0001', 'Smartphone', 499.99, 'C0001', 100, 'High-end smartphone with great features.', 'https://picsum.photos/id/125/200/300', 4.5),
+    ('P0002', 'T-shirt', 19.99, 'C0002', 200, 'Comfortable cotton T-shirt in various colors.', 'https://picsum.photos/id/125/200/300', 4.0),
+    ('P0003', 'Programming Book', 29.99, 'C0003', 50, 'Learn programming from scratch.', 'https://picsum.photos/id/125/200/300', 4.8),
+    ('P0004', 'Coffee Maker', 89.99, 'C0004', 30, 'Brew your favorite coffee at home.', 'https://picsum.photos/id/125/200/300', 4.2),
+    ('P0005', 'Board Game', 24.99, 'C0005', 80, 'Fun for the whole family.', 'https://picsum.photos/id/125/200/300', 4.6),
+    ('P0006', 'Outdoor Tent', 149.99, 'C0006', 15, 'Perfect for camping trips.', 'https://picsum.photos/id/125/200/300', 4.3),
+    ('P0007', 'Skin Care Set', 39.99, 'C0007', 100, 'Keep your skin healthy and radiant.', 'https://picsum.photos/id/125/200/300', 4.7),
+    ('P0008', 'Car Jump Starter', 79.99, 'C0008', 50, 'Never worry about a dead battery.', 'https://picsum.photos/id/125/200/300', 4.4),
+    ('P0009', 'Vitamins', 19.99, 'C0009', 120, 'Essential vitamins for a healthy life.', 'https://picsum.photos/id/125/200/300', 4.9),
+    ('P0010', 'Pet Toy Set', 14.99, 'C0010', 150, 'Entertain your furry friends.', 'https://picsum.photos/id/125/200/300', 4.1);
+>>>>>>> Stashed changes
 
 -- Insert dummy data for the comment table
 INSERT INTO comment (comment_id, message, username, product_id)
