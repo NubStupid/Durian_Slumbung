@@ -11,6 +11,6 @@ class Categories extends Model
     protected $connection = "connect_Durian";
     protected $table = "categories";
     protected $primaryKey = "category_id";
-    public $incrementing = true;
+    public $incrementing = false;
     public $timestamps = false;
 }

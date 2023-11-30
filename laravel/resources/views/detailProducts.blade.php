@@ -152,7 +152,7 @@
         updateStars();
     });
     function rate(value) {
-        let product_id = {{$product["product_id"]}};
+        let product_id = '{{$product["product_id"]}}';
         let username = '{{Session::get("username")}}';
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
         $.ajaxSetup({
@@ -186,7 +186,7 @@
                 rating: value
             }, function(response) {
                 // Handle the successful response
-                // console.log(response);
+                console.log(response);
                 // console.log("Berhasil");
             })
             .fail(function(error) {

@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Rating;
 use App\Models\Products;
 class RatingController extends Controller
@@ -11,8 +12,8 @@ class RatingController extends Controller
     public function insertUpdateRating(Request $req){
         $data = $req->all();
         $ifExist = Rating::where('product_id',$data['product_id'])
-                   ->where('username',$data['username'])
-                   ->first();
+        ->where('username',$data['username'])
+        ->first();
         $tes = 0;
         // return json_encode($ifExist);
         if($ifExist == null){
@@ -23,9 +24,11 @@ class RatingController extends Controller
             $rating->save();
             $tes = $rating->rate;
         }else{
-            $ifExist->rate = $data["rating"];
-            $ifExist->save();
-            $tes = $ifExist->rate;
+            DB::connection('connect_Durian')->table('rating')->
+            where('product_id','=',$data['product_id'])
+            ->where('username','=',$data['username'])
+            ->update(['rate'=>$data["rating"]]);
+            $tes = $data["rating"];
         }
         $tes = $this->updateRating($data["product_id"]);
         return $tes;

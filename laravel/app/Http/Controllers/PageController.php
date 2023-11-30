@@ -139,7 +139,7 @@ class PageController extends Controller
         // dd($comments);
         return $comments;
     }
-    public function viewProduct(int $id){
+    public function viewProduct($id){
 
         // $productViewed = DB::connection('connect_Customer')->table('products');
         // $productViewed = $productViewed->select(["*"]);
