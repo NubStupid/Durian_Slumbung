@@ -171,7 +171,7 @@ VALUES
     ('L0010', 'user10', 'CM010');
 
 -- Insert dummy data for the h_trans table
-INSERT INTO h_trans (h_trans_id, invoice_number, subtotal, username)
+INSERT INTO h_trans (h_trans_id, subtotal, username)
 VALUES
     ('HT001', 719.98, 'user01'),
     ('HT002', 39.98, 'user02'),
