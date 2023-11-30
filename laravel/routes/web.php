@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\PageController;
+use App\Http\Controllers\RatingController;
 use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
 
@@ -75,6 +76,8 @@ Route::get('/register', function () {
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
+        Route::post('/product/like',[RatingController::class,"insertUpdateRating"]);
+        Route::post('/product/delete',[RatingController::class,"deleteRating"]);
     });
 
 // Logout (Session dorrr)

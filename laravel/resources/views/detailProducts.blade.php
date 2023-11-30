@@ -6,16 +6,59 @@
     @endphp
 @endsection
 @push('style')
-{{-- <meta name="csrf-token" content="{{ csrf_token() }}">
-<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script> --}}
+<meta name="csrf-token" content="{{ csrf_token() }}">
+<script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+<style>
+    ::-webkit-scrollbar {
+        display: none;
+    }
+    .comment-section-outer {
+        max-width: 300px; /* Adjust the maximum width as needed */
+        border: 1px solid #ccc; /* Optional styling for the outer container */
+        overflow: hidden;
+    }
+
+    .comment-section-inner {
+        margin-bottom: -20px; /* Adjust margin to make space for the scrollbar */
+        overflow-y: auto; /* Use "auto" to show vertical scrollbar only when needed */
+        overflow-x: hidden;
+        scrollbar-width: thin; /* "auto" or "thin" depending on your preference - Firefox */
+        scrollbar-color: transparent transparent; /* Adjust colors as needed - Firefox */
+    }
+
+    .comment-section-inner::-webkit-scrollbar {
+        width: 0.5em; /* Adjust width as needed - WebKit browsers */
+    }
+
+    .comment-section-inner::-webkit-scrollbar-thumb {
+        background-color: transparent; /* Adjust color as needed - WebKit browsers */
+    }
+
+    .content {
+        padding: 20px; /* Adjust padding as needed */
+    }
+</style>
+<script>
+     function like(comment){
+        var currentSrc = $(comment).attr('src');
+        // Define the new image source
+        if(currentSrc!=undefined)
+        var newSrc = (currentSrc === "{{asset('assets/detail/like.png')}}") ? "{{asset('assets/detail/liked.png')}}" : "{{asset('assets/detail/like.png')}}";
+        // Change the image source
+        $(comment).attr('src', newSrc);
+    }
+</script>
 @endpush
 @section('content')
-    {{-- <pre>
+    <pre>
         @php
-            print_r(Session::get("username"));
+            // print_r(Session::get("username"));
+            // print_r($product["product_id"]);
+            // print_r($comments);
+            // echo $rating;
         @endphp
-    </pre> --}}
+    </pre>
     <div class="row my-4"></div>
     <div class="container-md">
         <h1 class="ps-3 mb-5">Detail Product</h1>
@@ -57,8 +100,17 @@
                 <div class="row my-2"></div>
                 <div class="row my-2">
                     <div class="fs-5 fw-semibold text-start">Comments : </div>
-                    <div class="comment-section rounded-4">
-                       dolorem exercitationem! Odit, beatae! Nulla magnam magni ipsum modi voluptatum minima quis aspernatur, accusantium nobis dolores, nostrum, consequuntur earum officiis voluptate mollitia ratione animi quod beatae dicta dolorem facilis? Vitae voluptatem dolor modi facere omnis sint tenetur suscipit animi velit doloremque neque sit iste temporibus sed tempore, aliquam quae pariatur recusandae distinctio voluptatum?
+                    <div class="row mt-2">
+                        <div class="col-9 p-2"><input type="text" name="comment" id="" class="form-control fs-5" placeholder="Comment"></div>
+                        <div class="col-3 p-2"><a href="" class="btn bg-blue-dark p-2 fw-semibold text-white">Comment</a></div>
+                    </div>
+                    <div class="comment-section comment-section-outer rounded-2 mt-3 shadow">
+                        <div class="comment-section-inner">
+                            {{-- dolorem exercitationem! Odit, beatae! Nulla magnam magni ipsum modi voluptatum minima quis aspernatur, accusantium nobis dolores, nostrum, consequuntur earum officiis voluptate mollitia ratione animi quod beatae dicta dolorem facilis? Vitae voluptatem dolor modi facere omnis sint tenetur suscipit animi velit doloremque neque sit iste temporibus sed tempore, aliquam quae pariatur recusandae distinctio voluptatum? --}}
+                            @foreach ($comments as $comment)
+                                @include('commentCard',['comment'=>$comment])
+                            @endforeach
+                        </div>
                     </div>
                 </div>
             </div>
@@ -95,15 +147,52 @@
 @push('script')
 <script>
     let ratingValue = 0;
-
+    $(document).ready(function () {
+        ratingValue = {{$rating}};
+        updateStars();
+    });
     function rate(value) {
+        let product_id = {{$product["product_id"]}};
+        let username = '{{Session::get("username")}}';
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
         if(ratingValue == value){
             // remove star sama record di db likes
             removeAllActiveStars();
+            ratingValue =0;
+            $.post('/product/delete', {
+                username: username,
+                product_id: product_id,
+            }, function(response) {
+                // Handle the successful response
+                console.log(response);
+                // console.log("Berhasil");
+            })
+            .fail(function(error) {
+                // Handle errors
+                console.error('Error:', error);
+            });
         }else{
             ratingValue = value;
             //cek apakah ada di db kalau ga di insert kalau ada di update
             updateStars();
+            $.post('/product/like', {
+                username: username,
+                product_id: product_id,
+                rating: value
+            }, function(response) {
+                // Handle the successful response
+                // console.log(response);
+                // console.log("Berhasil");
+            })
+            .fail(function(error) {
+                // Handle errors
+                console.error('Error:', error);
+            });
         }
     }
 
@@ -118,6 +207,8 @@
         stars.forEach((star) => {
             star.classList.remove('active-star');
     });
+
+
 }
 </script>
 @endpush

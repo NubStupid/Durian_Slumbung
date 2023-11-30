@@ -35,7 +35,7 @@
                     <li>
                         <span class="text-start fw-semibold">Filter by Maximum Rating : </span><br>
                         <span class="text-start" id="rated">5</span>⭐
-                        <div class="col-10"><input type="range" class="form-range" min="1" max="5" step="1" id="rangeRating" oninput="search()" value="5"></div>
+                        <div class="col-10"><input type="range" class="form-range" min="1" max="5" step="0.5" id="rangeRating" oninput="search()" value="5"></div>
                     </li>
                     <li>
                         From <span class="text-start fw-semibold" id="category">All Category</span><br>

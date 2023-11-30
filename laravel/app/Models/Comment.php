@@ -5,17 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Rating extends Model
+class Comment extends Model
 {
     use HasFactory;
-
     protected $connection = "connect_Durian";
-    protected $table = "rating";
-    protected $primaryKey = "rating_id";
+    protected $table = "comment";
+    protected $primaryKey = "comment_id";
     public $incrementing = true;
     public $timestamps = false;
-
-    protected $fillable = [
-        'rate','username','product_id'
-    ];
 }

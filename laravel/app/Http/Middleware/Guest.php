@@ -17,7 +17,7 @@ class Guest
     {
         if(session()->has('username')){
             if (session()->get('role') == "user"){
-                return redirect('home');
+                return redirect('/');
             }
             else if(session()->get('role') == "admin"){
                 return redirect('adminhomepage');

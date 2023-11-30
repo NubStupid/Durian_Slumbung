@@ -1,6 +1,6 @@
 <div class="col card p-2 mx-5 my-3" style="width: 18rem;">
     <div class="row d-flex justify-content-center">
-        <img src="{{$products[$i-1]->img_url}}" class="card-img-top" alt="..." style="max-width:10rem;max-height:auto;">
+        <img src={{$products[$i-1]->img_url}} class="card-img-top" alt="..." style="max-width:10rem;max-height:auto;">
     </div>
     <div class="card-body">
         <h5 class="card-title row">
@@ -8,8 +8,8 @@
                 {{$products[$i-1]->name}}
             </div>
             <div class="col-3 d-flex align-items-center">
-                @if($products[$i-1]->rating != null)
-                {{$products[$i-1]->rating}}⭐
+                @if($products[$i-1]->rate != null)
+                {{$products[$i-1]->rate}}⭐
                 @else
                     -⭐
                 @endif
