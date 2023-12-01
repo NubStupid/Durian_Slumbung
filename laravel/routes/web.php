@@ -7,6 +7,7 @@ use App\Http\Controllers\PageController;
 use App\Http\Controllers\RatingController;
 use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CommentController;
 
 /*
 |--------------------------------------------------------------------------
@@ -78,6 +79,7 @@ Route::get('/register', function () {
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
         Route::post('/product/like',[RatingController::class,"insertUpdateRating"]);
         Route::post('/product/delete',[RatingController::class,"deleteRating"]);
+        Route::post('/comments', [CommentController::class, 'addComment']);
     });
 
 // Logout (Session dorrr)
@@ -102,7 +104,12 @@ Route::get('/logout', function (Request $request) {
 */
 
 
+
 // Paling bawah
 Route::get('/{any}',function(){
     return view('error.404');
 });
+
+// routes/web.php
+
+

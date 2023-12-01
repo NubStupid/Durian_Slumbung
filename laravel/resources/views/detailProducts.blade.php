@@ -40,6 +40,7 @@
     }
 </style>
 <script>
+
      function like(comment){
         var currentSrc = $(comment).attr('src');
         // Define the new image source
@@ -48,6 +49,32 @@
         // Change the image source
         $(comment).attr('src', newSrc);
     }
+    function addComment(){
+        let product_id = '{{$product["product_id"]}}';
+        let username = '{{Session::get("username")}}';
+        let message = $("#commentToAdd").val();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+        $.post('/comments', {
+            message: message,
+            username: username,
+            product_id: product_id
+        }, function(response) {
+            // Handle the successful response
+            console.log(response);
+            $("#comment").html(response);
+            // console.log("Berhasil");
+        })
+        .fail(function(error) {
+            // Handle errors
+            console.error('Error:', error);
+        });
+    }
+
 </script>
 @endpush
 @section('content')
@@ -101,15 +128,18 @@
                 <div class="row my-2">
                     <div class="fs-5 fw-semibold text-start">Comments : </div>
                     <div class="row mt-2">
-                        <div class="col-9 p-2"><input type="text" name="comment" id="" class="form-control fs-5" placeholder="Comment"></div>
-                        <div class="col-3 p-2"><a href="" class="btn bg-blue-dark p-2 fw-semibold text-white">Comment</a></div>
+                        {{-- <form action="" method="post">
+                            @csrf --}}
+                            <div class="row mt-2">
+                                <div class="col-9 p-2"><input type="text" name="comment" class="form-control fs-5" placeholder="Comment" id="commentToAdd"></div>
+                                <div class="col-3 p-2"><button type="submit" class="btn bg-blue-dark p-2 fw-semibold text-white" onclick="addComment()">Comment</button></div>
+                            </div>
+                        {{-- </form> --}}
                     </div>
                     <div class="comment-section comment-section-outer rounded-2 mt-3 shadow">
-                        <div class="comment-section-inner">
+                        <div class="comment-section-inner" id="comment">
                             {{-- dolorem exercitationem! Odit, beatae! Nulla magnam magni ipsum modi voluptatum minima quis aspernatur, accusantium nobis dolores, nostrum, consequuntur earum officiis voluptate mollitia ratione animi quod beatae dicta dolorem facilis? Vitae voluptatem dolor modi facere omnis sint tenetur suscipit animi velit doloremque neque sit iste temporibus sed tempore, aliquam quae pariatur recusandae distinctio voluptatum? --}}
-                            @foreach ($comments as $comment)
-                                @include('commentCard',['comment'=>$comment])
-                            @endforeach
+                            @include('commentContent',['comments'=>$comments])
                         </div>
                     </div>
                 </div>
@@ -143,11 +173,12 @@
         </div>
     </div>
     <div class="row my-5"></div>
-@endsection
-@push('script')
-<script>
-    let ratingValue = 0;
-    $(document).ready(function () {
+    @endsection
+    @push('script')
+    <script>
+        
+        let ratingValue = 0;
+        $(document).ready(function () {
         ratingValue = {{$rating}};
         updateStars();
     });
@@ -207,7 +238,6 @@
         stars.forEach((star) => {
             star.classList.remove('active-star');
     });
-
 
 }
 </script>

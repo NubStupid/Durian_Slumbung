@@ -5,16 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Comment extends Model
+class Likes extends Model
 {
     use HasFactory;
+
     protected $connection = "connect_Durian";
-    protected $table = "comment";
-    protected $primaryKey = "comment_id";
+    protected $table = "likes";
+    protected $primaryKey = null;
     public $incrementing = false;
     public $timestamps = false;
-
-    protected $fillable = [
-        'comment_id','message','username', 'product_id'
-    ];
 }
