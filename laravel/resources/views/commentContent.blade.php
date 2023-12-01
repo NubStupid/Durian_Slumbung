@@ -1,3 +1,3 @@
-@foreach ($comments as $comment)
-    @include('commentCard',['comment'=>$comment])
+@foreach ($comments->reverse() as $comment)
+    @include('commentCard', ['comment' => $comment])
 @endforeach

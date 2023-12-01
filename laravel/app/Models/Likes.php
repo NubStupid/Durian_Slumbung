@@ -14,4 +14,8 @@ class Likes extends Model
     protected $primaryKey = null;
     public $incrementing = false;
     public $timestamps = false;
+
+    protected $fillable = [
+        'likes_id', 'username', 'comment_id'
+    ];
 }

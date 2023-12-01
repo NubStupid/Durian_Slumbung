@@ -13,9 +13,9 @@ class CommentController extends Controller
     {
         $data = $req->all();
         
+        $comment = new Comment();
         $maxID = Comment::max('comment_id');
         $maxNum = substr($maxID, 2, 3) + 1;
-        $comment = new Comment();
         if($maxNum > 0 && $maxNum < 10){
             $comment->comment_id = "CM00".substr($maxID, 2, 3) + 1;
         }
@@ -31,7 +31,7 @@ class CommentController extends Controller
         $comment->save();
         
         $updateComment = Comment::all()
-                            ->where('username',$data['username']);
+                            ->where('product_id',$data['product_id']);
         $view = view('commentContent',['comments'=>$updateComment]);
         return $view;
     }

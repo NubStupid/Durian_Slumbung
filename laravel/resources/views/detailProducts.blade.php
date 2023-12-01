@@ -49,6 +49,7 @@
         // Change the image source
         $(comment).attr('src', newSrc);
     }
+
     function addComment(){
         let product_id = '{{$product["product_id"]}}';
         let username = '{{Session::get("username")}}';
@@ -65,9 +66,9 @@
             product_id: product_id
         }, function(response) {
             // Handle the successful response
-            console.log(response);
             $("#comment").html(response);
-            // console.log("Berhasil");
+            console.log("Berhasil");
+            $("#commentToAdd").val('');
         })
         .fail(function(error) {
             // Handle errors
@@ -90,8 +91,6 @@
     <div class="container-md">
         <h1 class="ps-3 mb-5">Detail Product</h1>
 
-
-
         <div class="row my-2">
             <div class="col-3 mx-3">
                 <div class="row d-flex justify-content-center">
@@ -109,8 +108,6 @@
 
             </div>
         </div>
-
-
 
         <div class="row my-2">
             <div class="col-3 mx-3">
