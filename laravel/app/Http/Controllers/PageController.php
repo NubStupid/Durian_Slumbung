@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
+use Illuminate\Database\Eloquent\Model;
 
 
 use App\Models\Products;
@@ -172,12 +173,12 @@ class PageController extends Controller
         ]);
     }
 
-    public function addCart(int $id, Request $req){
+    public function addCart(string $id, Request $req){
         $qty = $req->input('qty');
         $produk = Products::select(["*"])->where('product_id',$id)->first();
         $cekuser = Session('username');
-        $cekisicart = Cart::where('username', $cekuser)
-            ->where('product_id', $id)
+        $cekisicart = Cart::where('product_id', $id)
+            ->where('username', $cekuser)
             ->first();
         if($cekisicart){
             $cekqty = $cekisicart->qty;
@@ -185,13 +186,19 @@ class PageController extends Controller
                 return redirect()->back()->with('error', 'gagal');
             }
             else{
-                $cekisicart->update(['qty' => $cekqty+$qty]);
+                Cart::where('product_id', $id)
+                    ->where('username', $cekuser)
+                    ->update(['qty' => $cekqty+$qty]);
                 return redirect()->back()->with('success', 'sukses');
             }
         }
         else{
+            $latestCart = Cart::latest('cart_id')->first(); 
+            $idadd = intval(substr($latestCart->cart_id, 1))+1;
+            $newID = "C" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
             $res = Cart::create(
                 [
+                    "cart_id"=>$newID,
                     "product_id"=>$id,
                     "price"=>$produk->price,
                     "qty"=>$qty,
