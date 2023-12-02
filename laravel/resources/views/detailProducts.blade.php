@@ -39,25 +39,7 @@
         padding: 20px; /* Adjust padding as needed */
     }
 
-    .circle {
-        display: inline-block;
-        border-radius: 50%;
-        min-width: 20px;
-        min-height: 20px;
-        padding: 5px;
-        color: green;
-        text-align: center;
-        line-height: 1;
-        box-sizing: content-box;
-        white-space: nowrap;
-        border: 2px solid green;
-    }
-    button:disabled,
-        button[disabled]{
-            border: 1px solid #999999;
-            background-color: #cccccc;
-            color: #666666;
-        }
+    
 </style>
 <script>
      function like(comment){
@@ -151,7 +133,11 @@
 
                     </div>
                     <div class="col-3 d-flex justify-content-center">
-                        <a href="" class="btn bg-blue-dark p-2 text-white fs-5" style="width:5vw;">Buy</a>
+                        <form action="{{ route('add-cart', ['id' => $product->product_id])  }}" Method="POST"onsubmit="cekqty()">
+                            @csrf
+                            <input type="hidden" name="qty" id="getQty">
+                            <input type="submit" class="btn bg-blue-dark p-2 text-white fs-5" style="width:5vw;" value="Buy">
+                        </form>
                     </div>
                 </div>
             </div>
@@ -167,6 +153,34 @@
         </div>
     </div>
     <div class="row my-5"></div>
+
+    {{-- Popup add to cart --}}
+    @if(session('success'))
+    <div class="modal fade" id="HasilAdd" tabindex="-1" aria-labelledby="HasilAdd" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{asset('assets/misc/berhasiladdtocart.gif')}}" class="my-2" alt="" width="max-content" height="110px">
+              <h5 class="py-2">Berhasil Menambah ke keranjang!</h5>
+              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Sip!</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    @endif
+    @if(session('error'))
+    <div class="modal fade" id="HasilAdd" tabindex="-1" aria-labelledby="HasilAdd" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{asset('assets/misc/gagaladdtocart.gif')}}" class="my-2" alt="" width="max-content" height="110px">
+              <h5 class="py-2">Jumlah barang di keranjang melebihi stok!</h5>
+              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    @endif
 @endsection
 @push('script')
 <script>
@@ -175,6 +189,7 @@
         ratingValue = {{$rating}};
         updateStars();
         loadData();
+        showModal();
 
         $('.decreaseQty').click(function(e) {
             e.preventDefault();
@@ -214,26 +229,45 @@
         $('.qty').on('input', function() {
             var value = $(this).val();
 
-            value = value.replace(/[^\d-]/g, '');
+            if (!/^-?\d*\.?\d+$/.test(value)) {
+                value = value.replace(/[^\d-]/g, '');
+            } 
             let maksqty = {{$product->qty}};
             var countMinus = (value.match(/-/g) || []).length;
             if (countMinus > 1 || (countMinus === 1 && value.indexOf('-') !== 0)) {
                 value = value.replace(/-/g, '');
             }
-            if(value<0){
+            if(value<1){
                 value = 0;
             }
             else if(value>maksqty){
                 value = maksqty;
             }
-            
+            else if(value.length === 2 && value.charAt(0) === '0' && value.charAt(1) !== '0') {
+                value = value.substring(1);
+            }
+            loadData();
             $(this).val(value);
         });
         $('.qty').on('change', function (){
             cekbutton();
         });
+        $('.qty').on('blur', function() {
+            var value = $(this).val();
+            if(value === '0') {
+                $(this).val('1');
+            }
+            loadData();
+        });
     });
-
+    
+    function cekqty() {
+        var qtyValue = document.querySelector('.qty').value;
+        document.getElementById('getQty').value = qtyValue;
+    }
+    function showModal() {
+        $('#HasilAdd').modal('show');
+    }
     function loadData(){
         var qty = $('.qty').val();
         var value = parseInt(qty);
@@ -241,10 +275,13 @@
         let harga = {{$product->price}};
         let maksqty = {{$product->qty}};
         var subtotal = harga*value;
+        if(subtotal>harga*maksqty){
+            subtotal = harga * maksqty;
+        }
         if (!isNaN(subtotal))
             document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
 
-        if (value === 1) {
+        if (value <=1) {
             $('.decreaseQty').prop('disabled', true);
         } else {
             $('.decreaseQty').prop('disabled', false);
@@ -255,7 +292,7 @@
         var value = parseInt(qty);
         value = isNaN(value) ? 0 : value;
         let maksqty = {{$product->qty}};
-        if (value === 1) {
+        if (value <= 1) {
             $('.decreaseQty').prop('disabled', true);
         } else {
             $('.decreaseQty').prop('disabled', false);
