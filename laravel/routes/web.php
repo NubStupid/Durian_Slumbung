@@ -70,12 +70,14 @@ Route::get('/register', function () {
         Route::post('/product',[PageController::class, "searchProduct"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
-
+        
         Route::get('/checkout',[PageController::class,'checkout']);
 
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
+        Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
+        Route::get('/cart',[PageController::class,"viewCart"]);
         Route::post('/product/like',[RatingController::class,"insertUpdateRating"]);
         Route::post('/product/delete',[RatingController::class,"deleteRating"]);
     });

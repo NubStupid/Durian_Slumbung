@@ -11,6 +11,7 @@ use App\Models\Products;
 use App\Models\Categories;
 use App\Models\Rating;
 use App\Models\Comment;
+use App\Models\Cart;
 
 class PageController extends Controller
 {
@@ -157,6 +158,49 @@ class PageController extends Controller
             'rating'=>$rating,
             'comments'=>$comments
         ]);
+    }
+
+    public function viewCart(){
+        $cekuser = Session('username');
+        $listcart = Cart::where('username', $cekuser)->get();
+        $user = request()->attributes->get('user');
+        $listproduct = Products::all();
+        return view('cart',[
+            "listcart"=>$listcart,
+            "listproduct" => $listproduct,
+            "user" => $user
+        ]);
+    }
+
+    public function addCart(int $id, Request $req){
+        $qty = $req->input('qty');
+        $produk = Products::select(["*"])->where('product_id',$id)->first();
+        $cekuser = Session('username');
+        $cekisicart = Cart::where('username', $cekuser)
+            ->where('product_id', $id)
+            ->first();
+        if($cekisicart){
+            $cekqty = $cekisicart->qty;
+            if($cekqty+$qty > $produk->qty){
+                return redirect()->back()->with('error', 'gagal');
+            }
+            else{
+                $cekisicart->update(['qty' => $cekqty+$qty]);
+                return redirect()->back()->with('success', 'sukses');
+            }
+        }
+        else{
+            $res = Cart::create(
+                [
+                    "product_id"=>$id,
+                    "price"=>$produk->price,
+                    "qty"=>$qty,
+                    "username"=>$cekuser
+                ]
+            );
+            return redirect()->back()->with('success', 'Quantity updated in the cart.');
+        }
+        return redirect("detailProducts");
     }
 
     // Wisata

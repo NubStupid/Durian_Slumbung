@@ -217,8 +217,8 @@
         rightLoaded();
     }
     function showSuccessModal() {
-            $('#RegisBerhasil').modal('show');
-        }
+        $('#RegisBerhasil').modal('show');
+    }
     function loginClick(){
         $("#text").html("Login into");
         $('#overlay').toggleClass('moveRight');
