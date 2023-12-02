@@ -73,7 +73,12 @@ Route::get('/register', function () {
         Route::get('/wisata',[PageController::class,'loadWisataView']);
 
         Route::get('/checkout',[TransactionController::class,'checkout']);
+        Route::post('/checkout', [TransactionController::class, 'pay']);
 
+        Route::get('/payment-success', function(){
+            return view('payment-success');
+        });
+        
         Route::get('/invoice/{id}', [TransactionController::class, 'invoice']);
 
     });

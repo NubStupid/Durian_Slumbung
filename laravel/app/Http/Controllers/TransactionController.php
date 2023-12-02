@@ -3,10 +3,20 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Transaction;
 use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
 {
+    public function __construct()
+    {
+        \Midtrans\Config::$serverKey    = config('services.midtrans.serverKey');
+        \Midtrans\Config::$isProduction = config('services.midtrans.isProduction');
+        \Midtrans\Config::$isSanitized  = config('services.midtrans.isSanitized');
+        \Midtrans\Config::$is3ds        = config('services.midtrans.is3ds');
+    }
+
     public function checkout()
     {
         $user = request()->attributes->get('user');
@@ -65,12 +75,133 @@ class TransactionController extends Controller
         ]);
     }
 
+    public function generateHtrans()
+    {
+        $maks = substr(Transaction::max('h_trans_id'), 2, 3);
+        $ht = "HT" . str_pad($maks + 1, 3, "0", STR_PAD_LEFT);
+        return $ht;
+    }
+
+    public function generateInv()
+    {
+        // $inv = "INYYYYMMDDXXX001";
+        $inv = "IN" . date("Ymd");
+        $num = "";
+        do
+        {
+            $num = rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9) . rand(0, 9);
+        }while(Transaction::where('invoice_number', $inv . $num)->exists());
+        // dd(Transaction::where('invoice_number', $inv . $num)->exists());
+        // dd(Transaction::where('invoice_number', 'IN2023120275300')->exists());
+        // $maks = substr(Transaction::whereLike('invoice_number', $inv)->max('invoice_number'), 9, 3);
+        $inv .= $num;
+        // $maks = substr(Transaction::max('h_trans_id'), 2, 3);
+        // $ht = "HT" . str_pad($maks + 1, 3, "0", STR_PAD_LEFT);
+        // dd($ht);
+        return $inv;
+    }
+
+    public function pay(Request $req)
+    {
+        // dd($req->all());
+
+        $data = $req->all();
+        // $data['_token'] = $req->_token;
+        $data['h_trans_id'] = $this->generateHtrans();
+        $data['invoice_number'] = $this->generateInv();
+        // $data['subtotal'] = $req->subtotal;
+        $data['username'] = Session::get('username');
+        $data['status'] = 'pending';
+        // dd($data);
+        $order = Transaction::create($data);
+
+        // dd($order);
+        // dd($order->id);
+        // dd($order->subtotal);
+        // dd($order->amount);
+
+        // \Midtrans\Config::$serverKey = 'YOUR_SERVER_KEY';
+        // // Set to `Development/Sandbox Environment (default). Set to true for Production Environment (accept real transaction).
+        // \Midtrans\Config::$isProduction = false;
+        // // Set sanitization on (default)
+        // \Midtrans\Config::$isSanitized = true;
+        // // Set 3DS transaction for credit card to true
+        // \Midtrans\Config::$is3ds = true;
+
+        \Midtrans\Config::$serverKey    = config('services.midtrans.serverKey');
+        \Midtrans\Config::$isProduction = config('services.midtrans.isProduction');
+        \Midtrans\Config::$isSanitized  = config('services.midtrans.isSanitized');
+        \Midtrans\Config::$is3ds        = config('services.midtrans.is3ds');
+
+        $params = array(
+            'transaction_details' => array(
+                'order_id' => $order->h_trans_id,
+                'gross_amount' => $order->total,
+            ),
+            'customer_details' => array(
+                'h_trans_id' => $order->h_trans_id,
+                'invoice_number' => $order->inv,
+                'total' => $order->total,
+                'username' => Session::get('username')
+            ),
+            'callbacks' => array(
+                'finish' => url('/payment-success')
+            )
+        );
+
+        $snapToken = \Midtrans\Snap::getSnapToken($params);
+
+        $paymentUrl = \Midtrans\Snap::createTransaction($params)->redirect_url;
+        return redirect($paymentUrl);
+        // dd($snapToken);
+        // return view('checkout', compact('snapToken', 'order'));
+    }
+
+    public function callback(Request $req)
+    {
+        $serverKey = config('services.midtrans.serverKey');
+        $hashed = hash("sha512", $req->order_id.$req->status_code.$req->gross_amount.$serverKey);
+        if($hashed == $req->signature_key)
+        {
+            if($req->transaction_status == 'capture' || $req->transaction_status == 'settlement')
+            {
+                // dd($req->order_id);
+                $order = Transaction::find($req->order_id);
+                $order->update(['status' => 'paid']);
+                // return redirect()->route('invoice', ['id' => $order->inv]);
+
+                // dd($order);
+                // $pdf = Pdf::loadView('invoice', compact('order'));
+
+                // return view('invoice/' . $order->id);
+            }
+        }
+    }
+
+    // public function success($id)
+    // {
+    //     $order = Pay::find($id);
+
+    //     // $pdf = Pdf::loadView('invoice', compact('order'));
+
+    //     // return $pdf->stream($order->id. '.pdf');
+    //     return view('payment-success', compact('order'));
+    // }
+
     public function invoice($id)
     {
-        // $order = Pay::find($id);
-        $order = [
-            "id" => 1
-        ];
+        // $order = Transaction::find($id);
+        $order = Transaction::where('invoice_number', $id)->first();
+        // dd($order);
+        // dd(Transaction::where('invoice_number', $id)->exists());
+
+        // dd($order->invoice_number);
+
+        // dd($order->id);
+        // dd($order->invoice_number);
+        // $order = [
+        //     "id" => 1
+        // ];
 
         $pdf = Pdf::loadView('invoice', compact('order'));
 
@@ -91,7 +222,7 @@ class TransactionController extends Controller
         //     ])
         // );
 
-        return $pdf->stream($order['id']. '.pdf');
+        return $pdf->stream($order['invoice_number']. '.pdf');
         // return $pdf->stream($order->id. '.pdf');
 
         // return view('invoice', compact('order'));

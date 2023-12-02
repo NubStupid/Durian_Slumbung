@@ -6,6 +6,10 @@
     @endphp
 @endsection
 
+@push('style')
+    <script type="text/javascript" src="https://app.stg.midtrans.com/snap/snap.js" data-client-key="{{config('services.midtrans.clientKey')}}"></script>
+@endpush
+
 @section('content')
     <nav class="navbar navbar-expand-lg bg-green-primary">
         <div class="container-fluid">
@@ -91,6 +95,7 @@
                     </div>
                 </div>
                 <hr>
+                <input type="hidden" name="total" value="{{$totalProduk['harga']+$totalWisata['harga']}}">
                 <button type="submit" class="btn bg-green-primary text-white">Buat Pesanan</button>
             </div>
         </div>

@@ -4,11 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    {{-- <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Poppins&display=swap" rel="stylesheet"> --}}
-    <title>{{$order['id']}}</title>
-    {{-- <title>{{$order->id}}</title> --}}
+    <title>{{$order['invoice_number']}}</title>
     <style>
         @font-face {
             font-family: 'Poppins';
@@ -102,7 +98,7 @@
     <table class="w-100">
         <tr>
             <td class="w-50 semi-bold">BILLED TO:</td>
-            <td class="text-end">IN20231124814001</td>
+            <td class="text-end">{{$order['invoice_number']}}</td>
             {{-- <td class="text-end">INYYYYMMDDXXX001</td> --}}
         </tr>
         <tr>
