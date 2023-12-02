@@ -5,7 +5,7 @@
     </div>
     <div class="row d-flex justify-content-end align-items-center">
         <div class="col-1">
-            <img src="{{asset('assets/detail/like.png')}}" alt="" style="max-width:1rem; max-height:auto;" onclick="like(this)">
+            <img src="{{asset('assets/detail/like.png')}}" alt="" style="max-width:1rem; max-height:auto;" onclick="like(this)" data-comment-id="{{$comment->id}}">
         </div>
         <div class="pt-1 col-3 d-flex justify-content-end">
             <span class="">12345</span>

@@ -49,8 +49,11 @@ create table likes(
 create table h_trans(
     h_trans_id varchar(5) primary key,
     invoice_number varchar(20) not null,
-    subtotal decimal(10,2) not null,
-    username varchar(50) references user(username)
+    total decimal(10,2) not null,
+    username varchar(50) references user(username),
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp,
+    status varchar(10)
 );
 
 create table d_trans(
@@ -171,18 +174,18 @@ VALUES
     ('L0010', 'user10', 'CM010');
 
 -- Insert dummy data for the h_trans table
-INSERT INTO h_trans (h_trans_id, subtotal, username)
+INSERT INTO h_trans (h_trans_id, invoice_number, total, username)
 VALUES
-    ('HT001', 719.98, 'user01'),
-    ('HT002', 39.98, 'user02'),
-    ('HT003', 29.99, 'user03'),
-    ('HT004', 149.99, 'user04'),
-    ('HT005', 124.95, 'user05'),
-    ('HT006', 314.97, 'user06'),
-    ('HT007', 239.92, 'user07'),
-    ('HT008', 159.98, 'user08'),
-    ('HT009', 199.80, 'user09'),
-    ('HT010', 74.95, 'user10');
+    ('HT001', 'INYYYYMMDDXXX001', 719.98, 'user01'),
+    ('HT002', 'INYYYYMMDDXXX002', 39.98, 'user02'),
+    ('HT003', 'INYYYYMMDDXXX003', 29.99, 'user03'),
+    ('HT004', 'INYYYYMMDDXXX004', 149.99, 'user04'),
+    ('HT005', 'INYYYYMMDDXXX005', 124.95, 'user05'),
+    ('HT006', 'INYYYYMMDDXXX006', 314.97, 'user06'),
+    ('HT007', 'INYYYYMMDDXXX007', 239.92, 'user07'),
+    ('HT008', 'INYYYYMMDDXXX008', 159.98, 'user08'),
+    ('HT009', 'INYYYYMMDDXXX009', 199.80, 'user09'),
+    ('HT010', 'INYYYYMMDDXXX010', 74.95, 'user10');
 
 -- Insert dummy data for the d_trans table
 INSERT INTO d_trans (d_trans_id, qty, total, h_trans_id, product_id)

@@ -41,14 +41,35 @@
 </style>
 <script>
 
-     function like(comment){
+    function like(comment) {
         var currentSrc = $(comment).attr('src');
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        
         // Define the new image source
-        if(currentSrc!=undefined)
-        var newSrc = (currentSrc === "{{asset('assets/detail/like.png')}}") ? "{{asset('assets/detail/liked.png')}}" : "{{asset('assets/detail/like.png')}}";
+        var newSrc = (currentSrc === "{{ asset('assets/detail/like.png') }}") ? "{{ asset('assets/detail/liked.png') }}" : "{{ asset('assets/detail/like.png') }}";
+        
         // Change the image source
         $(comment).attr('src', newSrc);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+
+        $.post('/likes/add', {
+            comment_id: $(comment).data('comment-id') // Pass comment_id using data attribute
+        })
+        .done(function(response) {
+            // console.log(response);
+        })
+        .fail(function(error) {
+            // Handle errors
+            // console.error('Error:', error);
+            // console.log('Response Text:', error.responseText);
+        });
     }
+
 
     function addComment(){
         let product_id = '{{$product["product_id"]}}';

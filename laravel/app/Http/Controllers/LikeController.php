@@ -17,19 +17,17 @@ class LikeController extends Controller
         $likes = new Likes();
         $maxID = Likes::max('likes_id');
         $maxNum = substr($maxID, 2, 3) + 1;
-        if($maxNum > 0 && $maxNum < 10){
-            $likes->likes_id = "L000".substr($maxID, 2, 3) + 1;
+
+        if ($maxNum > 0 && $maxNum < 10) {
+            $likes->likes_id = "L000" . $maxNum;
+        } else if ($maxNum >= 10 && $maxNum < 100) {
+            $likes->likes_id = "L00" . $maxNum;
+        } else if ($maxNum >= 100 && $maxNum < 1000) {
+            $likes->likes_id = "L0" . $maxNum;
+        } else {
+            $likes->likes_id = "L" . $maxNum;
         }
-        else if($maxNum >= 10 && $maxNum < 100){
-            $likes->likes_id = "L00".substr($maxID, 2, 3) + 1;
-        }
-        else if($maxNum >= 100 && $maxNum < 1000){
-            $likes->likes_id = "L0".substr($maxID, 2, 3) + 1;
-        }
-        else{
-            $likes->likes_id = "L".substr($maxID, 2, 3) + 1;
-        }
-        $likes->likes_id = $data["likes_id"];
+
         $likes->username = $data["username"];
         $likes->comment_id = $data["comment_id"];
         $likes->save();
@@ -37,7 +35,26 @@ class LikeController extends Controller
         $updateLike = Likes::where('comment_id', $data['comment_id'])->get();
         $likeCount = $updateLike->count();
 
-        $view = view('commentCard',['comments'=>$likeCount]);
+        $view = view('commentCard', ['comments' => $likeCount]);
         return $view;
     }
+
+
+
+    public function deleteLike(Request $req)
+    {
+        $data = $req->all();
+        
+        $ifExist = Likes::where('comment_id', $data['comment_id'])
+                       ->where('username', $data['username'])
+                       ->first();
+    
+        if ($ifExist != null) {
+            $ifExist->delete();
+            return "Success";
+        } else {
+            return "Failed";
+        }
+    }
+    
 }
