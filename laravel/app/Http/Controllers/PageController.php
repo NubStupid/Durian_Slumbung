@@ -150,7 +150,13 @@ class PageController extends Controller
         $user = request()->attributes->get('user');
         $rating = $this->getRating($id);
         $comments = $this->getProductComments($id);
-        return view('detailProducts',["product"=>$productViewed,"products"=>$get3SimilarProduct,'user'=>$user,'rating'=>$rating,'comments'=>$comments]);
+        return view('detailProducts',[
+            "product"=>$productViewed,
+            "products"=>$get3SimilarProduct,
+            'user'=>$user,
+            'rating'=>$rating,
+            'comments'=>$comments
+        ]);
     }
 
     // Wisata

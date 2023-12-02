@@ -30,7 +30,7 @@
             @endphp
         </p>
         {{-- <div class="" style="font-size:1.1rem">Rating : {{$products[$i-1]->rating}}/5 ⭐</div> --}}
-        <div class="mb-3" style="font-size:1.1rem">Rp. {{$products[$i-1]->price}}</div>
+        <div class="mb-3" style="font-size:1.1rem">Rp. {{ number_format($products[$i-1]->price,0,",",".") }}</div>
         <div class="my-4"></div>
         <a href="{{url('/product/view/'.$products[$i-1]->product_id)}}" class="position-absolute btn bg-green-primary text-white fw-semibold" style="bottom:1vh;left:1vw;">More Detail</a>
     </div>
