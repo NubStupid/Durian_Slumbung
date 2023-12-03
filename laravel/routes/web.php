@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
 
@@ -70,8 +71,15 @@ Route::get('/register', function () {
         Route::post('/product',[PageController::class, "searchProduct"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
+
+        Route::get('/checkout',[TransactionController::class,'checkout']);
+        Route::post('/checkout', [TransactionController::class, 'pay']);
+
+        Route::get('/payment-success', function(){
+            return view('payment-success');
+        });
         
-        Route::get('/checkout',[PageController::class,'checkout']);
+        Route::get('/invoice/{id}', [TransactionController::class, 'invoice']);
 
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
