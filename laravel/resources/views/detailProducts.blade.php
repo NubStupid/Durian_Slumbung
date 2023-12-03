@@ -40,7 +40,6 @@
     }
 </style>
 <script>
-
     function like(comment) {
         var currentSrc = $(comment).attr('src');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
@@ -255,8 +254,7 @@
         const stars = document.querySelectorAll('.fa-star');
         stars.forEach((star) => {
             star.classList.remove('active-star');
-    });
-
-}
+        });
+    }
 </script>
 @endpush
