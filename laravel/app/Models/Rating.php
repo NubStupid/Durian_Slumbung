@@ -11,8 +11,8 @@ class Rating extends Model
 
     protected $connection = "connect_Durian";
     protected $table = "rating";
-    protected $primaryKey = "rating_id";
-    public $incrementing = true;
+    protected $primaryKey = null;
+    public $incrementing = false;
     public $timestamps = false;
 
     protected $fillable = [
