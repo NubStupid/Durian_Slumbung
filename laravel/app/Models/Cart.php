@@ -11,11 +11,9 @@ class Cart extends Model
 
     protected $connection = "connect_Durian";
     protected $table = "cart";
-    protected $primaryKey = "cart_id";
-    public $incrementing = true;
     public $timestamps = false;
 
     protected $fillable = [
-        'product_id','price','qty', 'username'
+        'cart_id','product_id','price','qty', 'username'
     ];
 }
