@@ -11,6 +11,6 @@ class Products extends Model
     protected $connection = "connect_Durian";
     protected $table = "product";
     protected $primaryKey = "product_id";
-    public $incrementing = true;
+    public $incrementing = false;
     public $timestamps = false;
 }

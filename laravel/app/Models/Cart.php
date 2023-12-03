@@ -5,12 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Categories extends Model
+class Cart extends Model
 {
     use HasFactory;
+
     protected $connection = "connect_Durian";
-    protected $table = "categories";
-    protected $primaryKey = "category_id";
-    public $incrementing = false;
+    protected $table = "cart";
     public $timestamps = false;
+
+    protected $fillable = [
+        'cart_id','product_id','price','qty', 'username'
+    ];
 }

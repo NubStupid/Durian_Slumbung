@@ -11,6 +11,6 @@ class Comment extends Model
     protected $connection = "connect_Durian";
     protected $table = "comment";
     protected $primaryKey = "comment_id";
-    public $incrementing = true;
+    public $incrementing = false;
     public $timestamps = false;
 }
