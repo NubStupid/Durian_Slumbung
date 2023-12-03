@@ -33,14 +33,20 @@
                     <th class="text-center" style="background-color: #F0F0F0; width: 10%;">Jumlah</th>
                     <th class="text-center" style="background-color: #F0F0F0;">Subtotal</th>
                 </thead>
-                @foreach ($produk as $p)
+                @for ($i = 0; $i < count($produk); $i++)
+                    @php
+                        $p = $produk[$i];
+                    @endphp
                     <tr class="table-group-divider" style="border-color: #CFCFCF;">
                         <td style="background-color: #F0F0F0">{{$p['product_name']}}</td>
                         <td class="text-center" style="background-color: #F0F0F0">{{number_format($p['product_price'],0,",",".")}}</td>
                         <td class="text-center" style="background-color: #F0F0F0">{{$p['qty']}}</td>
                         <td class="text-end" style="background-color: #F0F0F0">Rp{{number_format($p['subtotal'],0,",",".")}}</td>
                     </tr>
-                @endforeach
+                    <input type="hidden" name="produk[{{$i}}][id]" value="{{$p['product_id']}}">
+                    <input type="hidden" name="produk[{{$i}}][qty]" value="{{$p['qty']}}">
+                    <input type="hidden" name="produk[{{$i}}][subtotal]" value="{{$p['subtotal']}}">
+                @endfor
                 <tr class="table-group-divider" style="border-color: #CFCFCF;">
                     <td style="background-color: #F0F0F0">
                         <div class="d-flex align-items-center">
@@ -62,7 +68,10 @@
                     <th class="text-center" style="background-color: #F0F0F0; width: 10%;">Jumlah</th>
                     <th class="text-center" style="background-color: #F0F0F0">Subtotal</th>
                 </thead>
-                @foreach ($wisata as $w)
+                @for ($i = 0; $i < count($wisata); $i++)
+                    @php
+                        $w = $wisata[$i];
+                    @endphp
                     <tr class="table-group-divider" style="border-color: #CFCFCF;">
                         <td style="background-color: #F0F0F0">{{$w['wisata_name']}}</td>
                         <td class="text-center" style="background-color: #F0F0F0">{{$w['date']}}</td>
@@ -70,7 +79,10 @@
                         <td class="text-center" style="background-color: #F0F0F0">{{$w['qty']}}</td>
                         <td class="text-end" style="background-color: #F0F0F0">Rp{{number_format($w['subtotal'],0,",",".")}}</td>
                     </tr>
-                @endforeach
+                    <input type="hidden" name="wisata[{{$i}}][id]" value="{{$w['wisata_id']}}">
+                    <input type="hidden" name="wisata[{{$i}}][qty]" value="{{$w['qty']}}">
+                    <input type="hidden" name="wisata[{{$i}}][subtotal]" value="{{$w['subtotal']}}">
+                @endfor
                 <tr class="table-group-divider" style="border-color: #CFCFCF;">
                     <td colspan="2" style="background-color: #F0F0F0">
                         <div class="d-flex align-items-center">

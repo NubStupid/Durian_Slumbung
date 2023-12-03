@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Transaction;
+use App\Models\DetailTransaction;
 use Barryvdh\DomPDF\Facade\Pdf;
 use Illuminate\Support\Facades\Session;
 
@@ -82,6 +83,13 @@ class TransactionController extends Controller
         return $ht;
     }
 
+    public function generateDtrans()
+    {
+        $maks = substr(DetailTransaction::max('d_trans_id'), 2, 3);
+        $dt = "DT" . str_pad($maks + 1, 3, "0", STR_PAD_LEFT);
+        return $dt;
+    }
+
     public function generateInv()
     {
         // $inv = "INYYYYMMDDXXX001";
@@ -103,9 +111,40 @@ class TransactionController extends Controller
 
     public function pay(Request $req)
     {
+        foreach($req->produk as $p)
+        {
+            // var_dump($p);
+            $det['d_trans_id'] = $this->generateDtrans();
+            $det['qty'] = $p['qty'];
+            $det['total'] = $p['subtotal'];
+            $det['h_trans_id'] = $this->generateHtrans();
+            $det['product_id'] = $p['id'];
+
+            // var_dump($det);
+            // echo '<br>';
+            DetailTransaction::create($det);
+            // $detail = DetailTransaction::create($det);
+        }
+        foreach($req->wisata as $w)
+        {
+            // var_dump($p);
+            $det['d_trans_id'] = $this->generateDtrans();
+            $det['qty'] = $w['qty'];
+            $det['total'] = $w['subtotal'];
+            $det['h_trans_id'] = $this->generateHtrans();
+            $det['product_id'] = $w['id'];
+
+            // var_dump($det);
+            // echo '<br>';
+            DetailTransaction::create($det);
+            // $detail = DetailTransaction::create($det);
+        }
         // dd($req->all());
 
-        $data = $req->all();
+
+        // dd($req->all());
+        $data['_token'] = $req->_token;
+        $data['total'] = $req->total;
         // $data['_token'] = $req->_token;
         $data['h_trans_id'] = $this->generateHtrans();
         $data['invoice_number'] = $this->generateInv();
@@ -135,12 +174,13 @@ class TransactionController extends Controller
 
         $params = array(
             'transaction_details' => array(
-                'order_id' => $order->h_trans_id,
+                // 'order_id' => $order->h_trans_id,
+                'order_id' => $order->invoice_number,
                 'gross_amount' => $order->total,
             ),
             'customer_details' => array(
                 'h_trans_id' => $order->h_trans_id,
-                'invoice_number' => $order->inv,
+                'invoice_number' => $order->invoice_number,
                 'total' => $order->total,
                 'username' => Session::get('username')
             ),
@@ -166,7 +206,8 @@ class TransactionController extends Controller
             if($req->transaction_status == 'capture' || $req->transaction_status == 'settlement')
             {
                 // dd($req->order_id);
-                $order = Transaction::find($req->order_id);
+                // $order = Transaction::find($req->order_id);
+                $order = Transaction::where('invoice_number', $req->order_id)->first();
                 $order->update(['status' => 'paid']);
                 // return redirect()->route('invoice', ['id' => $order->inv]);
 
@@ -192,6 +233,10 @@ class TransactionController extends Controller
     {
         // $order = Transaction::find($id);
         $order = Transaction::where('invoice_number', $id)->first();
+        $detail = DetailTransaction::where('h_trans_id', $order->h_trans_id)->get();
+        // foreach($detail as $d)
+        // var_dump($d->d_trans_id);
+        // dd($detail);
         // dd($order);
         // dd(Transaction::where('invoice_number', $id)->exists());
 
@@ -203,7 +248,7 @@ class TransactionController extends Controller
         //     "id" => 1
         // ];
 
-        $pdf = Pdf::loadView('invoice', compact('order'));
+        $pdf = Pdf::loadView('invoice', compact('order', 'detail'));
 
         // $PDFOptions = ['enable_remote' => true, 'chroot' => public_path('storage/resource-booking')];
 

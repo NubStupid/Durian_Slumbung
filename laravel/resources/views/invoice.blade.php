@@ -119,7 +119,15 @@
             <td class="semi-bold">Unit Price</td>
             <td class="semi-bold">Subtotal</td>
         </tr>
-        <tr class="text-center">
+        @foreach ($detail as $d)
+            <tr class="text-center">
+                <td class="text-start ps">Produk</td>
+                <td>{{$d['qty']}}</td>
+                <td>50.000</td>
+                <td>Rp{{number_format($d['total'],0,",",".")}}</td>
+            </tr>
+        @endforeach
+        {{-- <tr class="text-center">
             <td class="text-start ps">Produk 1</td>
             <td>1</td>
             <td>50.000</td>
@@ -136,18 +144,18 @@
             <td>1</td>
             <td>50.000</td>
             <td>50.000</td>
-        </tr>
+        </tr> --}}
     </table>
     <table class="w-100 mt">
         <tr style="font-size: 18px;">
             <td class="w-50"></td>
             <td class="semi-bold">Total</td>
-            <td class="text-end semi-bold">Rp200.000</td>
+            <td class="text-end semi-bold">Rp{{number_format($order['total'],0,",",".")}}</td>
         </tr>
         <tr>
             <td class="w-50"></td>
             <td>Total Items</td>
-            <td class="text-end">4</td>
+            <td class="text-end">{{count($detail)}}</td>
         </tr>
         <tr>
             <td class="w-50"></td>
