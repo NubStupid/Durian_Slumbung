@@ -10,7 +10,7 @@
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 @endpush
 @section('content')
-    <script>
+    <script> 
         AOS.init();
     </script>
     <div class="d-flex justify-content-center my-5">

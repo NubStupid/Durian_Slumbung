@@ -26,6 +26,9 @@
             }else if($title == "About"){
                 $activeAbout = "active";
                 $hrefAbout = "#";
+            }else if($title == "Cart"){
+                $activeCart = "active";
+                $hrefCart = "#";
             }
         @endphp
         <div class="d-flex justify-content-center" id="navbarSupportedContent">

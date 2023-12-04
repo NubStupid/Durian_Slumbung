@@ -5,6 +5,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\user\UserController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\TransactionController;
 use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CommentController;
@@ -49,7 +50,7 @@ Route::get('/register', function () {
 
 
     // Semua Route Admin kalau mau di prefix jg bisa
-    Route::middleware('authen:admin')->group(function () {
+    Route::middleware('authen:A,M')->group(function () {
         // Route::prefix('admin')->group(function () {
             Route::get('/testDatabase',[UserController::class,"getCustomer"]);
         Route::get('/testTambah',[UserController::class,"loadFormTambah"]);
@@ -73,11 +74,20 @@ Route::get('/register', function () {
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
 
-        Route::get('/checkout',[PageController::class,'checkout']);
+        Route::get('/checkout',[TransactionController::class,'checkout']);
+        Route::post('/checkout', [TransactionController::class, 'pay']);
+
+        Route::get('/payment-success', function(){
+            return view('payment-success');
+        });
+
+        Route::get('/invoice/{id}', [TransactionController::class, 'invoice']);
 
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
+        Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
+        Route::get('/cart',[PageController::class,"viewCart"]);
         Route::post('/product/like',[RatingController::class,"insertUpdateRating"]);
         Route::post('/product/delete',[RatingController::class,"deleteRating"]);
         Route::post('/comments', [CommentController::class, 'addComment']);

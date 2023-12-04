@@ -6,6 +6,7 @@ use App\Rules\cekusername;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Validator;
+use App\Models\Admin;
 
 class AuthController extends Controller
 {
@@ -21,28 +22,55 @@ class AuthController extends Controller
         $username = $req->username;
         $password = $req->password;
         $remember = $req->remember;
-        if($username=="admin"&&$password=="admin"){
+            // session()->put('username', $username);
+            // session()->put('role', "admin");
+            // return redirect('adminhomepage');
+        $user = DB::connection("connect_Durian")->table('user')
+            ->where('username', $username)
+            ->where('password', $password)
+            ->first();
+
+        if($user){
             session()->put('username', $username);
-            session()->put('role', "admin");
-            return redirect('adminhomepage');
+            session()->put('role', "user");
+            return redirect()->back();
         }
         else{
-            $user = DB::connection("connect_Durian")->table('user')
-                ->where('username', $username)
-                ->where('password', $password)
-                ->first();
-
-            if($user){
+            $admin = Admin::where('username',$username)->where('password',$password)->first();
+            if($admin){
                 session()->put('username', $username);
-                session()->put('role', "user");
-                // return redirect()->intended('/');
-                return redirect()->back();
+                session()->put('role',$admin["role"]);
+                return redirect('adminhomepage');
             }
-            else{
-                return redirect(route('login'))->with("pesanLogin", "Gagal Login!")->withInput();
-            }
+            return redirect(route('login'))->with("pesanLogin", "Gagal Login!")->withInput();
         }
     }
+    // public function cekLogin(Request $req){
+    //     $username = $req->username;
+    //     $password = $req->password;
+    //     $remember = $req->remember;
+    //     if($username=="admin"&&$password=="admin"){
+    //         session()->put('username', $username);
+    //         session()->put('role', "admin");
+    //         return redirect('adminhomepage');
+    //     }
+    //     else{
+    //         $user = DB::connection("connect_Durian")->table('user')
+    //             ->where('username', $username)
+    //             ->where('password', $password)
+    //             ->first();
+
+    //         if($user){
+    //             session()->put('username', $username);
+    //             session()->put('role', "user");
+    //             // return redirect()->intended('/');
+    //             return redirect()->back();
+    //         }
+    //         else{
+    //             return redirect(route('login'))->with("pesanLogin", "Gagal Login!")->withInput();
+    //         }
+    //     }
+    // }
     public function cekRegister(Request $req){
         $rules = [
             'username' => ["required", new cekusername()],
