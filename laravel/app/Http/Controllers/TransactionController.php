@@ -27,14 +27,14 @@ class TransactionController extends Controller
         //     $checkout = Session::get('checkout');
         $tgl = "01-06-2023";
         $produk[] = [
-            "product_id" => "P001",
+            "product_id" => "P0001",
             "product_name" => "Durian Kecil",
             "product_price" => 10000,
             "qty" => 2,
             "subtotal" => 20000
         ];
         $produk[] = [
-            "product_id" => "P002",
+            "product_id" => "P0002",
             "product_name" => "Durian Sedang",
             "product_price" => 15000,
             "qty" => 1,
@@ -46,7 +46,7 @@ class TransactionController extends Controller
         ];
 
         $wisata[] = [
-            "wisata_id" => "W001",
+            "wisata_id" => "W0001",
             "wisata_name" => "Pengolahan Es Krim Durian",
             "date" => "30-11-2023",
             "wisata_price" => 10000,
@@ -54,7 +54,7 @@ class TransactionController extends Controller
             "subtotal" => 20000
         ];
         $wisata[] = [
-            "wisata_id" => "W002",
+            "wisata_id" => "W0002",
             "wisata_name" => "Pengolahan Pancake Durian",
             "date" => "12-12-2023",
             "wisata_price" => 10000,
@@ -231,11 +231,35 @@ class TransactionController extends Controller
 
     public function invoice($id)
     {
-        // $order = Transaction::find($id);
         $order = Transaction::where('invoice_number', $id)->first();
         $detail = DetailTransaction::where('h_trans_id', $order->h_trans_id)->get();
+        // $detail = DetailTransaction::where('h_trans_id', $order->h_trans_id)->where('product_id','LIKE',"P%")->get();
+        // $detail = DetailTransaction::find('DT010');
+        // dd($detail->Product()->get());
+        // $detail = DetailTransaction::where('h_trans_id', $order->h_trans_id)->first();
+        // dd($detail->Product()->get());
+        // dd($detail);
         // foreach($detail as $d)
-        // var_dump($d->d_trans_id);
+        // {
+            // var_dump($d);
+            // echo "<br>";
+            // if($d->product_id[0] == 'P')
+                // dump($d->Product->name);
+            // else
+                // dump($d->Wisata->tgl_dipesan);
+
+            // dump($d->product_id[0]);
+            // $d = $d->Product()->get();
+            // dump($d->Product()->get());
+            // var_dump($d);
+            // echo "<br>";
+        // }
+
+        // for($i = 0; $i < count($detail); $i++)
+        // {
+        //     var_dump($d->Product()->get());
+        //     echo "<br>";
+        // }
         // dd($detail);
         // dd($order);
         // dd(Transaction::where('invoice_number', $id)->exists());

@@ -121,9 +121,23 @@
         </tr>
         @foreach ($detail as $d)
             <tr class="text-center">
-                <td class="text-start ps">Produk</td>
+                <td class="text-start ps">
+                    @php
+                        if($d->product_id[0] == 'P')
+                            echo $d->Product->name;
+                        else
+                            echo $d->Wisata->tgl_dipesan;
+                    @endphp
+                </td>
                 <td>{{$d['qty']}}</td>
-                <td>50.000</td>
+                <td>
+                    @php
+                        if($d->product_id[0] == 'P')
+                            echo $d->Product->price;
+                        else
+                            echo $d->Wisata->tgl_dipesan;
+                    @endphp
+                </td>
                 <td>Rp{{number_format($d['total'],0,",",".")}}</td>
             </tr>
         @endforeach
