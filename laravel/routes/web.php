@@ -8,6 +8,8 @@ use App\Http\Controllers\RatingController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
 
 /*
 |--------------------------------------------------------------------------
@@ -88,6 +90,9 @@ Route::get('/register', function () {
         Route::get('/cart',[PageController::class,"viewCart"]);
         Route::post('/product/like',[RatingController::class,"insertUpdateRating"]);
         Route::post('/product/delete',[RatingController::class,"deleteRating"]);
+        Route::post('/comments', [CommentController::class, 'addComment']);
+        Route::post('/likes/add' ,[LikeController::class, 'addLike']);
+        Route::post('/likes/delete' ,[LikeController::class, 'deleteLike']);
     });
 
 // Logout (Session dorrr)
@@ -112,7 +117,12 @@ Route::get('/logout', function (Request $request) {
 */
 
 
+
 // Paling bawah
 Route::get('/{any}',function(){
     return view('error.404');
 });
+
+// routes/web.php
+
+

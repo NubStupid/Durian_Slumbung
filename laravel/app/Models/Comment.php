@@ -14,6 +14,9 @@ class Comment extends Model
     public $incrementing = false;
     public $timestamps = false;
 
+    protected $fillable = [
+        'comment_id','message','username', 'product_id'
+    ];
     // yang kiri itu fieldnya Users dan kanan fieldnya Comment
     public function User(){
         return $this->hasOne(Users::Class,"username","username");

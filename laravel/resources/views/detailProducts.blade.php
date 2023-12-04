@@ -42,14 +42,62 @@
     
 </style>
 <script>
-     function like(comment){
+    function like(comment) {
         var currentSrc = $(comment).attr('src');
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        
         // Define the new image source
-        if(currentSrc!=undefined)
-        var newSrc = (currentSrc === "{{asset('assets/detail/like.png')}}") ? "{{asset('assets/detail/liked.png')}}" : "{{asset('assets/detail/like.png')}}";
+        var newSrc = (currentSrc === "{{ asset('assets/detail/like.png') }}") ? "{{ asset('assets/detail/liked.png') }}" : "{{ asset('assets/detail/like.png') }}";
+        
         // Change the image source
         $(comment).attr('src', newSrc);
+
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+
+        $.post('/likes/add', {
+            comment_id: $(comment).data('comment-id') // Pass comment_id using data attribute
+        })
+        .done(function(response) {
+            // console.log(response);
+        })
+        .fail(function(error) {
+            // Handle errors
+            // console.error('Error:', error);
+            // console.log('Response Text:', error.responseText);
+        });
     }
+
+
+    function addComment(){
+        let product_id = '{{$product["product_id"]}}';
+        let username = '{{Session::get("username")}}';
+        let message = $("#commentToAdd").val();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        $.ajaxSetup({
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            }
+        });
+        $.post('/comments', {
+            message: message,
+            username: username,
+            product_id: product_id
+        }, function(response) {
+            // Handle the successful response
+            $("#comment").html(response);
+            console.log("Berhasil");
+            $("#commentToAdd").val('');
+        })
+        .fail(function(error) {
+            // Handle errors
+            console.error('Error:', error);
+        });
+    }
+
 </script>
 @endpush
 @section('content')
@@ -99,15 +147,18 @@
                 <div class="row my-2">
                     <div class="fs-5 fw-semibold text-start">Comments : </div>
                     <div class="row mt-2">
-                        <div class="col-9 p-2"><input type="text" name="comment" id="" class="form-control fs-5" placeholder="Comment"></div>
-                        <div class="col-3 p-2"><a href="" class="btn bg-blue-dark p-2 fw-semibold text-white">Comment</a></div>
+                        {{-- <form action="" method="post">
+                            @csrf --}}
+                            <div class="row mt-2">
+                                <div class="col-9 p-2"><input type="text" name="comment" class="form-control fs-5" placeholder="Comment" id="commentToAdd"></div>
+                                <div class="col-3 p-2"><button type="submit" class="btn bg-blue-dark p-2 fw-semibold text-white" onclick="addComment()">Comment</button></div>
+                            </div>
+                        {{-- </form> --}}
                     </div>
                     <div class="comment-section comment-section-outer rounded-2 mt-3 shadow">
-                        <div class="comment-section-inner">
+                        <div class="comment-section-inner" id="comment">
                             {{-- dolorem exercitationem! Odit, beatae! Nulla magnam magni ipsum modi voluptatum minima quis aspernatur, accusantium nobis dolores, nostrum, consequuntur earum officiis voluptate mollitia ratione animi quod beatae dicta dolorem facilis? Vitae voluptatem dolor modi facere omnis sint tenetur suscipit animi velit doloremque neque sit iste temporibus sed tempore, aliquam quae pariatur recusandae distinctio voluptatum? --}}
-                            @foreach ($comments as $comment)
-                                @include('commentCard',['comment'=>$comment])
-                            @endforeach
+                            @include('commentContent',['comments'=>$comments])
                         </div>
                     </div>
                 </div>
@@ -153,7 +204,6 @@
         </div>
     </div>
     <div class="row my-5"></div>
-
     {{-- Popup add to cart --}}
     @if(session('success'))
     <div class="modal fade" id="HasilAdd" tabindex="-1" aria-labelledby="HasilAdd" aria-hidden="true">
