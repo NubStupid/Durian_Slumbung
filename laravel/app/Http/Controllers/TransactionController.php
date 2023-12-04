@@ -5,7 +5,8 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Transaction;
 use App\Models\DetailTransaction;
-use Barryvdh\DomPDF\Facade\Pdf;
+use Illuminate\Support\Facades\View;
+use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Session;
 
 class TransactionController extends Controller
@@ -233,6 +234,23 @@ class TransactionController extends Controller
     {
         $order = Transaction::where('invoice_number', $id)->first();
         $detail = DetailTransaction::where('h_trans_id', $order->h_trans_id)->get();
+
+        $view = View::make('invoice', compact('order', 'detail'));
+
+    // Create the PDF converter and load the HTML into the object.
+        $dompdf = new Dompdf();
+        $dompdf->loadHtml($view);
+        $dompdf->setPaper('A4', 'potrait');
+        $dompdf->render();
+
+        // Return the file as a response to the HTTP request, and prompt the user a download dialog.
+        return $dompdf->stream("invoice.pdf", [
+                'Attachment' => 0
+            ]);
+
+
+        $order = Transaction::where('invoice_number', $id)->first();
+        $detail = DetailTransaction::where('h_trans_id', $order->h_trans_id)->get();
         // $detail = DetailTransaction::where('h_trans_id', $order->h_trans_id)->where('product_id','LIKE',"P%")->get();
         // $detail = DetailTransaction::find('DT010');
         // dd($detail->Product()->get());
@@ -292,6 +310,11 @@ class TransactionController extends Controller
         // );
 
         return $pdf->stream($order['invoice_number']. '.pdf');
+
+
+
+
+
         // return $pdf->stream($order->id. '.pdf');
 
         // return view('invoice', compact('order'));
