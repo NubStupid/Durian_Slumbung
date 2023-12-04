@@ -48,7 +48,7 @@ Route::get('/register', function () {
 
 
     // Semua Route Admin kalau mau di prefix jg bisa
-    Route::middleware('authen:admin')->group(function () {
+    Route::middleware('authen:A,M')->group(function () {
         // Route::prefix('admin')->group(function () {
             Route::get('/testDatabase',[UserController::class,"getCustomer"]);
         Route::get('/testTambah',[UserController::class,"loadFormTambah"]);
@@ -78,7 +78,7 @@ Route::get('/register', function () {
         Route::get('/payment-success', function(){
             return view('payment-success');
         });
-        
+
         Route::get('/invoice/{id}', [TransactionController::class, 'invoice']);
 
     });

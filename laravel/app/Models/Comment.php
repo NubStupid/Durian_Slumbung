@@ -13,4 +13,14 @@ class Comment extends Model
     protected $primaryKey = "comment_id";
     public $incrementing = false;
     public $timestamps = false;
+
+    // yang kiri itu fieldnya Users dan kanan fieldnya Comment
+    public function User(){
+        return $this->hasOne(Users::Class,"username","username");
+    }
+    // yang kiri itu fieldnya Comment dan kanan fieldnya Users
+    // public function User(){
+        // return $this->belongsTo(Users::class,"username","username");
+    // }
+
 }

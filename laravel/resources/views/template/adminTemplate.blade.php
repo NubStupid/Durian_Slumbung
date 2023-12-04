@@ -13,16 +13,23 @@
             </div>
                 <ul class="menu menu-lg dropdown-content mt-3 z-[1] shadow bg-green-light rounded-box w-52 flex justify-center">
 
-                {{-- Kalau Rolenya itu admin --}}
-{{--
-                    <li class="px-5 my-3"><a href="" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1">Dashboard</a></li>
-                    <li class="px-5 my-3"><a href="#" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1">Products</a></li> --}}
+                    @if(Session::has('role'))
+                    @php
+                        $role = Session::get('role')
+                        @endphp
+                    @if($role == "A")
+                        {{-- Kalau Rolenya itu admin --}}
+                        <li class="px-5 my-3"><a href="" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1">Dashboard</a></li>
+                        <li class="px-5 my-3"><a href="#" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1">Products</a></li>
+                    @elseif($role == "M")
+                        {{-- Kalau Rolenya itu master / owner --}}
+                        <li class="px-5 my-3"><a href="" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Dashboard</a></li>
+                        <li class="px-5 my-3"><a href="#" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Products Report</a></li>
+                        <li class="px-5 my-3"><a href="#" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Wisata Report</a></li>
+                    @endif
+                @endif
 
 
-                {{-- Kalau Rolenya itu master / owner --}}
-                {{-- <li class="px-5 my-3"><a href="" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Dashboard</a></li>
-                <li class="px-5 my-3"><a href="#" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Products Report</a></li>
-                <li class="px-5 my-3"><a href="#" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Wisata Report</a></li> --}}
 
                 <li class="px-5 my-3"><a href="{{url('logout')}}" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Logout</a></li>
 
