@@ -39,16 +39,16 @@
         padding: 20px; /* Adjust padding as needed */
     }
 
-    
+
 </style>
 <script>
     function like(comment) {
         var currentSrc = $(comment).attr('src');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        
+
         // Define the new image source
         var newSrc = (currentSrc === "{{ asset('assets/detail/like.png') }}") ? "{{ asset('assets/detail/liked.png') }}" : "{{ asset('assets/detail/like.png') }}";
-        
+
         // Change the image source
         $(comment).attr('src', newSrc);
 
@@ -57,18 +57,37 @@
                 'X-CSRF-TOKEN': csrfToken
             }
         });
-
-        $.post('/likes/add', {
-            comment_id: $(comment).data('comment-id') // Pass comment_id using data attribute
-        })
-        .done(function(response) {
-            // console.log(response);
-        })
-        .fail(function(error) {
-            // Handle errors
-            // console.error('Error:', error);
-            // console.log('Response Text:', error.responseText);
-        });
+        let comment_id = $(comment).attr("id");
+        let username = "{{Session::get('username')}}";
+        if(newSrc === "{{ asset('assets/detail/like.png') }}"){
+            $.post('/likes/delete', {
+                comment_id: comment_id,
+                username:username
+            })
+            .done(function(response) {
+                $("."+comment_id+"_likes").html(response)
+                console.log(response);
+            })
+            .fail(function(error) {
+                // Handle errors
+                // console.error('Error:', error);
+                // console.log('Response Text:', error.responseText);
+            });
+        }else{
+            $.post('/likes/add', {
+                comment_id: comment_id,
+                username:username
+            })
+            .done(function(response) {
+                $("."+comment_id+"_likes").html(response)
+                console.log(response);
+            })
+            .fail(function(error) {
+                // Handle errors
+                // console.error('Error:', error);
+                // console.log('Response Text:', error.responseText);
+            });
+        }
     }
 
 
@@ -256,10 +275,10 @@
             }
             $( ".qty" ).trigger( "change" );
         });
-        
-        
+
+
         $('.increaseQty').click(function(e) {
-            
+
             e.preventDefault();
             var qty = $('.qty').val();
             var value = parseInt(qty);
@@ -271,7 +290,7 @@
                 var subtotal = harga*value;
                 if (!isNaN(subtotal))
                     document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
-                
+
                 $('.qty').val(value);
             }
             $( ".qty" ).trigger( "change" );
@@ -281,7 +300,7 @@
 
             if (!/^-?\d*\.?\d+$/.test(value)) {
                 value = value.replace(/[^\d-]/g, '');
-            } 
+            }
             let maksqty = {{$product->qty}};
             var countMinus = (value.match(/-/g) || []).length;
             if (countMinus > 1 || (countMinus === 1 && value.indexOf('-') !== 0)) {
@@ -310,7 +329,7 @@
             loadData();
         });
     });
-    
+
     function cekqty() {
         var qtyValue = document.querySelector('.qty').value;
         document.getElementById('getQty').value = qtyValue;

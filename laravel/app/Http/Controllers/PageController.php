@@ -13,6 +13,7 @@ use App\Models\Categories;
 use App\Models\Rating;
 use App\Models\Comment;
 use App\Models\Cart;
+use App\Models\Likes;
 
 class PageController extends Controller
 {
@@ -141,6 +142,20 @@ class PageController extends Controller
         // dd($comments);
         return $comments;
     }
+    public function getUserLikedComment($user,$comments){
+        foreach ($comments as $i => $comment) {
+            $isLiked =  Likes::where('comment_id', $comment["comment_id"])->where('username',$user)->get();
+            if(count($isLiked)==0){
+                $comments[$i]["img_like"] = "assets/detail/like.png";
+            }else{
+                $comments[$i]["img_like"] = "assets/detail/liked.png";
+            }
+            $totalLiked = Likes::where('comment_id',$comment["comment_id"])->get()->count();
+            $comments[$i]["likes"] = $totalLiked;   
+        }
+
+        return $comments;
+    }
     public function viewProduct($id){
 
         // $productViewed = DB::connection('connect_Customer')->table('products');
@@ -152,6 +167,7 @@ class PageController extends Controller
         $user = request()->attributes->get('user');
         $rating = $this->getRating($id);
         $comments = $this->getProductComments($id);
+        $comments = $this->getUserLikedComment($user,$comments);
         return view('detailProducts',[
             "product"=>$productViewed,
             "products"=>$get3SimilarProduct,
@@ -193,7 +209,7 @@ class PageController extends Controller
             }
         }
         else{
-            $latestCart = Cart::latest('cart_id')->first(); 
+            $latestCart = Cart::latest('cart_id')->first();
             $idadd = intval(substr($latestCart->cart_id, 1))+1;
             $newID = "C" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
             $res = Cart::create(

@@ -19,4 +19,10 @@ class Users extends Model
     public function Comments(){
         return $this->hasMany(Comment::class,"username","username");
     }
+    // Kalau ada ayng many to many
+    // public function tesPivot(){
+    //     return $this->belongsToMany(Comment::class,"pivot_ini_ga_ada_cuma_test","username","username")
+    //             ->withPivot('field_ga_ada','field_ga_ada_2')
+    //             ->as("nama hehe");
+    // }
 }
