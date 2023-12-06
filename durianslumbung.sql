@@ -61,7 +61,8 @@ create table d_trans(
     qty int(5),
     total decimal(10,2) not null,
     h_trans_id varchar(5) references h_trans(h_trans_id),
-    product_id varchar(5) references product(product_id)
+    product_id varchar(5) references product(product_id),
+    wisata_id varchar(5) references wisata(wisata_id)
 );
 
 create table admin(
