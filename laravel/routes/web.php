@@ -3,6 +3,7 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\TransactionController;
@@ -57,8 +58,11 @@ Route::get('/register', function () {
         Route::post('/testTambah',[UserController::class,"tambah"]);
         Route::get('/testUbah/{id}',[UserController::class,"loadFormUbah"]);
         Route::post('/testUbah/{id}',[UserController::class,"ubah"]);
-        Route::get('/adminhomepage', function(){
-            return view('adminhomepage');
+        Route::middleware('role:A')->group(function(){
+            Route::get('/adminhomepage',[AdminController::class,"dashboard"]);
+        });
+        Route::middleware('role:M')->group(function(){
+            Route::get('/masterhomepage',[AdminController::class,"dashboard"]);
         });
         // });
     });

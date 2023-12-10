@@ -40,6 +40,9 @@ class AuthController extends Controller
             if($admin){
                 session()->put('username', $username);
                 session()->put('role',$admin["role"]);
+                if($admin["role"] == "M"){
+                    return redirect('masterhomepage');
+                }
                 return redirect('adminhomepage');
             }
             return redirect(route('login'))->with("pesanLogin", "Gagal Login!")->withInput();
