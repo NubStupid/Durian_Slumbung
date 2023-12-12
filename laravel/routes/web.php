@@ -11,6 +11,7 @@ use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -102,8 +103,12 @@ Route::get('/register', function () {
 // Logout (Session dorrr)
 Route::get('/logout', function (Request $request) {
     session()->forget('username');
+    if(Auth::guard('web')->check()){
+        Auth::guard('web')->logout();
+    }else if(Auth::guard('admin')->check()){
+        Auth::guard('admin')->logout();
+    }
     session()->forget('role');
-
     return redirect('login');
 });
 
