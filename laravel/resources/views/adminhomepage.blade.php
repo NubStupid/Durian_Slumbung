@@ -8,6 +8,18 @@
     <div id="chart-container overflow-hidden" style="width: 100%;">
         {!! $chart->container() !!}
     </div>
+    <div class="text-3xl font-bold ps-10 mt-10">Last Few Products Sold (5 Latest Transaction)</div>
+    <div class="grid grid-cols-2 justify-items-center">
+        @foreach($latestTrans as $trans)
+            <div class="card card-side bg-base-100 h-72 shadow-xl w-4/5 m-10">
+                <figure><img src="{{$trans['product']['img_url']}}" alt="iProduct"/></figure>
+                <div class="card-body">
+                <h1 class="card-title text-3xl">{{$trans['product']['name']}}</h1>
+                <p> QTY : {{$trans['qty']}} pcs</p>
+                </div>
+            </div>
+        @endforeach
+    </div>
     {{-- <div class="grid grid-cols-2 gap-4 p-20" style="width: 100%;">
         <div class="p-6 bg-white rounded shadow">
         </div>
