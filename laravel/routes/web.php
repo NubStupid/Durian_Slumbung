@@ -64,6 +64,7 @@ Route::get('/register', function () {
         });
         Route::middleware('role:M')->group(function(){
             Route::get('/masterhomepage',[AdminController::class,"dashboard"]);
+            Route::get('productsreport',[AdminController::class,'productReport']);
         });
         // });
     });

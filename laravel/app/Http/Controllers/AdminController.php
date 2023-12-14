@@ -6,6 +6,8 @@ use Illuminate\Http\Request;
 use App\Models\Products;
 use App\Charts\GoodProductChart;
 use App\Models\Htrans;
+use App\Models\Dtrans;
+use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
 {
@@ -23,5 +25,16 @@ class AdminController extends Controller
             }
         }
         return view('adminhomepage',['chart'=>$chart->build(),'latestTrans'=>$pinfo]);
+    }
+
+    public function productReport(){
+        $allTrans = Dtrans::select('product_id',DB::raw("SUM(qty) as total_qty"))->groupBy('product_id')->get();
+        $products =[];
+        foreach ($allTrans as $i => $dt) {
+            $toAdd['product'] = $dt->product;
+            $toAdd['qty'] = $dt->total_qty;
+            $products[] = $toAdd;
+        }   
+        return view('productreport',['products'=>$products]);
     }
 }
