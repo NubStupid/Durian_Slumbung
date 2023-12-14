@@ -26,6 +26,10 @@ Route::get('/', function () {
     return view('homepage');
 })->name('home');
 
+Route::get('/about', function () {
+    return view('aboutpage');
+})->name('about');
+
 // Route Utama Login
 
 // Login Cek
