@@ -7,6 +7,7 @@ use App\Models\Products;
 use App\Charts\GoodProductChart;
 use App\Models\Htrans;
 use App\Models\Dtrans;
+use App\Models\Wisata;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -34,7 +35,11 @@ class AdminController extends Controller
             $toAdd['product'] = $dt->product;
             $toAdd['qty'] = $dt->total_qty;
             $products[] = $toAdd;
-        }   
+        }
         return view('productreport',['products'=>$products]);
+    }
+
+    public function wisataReport(){
+        $allWisata = Wisata::select();
     }
 }

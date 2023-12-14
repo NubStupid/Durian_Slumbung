@@ -25,9 +25,9 @@ use Illuminate\Support\Facades\Auth;
 |
 */
 
-Route::get('/', function () {
-    return view('homepage');
-})->name('home');
+// Route::get('/', function () {
+//     return view('homepage');
+// })->name('home');
 
 
 Route::get('/auth/{provider}/redirect',[ProviderController::class,'redirect']);

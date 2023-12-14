@@ -16,9 +16,9 @@ class RoleHandlingMiddleware
     public function handle(Request $request, Closure $next,$role): Response
     {
         $user = null;
-        if(session('role') === 'A' && $role !== session('role')) {
+        if(session('role') == 'A' && $role!= session('role')) {
             return redirect('adminhomepage');
-        }else if(session('role' === 'M') && $role !== session('role')){
+        }else if(session('role') == 'M' && $role!= session('role')){
             return redirect('masterhomepage');
         }
         if(session()->has('username')) {
