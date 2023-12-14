@@ -11,6 +11,7 @@ use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\Auth\ProviderController;
 use Illuminate\Support\Facades\Auth;
 
 /*
@@ -27,6 +28,11 @@ use Illuminate\Support\Facades\Auth;
 Route::get('/', function () {
     return view('homepage');
 })->name('home');
+
+
+Route::get('/auth/{provider}/redirect',[ProviderController::class,'redirect']);
+Route::get('/auth/{provider}/callback', [ProviderController::class,'callback']);
+
 
 // Route Utama Login
 

@@ -20,6 +20,11 @@ class Users extends Authenticatable
     public function Comments(){
         return $this->hasMany(Comment::class,"username","username");
     }
+
+    protected $fillable =[
+        'username',
+        'password'
+    ];
     // Kalau ada ayng many to many
     // public function tesPivot(){
     //     return $this->belongsToMany(Comment::class,"pivot_ini_ga_ada_cuma_test","username","username")
