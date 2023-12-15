@@ -193,7 +193,7 @@ class PageController extends Controller
             }
         }
         else{
-            $latestCart = Cart::latest('cart_id')->first(); 
+            $latestCart = Cart::latest('cart_id')->first();
             $idadd = intval(substr($latestCart->cart_id, 1))+1;
             $newID = "C" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
             $res = Cart::create(
@@ -214,5 +214,11 @@ class PageController extends Controller
     public function loadWisataView(){
         $user = request()->attributes->get('user');
         return view('wisata',['user'=>$user]);
+    }
+
+    // About
+    public function loadAboutView(){
+        $user = request()->attributes->get('user');
+        return view('aboutpage',['user'=>$user]);
     }
 }
