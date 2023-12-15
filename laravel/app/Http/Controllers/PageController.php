@@ -225,6 +225,19 @@ class PageController extends Controller
         }
         return redirect("detailProducts");
     }
+    public function deleteCartItem($id) {
+        $user = Cart::where('cart_id', $id)->first();
+        if ($user) {
+            $listcart = Cart::where('username', $user->username)->get();
+            Cart::where('cart_id', $id)->delete();
+            if(count($listcart)==0){
+                return response()->json(['message' => 'cart kosong']);
+            }
+            else{
+                return response()->json(['message' => 'Item deleted successfully']);
+            }
+        }
+    }
 
     // Wisata
     public function loadWisataView(){

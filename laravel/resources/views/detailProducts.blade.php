@@ -231,7 +231,7 @@
             <div class="modal-body text-center">
                 <img src="{{asset('assets/misc/berhasiladdtocart.gif')}}" class="my-2" alt="" width="max-content" height="110px">
               <h5 class="py-2">Berhasil Menambah ke keranjang!</h5>
-              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Sip!</button>
+              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
             </div>
           </div>
         </div>
@@ -260,6 +260,7 @@
         loadData();
         showModal();
 
+        // Button Decrease Qty
         $('.decreaseQty').click(function(e) {
             e.preventDefault();
             var qty = $('.qty').val();
@@ -268,15 +269,15 @@
             if(value>1){
                 value--;
                 $('.qty').val(value);
-                let harga = {{$product->price}};
+                let harga = Math.ceil({{$product->price}});
                 var subtotal = harga*value;
                 if (!isNaN(subtotal))
-                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
+                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(Math.ceil(subtotal));
             }
             $( ".qty" ).trigger( "change" );
         });
 
-
+        // Button Increase Qty
         $('.increaseQty').click(function(e) {
 
             e.preventDefault();
@@ -286,15 +287,17 @@
             let maksqty = {{$product->qty}};
             if(value<maksqty){
                 value++;
-                let harga = {{$product->price}};
+                let harga = Math.ceil({{$product->price}});
                 var subtotal = harga*value;
                 if (!isNaN(subtotal))
-                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
+                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(Math.ceil(subtotal));
 
                 $('.qty').val(value);
             }
             $( ".qty" ).trigger( "change" );
         });
+
+        // Tiap on input pengecekan qty
         $('.qty').on('input', function() {
             var value = $(this).val();
 
@@ -318,9 +321,13 @@
             loadData();
             $(this).val(value);
         });
+
+        // Saat total qty diubah
         $('.qty').on('change', function (){
             cekbutton();
         });
+
+        // Saat total qty diset 0 dan user pencet diluar input box maka berubah jadi 1
         $('.qty').on('blur', function() {
             var value = $(this).val();
             if(value === '0') {
@@ -341,14 +348,15 @@
         var qty = $('.qty').val();
         var value = parseInt(qty);
         value = isNaN(value) ? 0 : value;
-        let harga = {{$product->price}};
+        
+        let harga = Math.ceil({{$product->price}});
         let maksqty = {{$product->qty}};
         var subtotal = harga*value;
         if(subtotal>harga*maksqty){
             subtotal = harga * maksqty;
         }
         if (!isNaN(subtotal))
-            document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
+            document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(Math.ceil(subtotal));
 
         if (value <=1) {
             $('.decreaseQty').prop('disabled', true);
