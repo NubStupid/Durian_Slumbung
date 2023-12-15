@@ -19,7 +19,7 @@ class GoodProductChart
         $bad = Products::where('rate', '<=', 3)->count();
         $good = Products::where('rate', '>', 3)->count();
         return $this->chart->pieChart()
-            ->setTitle('Products Rating')
+            ->setTitle('')
             ->addData([
                 $bad,$good
 

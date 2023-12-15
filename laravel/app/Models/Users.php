@@ -3,10 +3,11 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
+use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Users extends Model
+class Users extends Authenticatable
 {
     use HasFactory;
     protected $connection ="connect_Durian";
@@ -19,6 +20,11 @@ class Users extends Model
     public function Comments(){
         return $this->hasMany(Comment::class,"username","username");
     }
+
+    protected $fillable =[
+        'username',
+        'password'
+    ];
     // Kalau ada ayng many to many
     // public function tesPivot(){
     //     return $this->belongsToMany(Comment::class,"pivot_ini_ga_ada_cuma_test","username","username")
