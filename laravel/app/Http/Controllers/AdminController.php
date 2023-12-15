@@ -40,6 +40,22 @@ class AdminController extends Controller
     }
 
     public function wisataReport(){
-        $allWisata = Wisata::select();
+        $allWisata = Wisata::orderBy('tgl_dipesan','desc')->get();
+        return view('wisatareport',['wisata'=>$allWisata]);
+    }
+    public function filterWisata(Request $req){
+        $data = $req->all();
+        $filter = $data["time"];
+        if($filter == "today"){
+            $data = Wisata::whereDate('tgl_dipesan',today())->orderBy('tgl_dipesan','desc')->get();
+        }else if($filter == "this week"){
+            $data = Wisata::whereBetween('tgl_dipesan',[now()->subWeek(),now()])->orderBy('tgl_dipesan','desc')->get();
+        }else if($filter == "this month"){
+            $data = Wisata::whereMonth('tgl_dipesan',now()->month)->whereYear('tgl_dipesan',now()->year)->orderBy('tgl_dipesan','desc')->get();
+        }else{
+            $data = Wisata::orderBy('tgl_dipesan','desc')->orderBy('tgl_dipesan','desc')->get();
+        }
+        $view = view('wisatareportCard',['wisata'=>$data]);
+        return $view;
     }
 }

@@ -25,7 +25,7 @@
                         {{-- Kalau Rolenya itu master / owner --}}
                         <li class="px-5 my-3"><a href="{{url('/adminhomepage')}}" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Dashboard</a></li>
                         <li class="px-5 my-3"><a href="{{url('/productsreport')}}" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Products Report</a></li>
-                        <li class="px-5 my-3"><a href="#" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Wisata Report</a></li>
+                        <li class="px-5 my-3"><a href="{{url('/wisatareport')}}" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Wisata Report</a></li>
                         <li class="px-5 my-3"><a href="#" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Admins</a></li>
                     @endif
                 @endif

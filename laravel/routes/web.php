@@ -70,7 +70,9 @@ Route::get('/register', function () {
         });
         Route::middleware('role:M')->group(function(){
             Route::get('/masterhomepage',[AdminController::class,"dashboard"]);
-            Route::get('productsreport',[AdminController::class,'productReport']);
+            Route::get('/productsreport',[AdminController::class,'productReport']);
+            Route::get('/wisatareport',[AdminController::class,'wisataReport']);
+            Route::post('/wisatareport',[AdminController::class,'filterWisata']);
         });
         // });
     });

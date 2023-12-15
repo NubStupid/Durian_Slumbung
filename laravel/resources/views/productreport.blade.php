@@ -6,9 +6,9 @@
 @section('content')
 <div class="text-3xl font-bold my-10 text-center">Product Report</div>
 <div class="flex items-center justify-center">
-    
+
 </div>
-<div class="max-w-screen-md mx-auto bg-white p-2 rounded shadow">
+<div class="max-w-screen-md mx-auto bg-white p-2 rounded shadow mb-10">
     <table class="min-w-full bg-white border border-gray-300 table-auto">
         <thead>
             <tr class="bg-green-body">
