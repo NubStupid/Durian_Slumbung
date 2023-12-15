@@ -7,7 +7,8 @@ create table user(
     username varchar(50) primary key,
     password varchar(50),
     telp varchar(11),
-    poin int default 0
+    poin int default 0,
+    img_url varchar(255)
 );
 
 create table categories(
@@ -61,7 +62,8 @@ create table d_trans(
     qty int(5),
     total decimal(10,2) not null,
     h_trans_id varchar(5) references h_trans(h_trans_id),
-    product_id varchar(5) references product(product_id)
+    product_id varchar(5) references product(product_id),
+    wisata_id varchar(5) references wisata(wisata_id)
 );
 
 create table admin(
@@ -74,7 +76,8 @@ create table wisata(
     wisata_id varchar(5) primary key,
     tgl_dipesan date,
     sesi int(1),
-    qty_orang int(5)
+    qty_orang int(5),
+    username varchar(50) references user(username)
 );
 
 -- create table ads(
@@ -84,7 +87,7 @@ create table wisata(
 create table cart(
     cart_id varchar(5) primary key,
     product_id varchar(5) references product(product_id),
-    price decimal(10,2),
+    price int,
     qty int(5),
     username varchar(50) references user(username)
 );
@@ -209,18 +212,18 @@ VALUES
     ('mulyono', '123', 'M');
 
 -- Insert dummy data for the wisata table
-INSERT INTO wisata (wisata_id, tgl_dipesan, sesi, qty_orang)
+INSERT INTO wisata (wisata_id, tgl_dipesan, sesi, qty_orang, username)
 VALUES
-    ('W0001', '2023-12-01', 1, 5),
-    ('W0002', '2023-12-02', 2, 8),
-    ('W0003', '2023-12-03', 1, 3),
-    ('W0004', '2023-12-04', 2, 6),
-    ('W0005', '2023-12-05', 1, 4),
-    ('W0006', '2023-12-06', 2, 10),
-    ('W0007', '2023-12-07', 1, 7),
-    ('W0008', '2023-12-08', 2, 12),
-    ('W0009', '2023-12-09', 1, 9),
-    ('W0010', '2023-12-10', 2, 15);
+    ('W0001', '2023-12-01', 1, 5, 'user01'),
+    ('W0002', '2023-12-02', 2, 8, 'user03'),
+    ('W0003', '2023-12-03', 1, 3, 'user02'),
+    ('W0004', '2023-12-04', 2, 6, 'user02'),
+    ('W0005', '2023-12-05', 1, 4, 'user01'),
+    ('W0006', '2023-12-06', 2, 10, 'user03'),
+    ('W0007', '2023-12-07', 1, 7, 'user03'),
+    ('W0008', '2023-12-08', 2, 12, 'user05'),
+    ('W0009', '2023-12-09', 1, 9, 'user07'),
+    ('W0010', '2023-12-10', 2, 15, 'user09');
 
 -- Insert dummy data for the cart table
 INSERT INTO cart (cart_id, product_id, price, qty, username)

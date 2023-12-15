@@ -244,4 +244,10 @@ class PageController extends Controller
         $user = request()->attributes->get('user');
         return view('wisata',['user'=>$user]);
     }
+
+    // About
+    public function loadAboutView(){
+        $user = request()->attributes->get('user');
+        return view('aboutpage',['user'=>$user]);
+    }
 }
