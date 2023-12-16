@@ -193,7 +193,7 @@ class PageController extends Controller
             }
         }
         else{
-            $latestCart = Cart::latest('cart_id')->first(); 
+            $latestCart = Cart::latest('cart_id')->first();
             $idadd = intval(substr($latestCart->cart_id, 1))+1;
             $newID = "C" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
             $res = Cart::create(
@@ -213,6 +213,97 @@ class PageController extends Controller
     // Wisata
     public function loadWisataView(){
         $user = request()->attributes->get('user');
-        return view('wisata',['user'=>$user]);
+        date_default_timezone_set('Asia/Jakarta');
+
+        $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+        $day = date('D', strtotime(date('Y-m-01')));
+
+        $lastDay = strtotime("Last day of " . date("M") . " " . date("Y"));
+        $lastDay = date("d", $lastDay);
+        $prevMonth = strtotime("Last day of " . date("M") . " " . date("Y") . " previous month");
+        $prevMonth = date("d", $prevMonth);
+        $ctr = array_search($day, $days);
+
+        return view('wisata',[
+            'user' => $user,
+            'ctr' => $ctr,
+            'thn' => date("Y"),
+            'bln' => $bulan[date("m")-1],
+            'lastDay' => $lastDay,
+            'prevMonth' => $prevMonth,
+            'selisih' => 0
+        ]);
+    }
+    public function loadKalender(Request $req){
+        try {
+            $data = $req->all();
+
+            $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            $month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+            $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+            $day = date('D', strtotime("{$data['thn']}-{$data['bln']}-01"));
+            $lastDay = strtotime("Last day of {$month[$data['bln']-1]} {$data['thn']}");
+            $lastDay = date("d", $lastDay);
+            $prevMonth = strtotime("Last day of {$month[$data['bln']-1]} {$data['thn']} previous month");
+            $prevMonth = date("d", $prevMonth);
+            $ctr = array_search($day, $days);
+
+            // $date1=date_create("2013-03");
+            // $date2=date_create("2013-11");
+            // $diff=date_diff($date1,$date2);
+            // dump($diff);
+
+            return view('kalender',[
+                'ctr' => $ctr,
+                'thn' => $data['thn'],
+                'bln' => $bulan[$data['bln']-1],
+                'lastDay' => $lastDay,
+                'prevMonth' => $prevMonth,
+                'selisih' => $data['selisih']
+            ]);
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+
+            // Return an error response
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
+    }
+    public function loadSesi(Request $req){
+        try {
+            // $data = $req->all();
+
+            // $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            // $month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+            // $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+            // $day = date('D', strtotime("{$data['thn']}-{$data['bln']}-01"));
+            // $lastDay = strtotime("Last day of {$month[$data['bln']-1]} {$data['thn']}");
+            // $lastDay = date("d", $lastDay);
+            // $prevMonth = strtotime("Last day of {$month[$data['bln']-1]} {$data['thn']} previous month");
+            // $prevMonth = date("d", $prevMonth);
+
+            // return view('kalender',[
+            //     'day' => $day,
+            //     'days' => $days,
+            //     'thn' => $data['thn'],
+            //     'bln' => $bulan[$data['bln']-1],
+            //     'lastDay' => $lastDay,
+            //     'prevMonth' => $prevMonth
+            // ]);
+
+            return view('sesiWisata', [
+                'tgl' => $req->tgl
+            ]);
+            return $req->tgl;
+            return "masuk show sesi";
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+
+            // Return an error response
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
     }
 }

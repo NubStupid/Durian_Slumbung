@@ -127,7 +127,7 @@
         if(like !== "" || maxPrice < {{intval($maxPrice)}} || minPrice > 0|| rated <5 || category !== ""){
             mode = false;
         }
-        $("#content").load('/product',{
+        $("#content").load('/kalender',{
             like:like,
             maxPrice:maxPrice,
             minPrice:minPrice,

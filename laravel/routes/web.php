@@ -71,6 +71,9 @@ Route::get('/register', function () {
         Route::post('/product',[PageController::class, "searchProduct"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
+        // AJAX page wisata
+        Route::post('/kalender',[PageController::class,'loadKalender']);
+        Route::post('/sesi',[PageController::class,'loadSesi']);
 
         Route::get('/checkout',[TransactionController::class,'checkout']);
         Route::post('/checkout', [TransactionController::class, 'pay']);
