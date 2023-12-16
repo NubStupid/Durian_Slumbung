@@ -89,6 +89,9 @@ Route::get('/register', function () {
         Route::get('/about', [PageController::class, "loadAboutView"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
+        // AJAX page wisata
+        Route::post('/kalender',[PageController::class,'loadKalender']);
+        Route::post('/sesi',[PageController::class,'loadSesi']);
 
         Route::get('/checkout',[TransactionController::class,'checkout']);
         Route::post('/checkout', [TransactionController::class, 'pay']);

@@ -75,7 +75,12 @@
         <tr>
             {{-- <td class="w-50"></td> --}}
 
-            <td class="w-50 logo">Durian Slumbung</td>
+            {{-- <td class="w-50 logo">Durian Slumbung</td> --}}
+            <td class="w-50">
+                {{-- {{dump(file_get_contents(public_path('LogoDurianSlumbung.png')))}} --}}
+                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/pdf/Logo.png'))) }}" style="width: 100%">
+            </td>
+            {{-- <td class="w-50 logo">Durian Slumbung</td> --}}
             {{-- <td class="w-50"><img src="public" width="200" /></td> --}}
 
 
@@ -114,16 +119,30 @@
     </table>
     <table class="w-100 mt">
         <tr class="border-y text-center">
-            <td class="semi-bold" style="width: 40%">Item</td>
+            <td class="semi-bold" style="width: 40%; padding-bottom: 5px; padding-top: 5px">Item</td>
             <td class="semi-bold">Quantity</td>
             <td class="semi-bold">Unit Price</td>
             <td class="semi-bold">Subtotal</td>
         </tr>
         @foreach ($detail as $d)
             <tr class="text-center">
-                <td class="text-start ps">Produk</td>
+                <td class="text-start ps">
+                    @php
+                        if($d->product_id[0] == 'P')
+                            echo $d->Product->name;
+                        else
+                            echo $d->Wisata->tgl_dipesan;
+                    @endphp
+                </td>
                 <td>{{$d['qty']}}</td>
-                <td>50.000</td>
+                <td>
+                    @php
+                        if($d->product_id[0] == 'P')
+                            echo $d->Product->price;
+                        else
+                            echo $d->Wisata->tgl_dipesan;
+                    @endphp
+                </td>
                 <td>Rp{{number_format($d['total'],0,",",".")}}</td>
             </tr>
         @endforeach

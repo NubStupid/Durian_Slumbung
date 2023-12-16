@@ -6,11 +6,12 @@
     @endphp
 @endsection
 @push('style')
+    <meta name="csrf-token" content="{{ csrf_token() }}">
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
     <script src="https://code.jquery.com/jquery-3.6.4.min.js"></script>
     <link rel="stylesheet" href="{{asset('style-kalender.css')}}">
-    <script src="{{asset('script-kalender.js')}}"></script>
+    {{-- <script src="{{asset('script-kalender.js')}}"></script> --}}
     <style>
         body{
             overflow-x:hidden;
@@ -49,163 +50,61 @@
             </div>
         </div>
     </div>
-    <div class="row my-5">
-    </div>
-        <div class="container-md bg-gray-light bg-opacity-50 rounded-5 p-4" id="targetElement">
-
-            <div class="position-absolute img-transition" style="left:-10vw; z-index:-1;" id="img_left">
-                <img src="{{asset('assets/wisata/Durian_Rain.png')}}" alt="" style="max-width:40vw; max-height:auto;">
-            </div>
-
-            <div class="text-start fs-1 fw-bold my-5">
-                Apa itu Dapur Durian?
-            </div>
-            <div class="row fs-4 fw-semibold my-5">
-                Dapur Durian tidak hanya memberikan kesempatan bagi pengunjung untuk menikmati berbagai hidangan lezat, tetapi juga memberikan wawasan tentang proses pengolahan durian yang cermat. Pengelolaan durian melibatkan serangkaian tahapan, mulai dari panen buah durian yang matang hingga pengolahan menjadi berbagai produk
-            </div>
-
-            <div class="position-absolute img-transition" style="right:-10vw; z-index:-1;" id="img_right">
-                <img src="{{asset('assets/wisata/Durian_Rain.png')}}" alt="" style="max-width:40vw; max-height:auto; transform:scaleX(-1);">
-            </div>
-
-            <div class="row fs-4 fw-semibold my-5">
-                Pengunjung dapat melihat secara langsung bagaimana petani memilih durian yang sempurna, teknik penanganan buah, dan proses pemisahan daging durian dari bijinya. Selain itu, wisatawan juga dapat menyaksikan cara durian diolah menjadi es krim, pancake, dodol, atau produk olahan lainnya.
-            </div>
-            <div class="row fs-4 fw-semibold my-5">
-                Pemandangan kebun durian yang teratur dan terawat dengan baik memberikan gambaran tentang betapa pentingnya pertanian berkelanjutan dalam menjaga kualitas buah durian. Dengan demikian, Dapur Durian tidak hanya memberikan pengalaman kuliner, tetapi juga memperkaya pengetahuan pengunjung tentang proses pertanian dan pengelolaan durian yang berkelanjutan.
-            </div>
-        </div>
     <div class="row my-5"></div>
-    </div>
-        <div class="container-md bg-gray-light bg-opacity-50 rounded-5 p-4" id="targetElementQuick">
-            <div class="text-start fs-1 fw-bold my-5">
-                Bagaimana cara untuk bermain di wisata Dapur Durian?
-            </div>
-            <div class="row fs-4 fw-semibold my-5">
-                Untuk bermain di wisata Dapur Durian, diperlukan untuk memesan sesi yang dapat dipesan dan membayarnya. Lalu pada hari dan jam yang sesuai dengan yang dipesan, datanglah ke lokasi yang tertera.
-            </div>
+    <div class="container-md bg-gray-light bg-opacity-50 rounded-5 p-4" id="targetElement">
 
+        <div class="position-absolute img-transition" style="left:-10vw; z-index:-1;" id="img_left">
+            <img src="{{asset('assets/wisata/Durian_Rain.png')}}" alt="" style="max-width:40vw; max-height:auto;">
         </div>
+
+        <div class="text-start fs-1 fw-bold my-5">
+            Apa itu Dapur Durian?
+        </div>
+        <div class="row fs-4 fw-semibold my-5">
+            Dapur Durian tidak hanya memberikan kesempatan bagi pengunjung untuk menikmati berbagai hidangan lezat, tetapi juga memberikan wawasan tentang proses pengolahan durian yang cermat. Pengelolaan durian melibatkan serangkaian tahapan, mulai dari panen buah durian yang matang hingga pengolahan menjadi berbagai produk
+        </div>
+
+        <div class="position-absolute img-transition" style="right:-10vw; z-index:-1;" id="img_right">
+            <img src="{{asset('assets/wisata/Durian_Rain.png')}}" alt="" style="max-width:40vw; max-height:auto; transform:scaleX(-1);">
+        </div>
+
+        <div class="row fs-4 fw-semibold my-5">
+            Pengunjung dapat melihat secara langsung bagaimana petani memilih durian yang sempurna, teknik penanganan buah, dan proses pemisahan daging durian dari bijinya. Selain itu, wisatawan juga dapat menyaksikan cara durian diolah menjadi es krim, pancake, dodol, atau produk olahan lainnya.
+        </div>
+        <div class="row fs-4 fw-semibold my-5">
+            Pemandangan kebun durian yang teratur dan terawat dengan baik memberikan gambaran tentang betapa pentingnya pertanian berkelanjutan dalam menjaga kualitas buah durian. Dengan demikian, Dapur Durian tidak hanya memberikan pengalaman kuliner, tetapi juga memperkaya pengetahuan pengunjung tentang proses pertanian dan pengelolaan durian yang berkelanjutan.
+        </div>
+    </div>
+    <div class="row my-5"></div>
+    <div class="container-md bg-gray-light bg-opacity-50 rounded-5 p-4" id="targetElementQuick">
+        <div class="text-start fs-1 fw-bold my-5">
+            Bagaimana cara untuk bermain di wisata Dapur Durian?
+        </div>
+        <div class="row fs-4 fw-semibold my-5">
+            Untuk bermain di wisata Dapur Durian, diperlukan untuk memesan sesi yang dapat dipesan dan membayarnya. Lalu pada hari dan jam yang sesuai dengan yang dipesan, datanglah ke lokasi yang tertera.
+        </div>
+    </div>
 
     <div class="container-fluid kalender">
         <div class="row">
             <h3 class="text-center pt-4 text-dark fw-bolder" style="margin-bottom: 20px; margin-top: 20px;">Ingin memesan? Silakan mengecek sesi yang tersedia!</h3>
             <div class="col-3"></div>
             <div class="col-6 mx-5 my-3 d-flex justify-content-center" style="margin-left: 200px;">
-                <?php
-                    $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
-                    $currentDateTime = new DateTime('now');
-                    $date = $currentDateTime->format('Y-m-01');
-                    $date_obj = new DateTime($date);
-                    $day = $date_obj->format('D');
-                    $lastDay = strtotime("Last day of " . $currentDateTime->format('M'));
-                    $lastDate = date("d", $lastDay);
-                    $prevMonth = strtotime("last day of previous month");
-                    $prevMonth = date("d", $prevMonth);
-                    //kalender lama
-                    // echo '<div class="col ms-5 me-5">';
-                    // echo '<div id="bulan">September</div>';
-                    // echo '<div id="tahun">2023</div>';
-                    // echo '<button type="button" class="btn btn-outline-success" onclick="updateCalendar(' . "'Left'" . ')"><</button>';
-                    // echo "M T W T F S S";
-                    // echo '<button type="button" class="btn btn-outline-success" onclick="updateCalendar(' . "'Right'" . ')">></button>';
-                    // $ctr = array_search($day, $days);
-                    // echo '<div id="kalender">';
-                    // echo '<div class="row">';
-                    // for($i = $prevMonth - $ctr + 1; $i <= $prevMonth; $i++) {
-                    //     echo '<div class="col">';
-                    //     echo '<button type="button" class="btn btn-outline-primary" onclick="showBook(this)" disabled>' . $i . '</button>';
-                    //     echo '</div>';
-                    // }
-                    // for($i = 1; $i <= $lastDate; $i++) {
-                    //     if($ctr % 7 == 0) {
-                    //         if($ctr > 0)
-                    //             echo '</div>';
-                    //         echo '<div class="row">';
-                    //     }
-                    //     $ctr++;
-                    //     echo '<div class="col">';
-                    //     echo '<button type="button" class="btn btn-outline-primary" onclick="showBook(this)">' . $i . '</button>';
-                    //     echo '</div>';
-                    // }
-                    // for($i = 1; $ctr % 7 != 0; $i++) {
-                    //     $ctr++;
-                    //     echo '<div class="col">';
-                    //     echo '<button type="button" class="btn btn-outline-primary" onclick="showBook(this)" disabled>' . $i . '</button>';
-                    //     echo '</div>';
-                    // }
-                    // echo '</div>';
-                    // echo '</div>';
-                    // echo '</div>';
-                    //batas kalender lama
-                    //kalender baru
-
-                    //batas kalender baru
-                    echo '<div class="col-6">';
-                    // echo '<div class="calendar" id="calendar">';
-                    // //kalender header
-                    // echo '<div class="calendar-header">';
-                    // echo '<span class="year" id="tahun">';
-                    // echo '2023';
-                    // echo '</span>';
-                    // echo '<div class="month-picker">';
-                    // echo '<button type="button" class="btn btn-no-outline" onclick="updateCalendar(' . "'Left'" . ')"><</button>';
-                    // echo '<span id="bulan">September</span>';
-                    // echo '<button type="button" class="btn btn-no-outline" onclick="updateCalendar(' . "'Right'" . ')">></button>';
-                    // echo '</div>';
-                    // echo '</div>';
-                    // //batas kalender header
-                    // $ctr = array_search($day, $days);
-                    // //kalender body
-                    // echo '<div class="calendar-body" id="kalender">';
-                    // echo '<div class="calendar-week-day">';
-                    // echo '<div>Sun</div>';
-                    // echo '<div>Mon</div>';
-                    // echo '<div>Tue</div>';
-                    // echo '<div>Wed</div>';
-                    // echo '<div>Thu</div>';
-                    // echo '<div>Fri</div>';
-                    // echo '<div>Sat</div>';
-                    // echo '</div>';
-                    // echo '<div class="calendar-day">';
-                    // for($i = $prevMonth - $ctr + 1; $i <= $prevMonth; $i++) {
-                    //     $ctr++;
-                    //     echo '<div>';
-                    //     echo '<button type="button" class="btn custom-button" onclick="showBook(this)" disabled>' . $i . '</button>';
-                    //     echo '</div>';
-                    // }
-                    // for($i = 1; $i <= $lastDate; $i++) {
-                    //     $ctr++;
-                    //     echo '<div>';
-                    //     echo '<button type="button" class="btn custom-button" onclick="showBook(this)">' . $i . '</button>';
-                    //     echo '</div>';
-                    // }
-                    // for($i = 1; $ctr % 7 != 0; $i++) {
-                    //     $ctr++;
-                    //     echo '<div>';
-                    //     echo '<button type="button" class="btn custom-button" onclick="showBook(this)" disabled>' . $i . '</button>';
-                    //     echo '</div>';
-                    // }
-                    // echo '</div>'; #close calender body
-                    // echo '</div>';  #close calender
-                    // // echo '</body>'; #light
-                    // echo '</div>'; #close col
-                    // echo '</div>';
-                    // echo '<div class="col" id="sesiOlahan">';
-                    // echo '</div>';
-
-                ?>
-                @include('kalender')
-            </div>
-
-            <div class="row">
-                <div class="col-3" style="margin-left: 115px;"></div>
-                <div class="col ms-5">
-                <button type="submit" class="btn btn-light ms-5" data-bs-toggle="modal" data-bs-target="#Book" id="bookbtn">Book Now</button>
-                <h6 class="mt-3 mb-4 text-dark" style="margin-left: -70px;">*pemesanan >20 orang booking melalui WA</h6>
+                <div class="col-6" id="kalender">
+                    @include('kalender')
+                </div>
+                <div class="col" id="sesiWisata">
                 </div>
             </div>
         </div>
+        <div class="row">
+            <div class="col-3" style="margin-left: 115px;"></div>
+            <div class="col ms-5">
+                <button type="submit" class="btn btn-light ms-5" data-bs-toggle="modal" data-bs-target="#Book" id="bookbtn">Book Now</button>
+                <h6 class="mt-3 mb-4 text-dark" style="margin-left: -70px;">*pemesanan >20 orang booking melalui WA</h6>
+            </div>
+        </div>
+
     </div>
 
 {{-- P tolong sambungin D: --}}
@@ -382,114 +281,140 @@
 
 
 
-        function updateHarga() {
-            var jum = parseInt(document.getElementById("orang").value)
-            if(jum > 9 && jum < 21) {
-                const options = {
-                    style: 'decimal',
-                    currency: 'IDR',
-                    minimumFractionDigits: 2,
-                    maximumFractionDigits: 2,
-                }
-                document.getElementById("warning").innerHTML = ""
-                document.getElementById("harga").innerHTML = new Intl.NumberFormat('id-ID', options).format((jum * 20000))
-                // document.getElementById("harga").innerHTML = (jum * 20000)
-                // document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
-            } else {
-                if(!isNaN(jum))
-                    document.getElementById("warning").innerHTML = '<div class="alert alert-danger mt-1" role="alert"><h6 class="my-auto">Jumlah orang harus 10-20 orang</h6></div>'
-                document.getElementById("harga").innerHTML = "0"
-            }
-        };
+        // function updateHarga() {
+        //     var jum = parseInt(document.getElementById("orang").value)
+        //     if(jum > 9 && jum < 21) {
+        //         const options = {
+        //             style: 'decimal',
+        //             currency: 'IDR',
+        //             minimumFractionDigits: 2,
+        //             maximumFractionDigits: 2,
+        //         }
+        //         document.getElementById("warning").innerHTML = ""
+        //         document.getElementById("harga").innerHTML = new Intl.NumberFormat('id-ID', options).format((jum * 20000))
+        //         // document.getElementById("harga").innerHTML = (jum * 20000)
+        //         // document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
+        //     } else {
+        //         if(!isNaN(jum))
+        //             document.getElementById("warning").innerHTML = '<div class="alert alert-danger mt-1" role="alert"><h6 class="my-auto">Jumlah orang harus 10-20 orang</h6></div>'
+        //         document.getElementById("harga").innerHTML = "0"
+        //     }
+        // };
         function updateCalendar(act) {
-            var idx = 0;
-            const month = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
-            if(act == 'Right') {
-                idx = month.indexOf(document.getElementById("bulan").innerHTML)
-                idx++
-            } else {
-                idx = month.indexOf(document.getElementById("bulan").innerHTML)
-                idx--
-            }
+            const month = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            var idx = month.indexOf($("#bulan").html()), tahun = parseInt($("#tahun").html()), bulan;
+
+            if(act == 'Right')
+                idx++;
+            else
+                idx--;
+
             if(idx < 0) {
-                document.getElementById("tahun").innerHTML = parseInt(document.getElementById("tahun").innerHTML) - 1
-                idx = 11
+                tahun--;
+                idx = 11;
             }
             else if(idx > 11)
-                document.getElementById("tahun").innerHTML = parseInt(document.getElementById("tahun").innerHTML) + 1
-            document.getElementById("bulan").innerHTML = month[idx % 12]
-            var prev = document.getElementById("clicked")
-            document.getElementById("sesiOlahan").innerHTML = "";
-            if(prev != null && prev.classList.contains('btn-dark')) {
-                prev.classList.remove('btn-dark')
-                // prev.classList.add('btn-outline-primary')
-                prev.removeAttribute("id", "clicked")
-            }
-            m = month.indexOf(document.getElementById("bulan").innerHTML)
-            const bln = ["January","February","March","April","May","June","July","August","September","October","November","December"];
-            name = bln[m];
-            var tahun = document.getElementById("tahun").innerHTML
+                tahun++;
+            idx = idx % 12 + 1;
 
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("kalender").innerHTML = xhr.responseText;
-                }
+            // var date1 = new Date($('#firstPayDate').val());
+            // var date2 = new Date($('#loanTrm').val());
+            // var datediff = date2 - date1;
+            var now = new Date(), newMonth = new Date(tahun, idx-1), nowMonth = new Date(now.getFullYear(), (now.getMonth())), selisih = Math.round(((newMonth - nowMonth) % 31536000000)/2628000000);
+            // console.log(tahun + "-" + idx);
+            // console.log(now.getFullYear() + "-" + (now.getMonth()+1));
+            // console.log(newMonth)
+            // console.log(nowMonth)
+            // console.log(Math.round(((newMonth - nowMonth) % 31536000000)/2628000000))
+            // if(selisih >= 0 && selisih < 3)
+            // {
+            var prev = document.getElementById("clicked")
+            $("sesiOlahan").html("");
+            if(prev != null && prev.classList.contains('btn-dark')) {
+                prev.classList.remove('btn-dark');
+                prev.removeAttribute("id", "clicked");
             }
-            xhr.open('GET', "showCalendar.php?bln=" + name + "&thn=" + tahun, true);
-            xhr.send();
+
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
+                }
+            });
+            $("#kalender").load('/kalender',{
+                thn:tahun,
+                bln:idx,
+                selisih:selisih
+            },function (response) {
+                $('#kalender').html(response);
+            })
+            // }
+            // if(selisih == 0)
+            //     $("#btnLeft").prop("disabled",true);
+            // else if(selisih == 3)
+            //     $("#btnRight").prop("disabled",true);
+            // else
+            // {
+            //     $("#btnLeft").prop("disabled",false);
+            //     $("#btnRight").prop("disabled",false);
+            // }
+            // console.log(new Date($('#firstPayDate').val()));
+
         };
         function showBook(e) {
             var prev = document.getElementById("clicked")
             if(prev != null && prev.classList.contains('btn-dark')) {
                 prev.classList.remove('btn-dark')
-                // prev.classList.add('btn-outline-primary')
                 prev.removeAttribute("id", "clicked")
             }
             e.setAttribute("id", "clicked")
             e.classList.add('btn-dark')
-            // e.classList.remove('btn-outline-primary')
+
             const month = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember']
             m = month.indexOf(document.getElementById("bulan").innerHTML) + 1
             var tgl = m + '-' + e.innerHTML + '-' + document.getElementById("tahun").innerHTML
             let parse = Date.parse(tgl);
             let date = new Date(parse);
-            var tgl = date.getFullYear() + "-" + m.toString().padStart(2, '0') + "-" + date.getDate().toString().padStart(2, '0');
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState == 4 && xhr.status == 200) {
-                    document.getElementById("sesiOlahan").innerHTML = xhr.responseText;
+            tgl = date.getFullYear() + "-" + m.toString().padStart(2, '0') + "-" + date.getDate().toString().padStart(2, '0');
+
+            var csrfToken = $('meta[name="csrf-token"]').attr('content');
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': csrfToken
                 }
-            }
-            xhr.open('GET', "showSesi.php?tgl='" + tgl + "'", true);
-            xhr.send();
+            });
+            $("#sesiWisata").load('/sesi',{
+                tgl:tgl
+            },function (response) {
+                $('#sesiWisata').html(response);
+            })
         };
-        function pilihTgl() {
-            // console.log('Function called!');
-            // console.log("masuk")
-            // console.log()
-            var tgl = document.getElementById("pilihTanggal").value;
-            var xhr = new XMLHttpRequest();
-            xhr.onreadystatechange = function() {
-                if(xhr.readyState == 4 && xhr.status == 200) {
-                    // console.log(tgl);
-                    var def = '<option selected disabled>Pilih sesi</option>';
-                    document.getElementById("pilihSesi").innerHTML = def + xhr.responseText;
-                }
-            }
-            xhr.open('GET', "pilihSesi.php?tgl='" + tgl + "'", true);
-            xhr.send();
-            // console.log(document.getElementById("pilihTanggal").value)
-            // var jum = parseInt(document.getElementById("orang").value)
-            // if(jum > 9 && jum < 21) {
-            //     document.getElementById("warning").innerHTML = ""
-            //     document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
-            // } else {
-            //     if(!isNaN(jum))
-            //         document.getElementById("warning").innerHTML = '<div class="alert alert-danger" role="alert"><h6>Jumlah orang harus 10-20 orang</h6></div>'
-            //     document.getElementById("harga").innerHTML = "<h6>0</h6>"
-            // }
-        };
+        // function pilihTgl() {
+        //     // console.log('Function called!');
+        //     // console.log("masuk")
+        //     // console.log()
+        //     var tgl = document.getElementById("pilihTanggal").value;
+        //     var xhr = new XMLHttpRequest();
+        //     xhr.onreadystatechange = function() {
+        //         if(xhr.readyState == 4 && xhr.status == 200) {
+        //             // console.log(tgl);
+        //             var def = '<option selected disabled>Pilih sesi</option>';
+        //             document.getElementById("pilihSesi").innerHTML = def + xhr.responseText;
+        //         }
+        //     }
+        //     xhr.open('GET', "pilihSesi.php?tgl='" + tgl + "'", true);
+        //     xhr.send();
+        //     // console.log(document.getElementById("pilihTanggal").value)
+        //     // var jum = parseInt(document.getElementById("orang").value)
+        //     // if(jum > 9 && jum < 21) {
+        //     //     document.getElementById("warning").innerHTML = ""
+        //     //     document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
+        //     // } else {
+        //     //     if(!isNaN(jum))
+        //     //         document.getElementById("warning").innerHTML = '<div class="alert alert-danger" role="alert"><h6>Jumlah orang harus 10-20 orang</h6></div>'
+        //     //     document.getElementById("harga").innerHTML = "<h6>0</h6>"
+        //     // }
+        // };
         // function cek() {
             // console.log('Function called!');
             // console.log("masuk")
