@@ -3,11 +3,16 @@
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\user\UserController;
+use App\Http\Controllers\AdminController;
 use App\Http\Controllers\PageController;
 use App\Http\Controllers\RatingController;
 use App\Http\Controllers\TransactionController;
 use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
+use App\Http\Controllers\CommentController;
+use App\Http\Controllers\LikeController;
+use App\Http\Controllers\Auth\ProviderController;
+use Illuminate\Support\Facades\Auth;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,9 +25,14 @@ use Illuminate\Http\Request;
 |
 */
 
-Route::get('/', function () {
-    return view('homepage');
-})->name('home');
+// Route::get('/', function () {
+//     return view('homepage');
+// })->name('home');
+
+
+Route::get('/auth/{provider}/redirect',[ProviderController::class,'redirect']);
+Route::get('/auth/{provider}/callback', [ProviderController::class,'callback']);
+
 
 // Route Utama Login
 
@@ -48,15 +58,21 @@ Route::get('/register', function () {
 
 
     // Semua Route Admin kalau mau di prefix jg bisa
-    Route::middleware('authen:admin')->group(function () {
+    Route::middleware('authen:A,M')->group(function () {
         // Route::prefix('admin')->group(function () {
             Route::get('/testDatabase',[UserController::class,"getCustomer"]);
         Route::get('/testTambah',[UserController::class,"loadFormTambah"]);
         Route::post('/testTambah',[UserController::class,"tambah"]);
         Route::get('/testUbah/{id}',[UserController::class,"loadFormUbah"]);
         Route::post('/testUbah/{id}',[UserController::class,"ubah"]);
-        Route::get('/adminhomepage', function(){
-            return view('adminhomepage');
+        Route::middleware('role:A')->group(function(){
+            Route::get('/adminhomepage',[AdminController::class,"dashboard"]);
+        });
+        Route::middleware('role:M')->group(function(){
+            Route::get('/masterhomepage',[AdminController::class,"dashboard"]);
+            Route::get('/productsreport',[AdminController::class,'productReport']);
+            Route::get('/wisatareport',[AdminController::class,'wisataReport']);
+            Route::post('/wisatareport',[AdminController::class,'filterWisata']);
         });
         // });
     });
@@ -69,6 +85,8 @@ Route::get('/register', function () {
         });
         Route::get('/product',[PageController::class,'loadProductsView']) ;
         Route::post('/product',[PageController::class, "searchProduct"]);
+
+        Route::get('/about', [PageController::class, "loadAboutView"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
         // AJAX page wisata
@@ -89,15 +107,23 @@ Route::get('/register', function () {
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
         Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
         Route::get('/cart',[PageController::class,"viewCart"]);
+        Route::delete('/delete-cart-item/{id}',[PageController::class,"deleteCartItem"]);
         Route::post('/product/like',[RatingController::class,"insertUpdateRating"]);
         Route::post('/product/delete',[RatingController::class,"deleteRating"]);
+        Route::post('/comments', [CommentController::class, 'addComment']);
+        Route::post('/likes/add' ,[LikeController::class, 'addLike']);
+        Route::post('/likes/delete' ,[LikeController::class, 'deleteLike']);
     });
 
 // Logout (Session dorrr)
 Route::get('/logout', function (Request $request) {
     session()->forget('username');
+    if(Auth::guard('web')->check()){
+        Auth::guard('web')->logout();
+    }else if(Auth::guard('admin')->check()){
+        Auth::guard('admin')->logout();
+    }
     session()->forget('role');
-
     return redirect('login');
 });
 
@@ -115,7 +141,12 @@ Route::get('/logout', function (Request $request) {
 */
 
 
+
 // Paling bawah
 Route::get('/{any}',function(){
     return view('error.404');
 });
+
+// routes/web.php
+
+
