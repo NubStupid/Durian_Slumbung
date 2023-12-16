@@ -86,6 +86,8 @@ Route::get('/register', function () {
         Route::get('/product',[PageController::class,'loadProductsView']) ;
         Route::post('/product',[PageController::class, "searchProduct"]);
 
+        Route::get('/about', [PageController::class, "loadAboutView"]);
+
         Route::get('/wisata',[PageController::class,'loadWisataView']);
 
         Route::get('/checkout',[TransactionController::class,'checkout']);
