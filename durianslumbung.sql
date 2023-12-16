@@ -7,7 +7,8 @@ create table user(
     username varchar(50) primary key,
     password varchar(50),
     telp varchar(11),
-    poin int default 0
+    poin int default 0,
+    img_url varchar(255)
 );
 
 create table categories(
@@ -49,8 +50,11 @@ create table likes(
 create table h_trans(
     h_trans_id varchar(5) primary key,
     invoice_number varchar(20) not null,
-    subtotal decimal(10,2) not null,
-    username varchar(50) references user(username)
+    total decimal(10,2) not null,
+    username varchar(50) references user(username),
+    created_at timestamp default current_timestamp,
+    updated_at timestamp default current_timestamp,
+    status varchar(10) not null
 );
 
 create table d_trans(
@@ -58,7 +62,8 @@ create table d_trans(
     qty int(5),
     total decimal(10,2) not null,
     h_trans_id varchar(5) references h_trans(h_trans_id),
-    product_id varchar(5) references product(product_id)
+    product_id varchar(5) references product(product_id),
+    wisata_id varchar(5) references wisata(wisata_id)
 );
 
 create table admin(
@@ -71,7 +76,8 @@ create table wisata(
     wisata_id varchar(5) primary key,
     tgl_dipesan date,
     sesi int(1),
-    qty_orang int(5)
+    qty_orang int(5),
+    username varchar(50) references user(username)
 );
 
 -- create table ads(
@@ -81,7 +87,7 @@ create table wisata(
 create table cart(
     cart_id varchar(5) primary key,
     product_id varchar(5) references product(product_id),
-    price decimal(10,2),
+    price int,
     qty int(5),
     username varchar(50) references user(username)
 );
@@ -171,18 +177,18 @@ VALUES
     ('L0010', 'user10', 'CM010');
 
 -- Insert dummy data for the h_trans table
-INSERT INTO h_trans (h_trans_id, invoice_number, subtotal, username)
+INSERT INTO h_trans (h_trans_id, invoice_number, total, username, status)
 VALUES
-    ('HT001', 719.98, 'user01'),
-    ('HT002', 39.98, 'user02'),
-    ('HT003', 29.99, 'user03'),
-    ('HT004', 149.99, 'user04'),
-    ('HT005', 124.95, 'user05'),
-    ('HT006', 314.97, 'user06'),
-    ('HT007', 239.92, 'user07'),
-    ('HT008', 159.98, 'user08'),
-    ('HT009', 199.80, 'user09'),
-    ('HT010', 74.95, 'user10');
+    ('HT001', 'INYYYYMMDDXXX001', 719.98, 'user01', 'pending'),
+    ('HT002', 'INYYYYMMDDXXX002', 39.98, 'user02', 'paid'),
+    ('HT003', 'INYYYYMMDDXXX003', 29.99, 'user03', 'failed'),
+    ('HT004', 'INYYYYMMDDXXX004', 149.99, 'user04', 'pending'),
+    ('HT005', 'INYYYYMMDDXXX005', 124.95, 'user05', 'paid'),
+    ('HT006', 'INYYYYMMDDXXX006', 314.97, 'user06', 'failed'),
+    ('HT007', 'INYYYYMMDDXXX007', 239.92, 'user07', 'pending'),
+    ('HT008', 'INYYYYMMDDXXX008', 159.98, 'user08', 'failed'),
+    ('HT009', 'INYYYYMMDDXXX009', 199.80, 'user09', 'pending'),
+    ('HT010', 'INYYYYMMDDXXX010', 74.95, 'user10', 'pending');
 
 -- Insert dummy data for the d_trans table
 INSERT INTO d_trans (d_trans_id, qty, total, h_trans_id, product_id)
@@ -206,18 +212,18 @@ VALUES
     ('mulyono', '123', 'M');
 
 -- Insert dummy data for the wisata table
-INSERT INTO wisata (wisata_id, tgl_dipesan, sesi, qty_orang)
+INSERT INTO wisata (wisata_id, tgl_dipesan, sesi, qty_orang, username)
 VALUES
-    ('W0001', '2023-12-01', 1, 5),
-    ('W0002', '2023-12-02', 2, 8),
-    ('W0003', '2023-12-03', 1, 3),
-    ('W0004', '2023-12-04', 2, 6),
-    ('W0005', '2023-12-05', 1, 4),
-    ('W0006', '2023-12-06', 2, 10),
-    ('W0007', '2023-12-07', 1, 7),
-    ('W0008', '2023-12-08', 2, 12),
-    ('W0009', '2023-12-09', 1, 9),
-    ('W0010', '2023-12-10', 2, 15);
+    ('W0001', '2023-12-01', 1, 5, 'user01'),
+    ('W0002', '2023-12-02', 2, 8, 'user03'),
+    ('W0003', '2023-12-03', 1, 3, 'user02'),
+    ('W0004', '2023-12-04', 2, 6, 'user02'),
+    ('W0005', '2023-12-05', 1, 4, 'user01'),
+    ('W0006', '2023-12-06', 2, 10, 'user03'),
+    ('W0007', '2023-12-07', 1, 7, 'user03'),
+    ('W0008', '2023-12-08', 2, 12, 'user05'),
+    ('W0009', '2023-12-09', 1, 9, 'user07'),
+    ('W0010', '2023-12-10', 2, 15, 'user09');
 
 -- Insert dummy data for the cart table
 INSERT INTO cart (cart_id, product_id, price, qty, username)
