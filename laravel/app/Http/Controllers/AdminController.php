@@ -8,6 +8,7 @@ use App\Charts\GoodProductChart;
 use App\Models\Htrans;
 use App\Models\Dtrans;
 use App\Models\Wisata;
+use App\Models\Categories;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -56,6 +57,29 @@ class AdminController extends Controller
             $data = Wisata::orderBy('tgl_dipesan','desc')->orderBy('tgl_dipesan','desc')->get();
         }
         $view = view('wisatareportCard',['wisata'=>$data]);
+        return $view;
+    }
+
+    public function adminProduct(){
+        $allProduct = Products::all();
+        $allCategory = Categories::all();
+        return view('adminproduct',['products'=>$allProduct,'category'=>$allCategory]);
+    }
+
+    public function viewProduct(Request $req){
+        $data = $req->all();
+        $p_id = $data["p_id"];
+        $allCategory = Categories::all();
+        $viewed = Products::where('product_id',$p_id)->first();
+        $view = view('adminproductView',['p' => $viewed,'category'=>$allCategory]);
+        return $view;
+    }
+
+    public function searchProduct(Request $req){
+        $data = $req->all();
+        $filter = $data["name"];
+        $filtered = Products::where('name','like','%'.$filter.'%')->get();
+        $view = view('adminproductCard',['products'=>$filtered]);
         return $view;
     }
 }
