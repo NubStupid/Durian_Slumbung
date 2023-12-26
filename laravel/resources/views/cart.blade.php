@@ -27,7 +27,7 @@
     @if(count($listcart)!=0)
     <div class="container-fluid cart-content">
         <div class="row px-5">
-            <div class="col-9">
+            <div class="col-9 container-fluid">
                 @foreach($listproduct as $data)
                     @foreach($listcart as $cekdata)
                         @if($data->product_id == $cekdata->product_id)
@@ -38,44 +38,47 @@
                                 $total += $cekdata->qty*ceil($cekdata->price); 
                             ?>
                             <input type="hidden" class="maxQty_{{$cekdata->product_id}}" value="{{$maksqty}}">
-                            <div class="mx-5 row row-cols-1 my-5" style="background-color:var(--bg-blue-dark);">
-                                <div class="col-2">
-                                    <img src="{{$data->img_url}}" alt="">
+                            <div class="mx-5 row no-gutters my-5" style="background-color:var(--bg-blue-dark);">
+                                <div class="col-md-3">
+                                    <img src="{{$data->img_url}}" class="card-img" alt="">
                                 </div>
-                                <div class="col-6 ms-3 mt-3">
-                                    <h3>
-                                        {{$data->name}}
-                                    </h3>
-                                    <h4 class="mt-3">
-                                        Rp. {{number_format($data->price,0,",",".")}}
-                                    </h4>
-                                    <h5 class="mt-3">
-                                        {{$data->description}}
-                                    </h5>
-                                </div>
-                                <div class="col-2">
-                                    <div class="p-5"></div>
-                                    <div class="p-5"></div>
-                                    <div class="p-3"></div>
-                                    <div class="row mt-auto">
-                                        <div class="col-3 my-auto">
-                                            <button class="circle py-auto decreaseQty" id="dec_{{$cekdata->product_id}}"><b>-</b></button>
+                                <div class="col-md-9">
+                                    <div class="row">
+                                        <div class="col-6 mt-3">
+                                            <h3>
+                                                {{$data->name}}
+                                            </h3>
+                                            <h4 class="mt-3">
+                                                Rp. {{number_format($data->price,0,",",".")}}
+                                            </h4>
+                                            <h5 class="mt-3">
+                                                {{$data->description}}
+                                            </h5>
                                         </div>
-                                        <div class="col-6">
-                                            <input type="text" name="" class="form-control p-2 fs-5 qty_{{$cekdata->product_id}}" placeholder="0" value="{{$cekdata->qty}}" style="text-align:center;" onchange="cekbutton()">
+                                        <div class="col-4">
+                                            <div class="p-5"></div>
+                                            <div class="p-5"></div>
+                                            <div class="p-4"></div>
+                                            <div class="row mt-auto">
+                                                <div class="col-3 my-auto">
+                                                    <button class="circle py-auto decreaseQty" id="dec_{{$cekdata->product_id}}"><b>-</b></button>
+                                                </div>
+                                                <div class="col-6">
+                                                    <input type="text" name="" class="form-control p-2 fs-5 qty_{{$cekdata->product_id}}" placeholder="0" value="{{$cekdata->qty}}" style="text-align:center;" onchange="cekbutton()">
+                                                </div>
+                                                <div class="col-3 my-auto">
+                                                    <button class="circle py-auto increaseQty" id="inc_{{$cekdata->product_id}}"><b>+</b></button>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div class="col-3 my-auto">
-                                            <button class="circle py-auto increaseQty" id="inc_{{$cekdata->product_id}}"><b>+</b></button>
+                                        <div class="col-2">
+                                            <div class="p-5"></div>
+                                            <div class="p-5"></div>
+                                            <div class="p-4"></div>
+                                            <div class="mt-auto pe-5 d-flex">
+                                                <button class="mx-3 deleteCartItem border border-0" data-cart-id="{{$cekdata->cart_id}}"><img src="{{asset('assets/cart/trashicon.png')}}" alt="Trash Icon" width="max-content" height="40px"></button>
+                                            </div>
                                         </div>
-                                    </div>
-                                </div>
-                                <div class="col-1">
-                                    <div class="p-5"></div>
-                                    <div class="p-5"></div>
-                                    <div class="p-3"></div>
-                                    <div class="mt-auto d-flex">
-                                        <button class="mx-3 deleteCartItem border border-0" data-cart-id="{{$cekdata->cart_id}}"><img src="{{asset('assets/cart/trashicon.png')}}" alt="Trash Icon" width="max-content" height="40px"></button>
-                                        <button class="btn btn-success px-4">Beli</button>
                                     </div>
                                 </div>
                             </div>
