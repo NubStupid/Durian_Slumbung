@@ -115,17 +115,29 @@
                 </div>
             </div>
         </div>
-        <div class="row d-flex justify-content-center">
-            <div class="col text-center mx-5">
-                    <button type="submit" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#Book" id="bookbtn">Book Now</button>
-                    <h6 class="mt-3 mb-5">*pemesanan >20 orang booking melalui WA</h6>
+        <div class="row">
+            <div class="col-3" style="margin-left: 115px;"></div>
+            <div class="col ms-5">
+                <?php
+                if(url()->current() == url("/wisata")){
+                ?>
+                <form action="{{ route('wisata')}} " method="post">
+                    @csrf
+                    <button type="submit" class="btn btn-light ms-5">Book Now</button>
+                </form>
+                <?php
+                }
+                else{
+                ?>
+                <button type="submit" class="btn btn-light ms-5" data-bs-toggle="modal" data-bs-target="#Book" id="bookbtn">Book Now</button>
+                <?php    
+                }
+                ?>
+                <h6 class="mt-3 mb-4 text-dark" style="margin-left: -70px;">*pemesanan >20 orang booking melalui WA</h6>
             </div>
         </div>
-
     </div>
 
-{{-- P tolong sambungin D: --}}
-{{--
     <div class="modal fade" id="Book" data-bs-backdrop="static" data-bs-keyboard="false" tabindex="-1" aria-labelledby="bookPop" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
             <div class="modal-content p-3">
@@ -134,7 +146,7 @@
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body pb-1">
-                    <form action="tambahPesanan.php" method="post" id="booking" enctype="multipart/form-data">
+                    <form action="" method="post" id="booking" enctype="multipart/form-data">
                         <div class="row">
                             <div class="row">
                                 <h5><b>Pilih jadwal</b></h5>
@@ -155,12 +167,12 @@
                                 <div class="col-6 text-center">
                                     <select id="pilihOlahan" name="pilihOlahan" required>
                                         <option selected disabled>Pilih Olahan</option>
-                                        <?php
+                                        {{-- <?php
                                             $stmt = $pdo->query("SELECT * FROM olahan");
                                             while($data = $stmt->fetch()) {
                                                 echo '<option value="' . $data['nama'] . '">' . $data['nama'] . '</option>';
                                             }
-                                        ?>
+                                        ?> --}}
                                     </select>
                                 </div>
                             </div>
@@ -223,9 +235,7 @@
                 </div>
             </div>
         </div>
-    </div> --}}
-
-
+    </div>
 @endsection
 @push('script')
     <script>
@@ -277,37 +287,25 @@
             });
         });
 
-
-
-
-
-
-
-
-
-
-
-
-
-        // function updateHarga() {
-        //     var jum = parseInt(document.getElementById("orang").value)
-        //     if(jum > 9 && jum < 21) {
-        //         const options = {
-        //             style: 'decimal',
-        //             currency: 'IDR',
-        //             minimumFractionDigits: 2,
-        //             maximumFractionDigits: 2,
-        //         }
-        //         document.getElementById("warning").innerHTML = ""
-        //         document.getElementById("harga").innerHTML = new Intl.NumberFormat('id-ID', options).format((jum * 20000))
-        //         // document.getElementById("harga").innerHTML = (jum * 20000)
-        //         // document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
-        //     } else {
-        //         if(!isNaN(jum))
-        //             document.getElementById("warning").innerHTML = '<div class="alert alert-danger mt-1" role="alert"><h6 class="my-auto">Jumlah orang harus 10-20 orang</h6></div>'
-        //         document.getElementById("harga").innerHTML = "0"
-        //     }
-        // };
+        function updateHarga() {
+            var jum = parseInt(document.getElementById("orang").value)
+            if(jum > 9 && jum < 21) {
+                const options = {
+                    style: 'decimal',
+                    currency: 'IDR',
+                    minimumFractionDigits: 2,
+                    maximumFractionDigits: 2,
+                }
+                document.getElementById("warning").innerHTML = ""
+                document.getElementById("harga").innerHTML = new Intl.NumberFormat('id-ID', options).format((jum * 20000))
+                // document.getElementById("harga").innerHTML = (jum * 20000)
+                // document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
+            } else {
+                if(!isNaN(jum))
+                    document.getElementById("warning").innerHTML = '<div class="alert alert-danger mt-1" role="alert"><h6 class="my-auto">Jumlah orang harus 10-20 orang</h6></div>'
+                document.getElementById("harga").innerHTML = "0"
+            }
+        };
         function updateCalendar(act) {
             const month = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
             var idx = month.indexOf($("#bulan").html()), tahun = parseInt($("#tahun").html()), bulan;
