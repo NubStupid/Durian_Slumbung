@@ -85,23 +85,40 @@
         </div>
     </div>
 
+    <div class="container-md p-4">
+        <div class="text-center fs-1 fw-bold my-4">
+            Produk Olahan Durian
+        </div>
+        <div class="row row-cols-3">
+            @foreach ($olahan as $o)
+                <div class="col pb-4">
+                    <div class="card h-100">
+                        <img class="card-img-top" src="{{asset('assets/wisata/olahan/' . $o->img)}}" alt="{{$o->name}}" style="height: 250px; object-fit: cover;">
+                        <div class="card-body text-center">
+                            <h5 class="card-title">{{$o->name}}</h5>
+                            <p class="card-text">{{$o->description}}</p>
+                        </div>
+                    </div>
+                </div>
+            @endforeach
+        </div>
+    </div>
+
     <div class="container-fluid kalender">
-        <div class="row">
+        <div class="row d-flex justify-content-center">
             <h3 class="text-center pt-4 text-dark fw-bolder" style="margin-bottom: 20px; margin-top: 20px;">Ingin memesan? Silakan mengecek sesi yang tersedia!</h3>
-            <div class="col-3"></div>
-            <div class="col-6 mx-5 my-3 d-flex justify-content-center" style="margin-left: 200px;">
-                <div class="col-6" id="kalender">
+            <div class="col-6 mx-5 d-flex justify-content-center">
+                <div class="col d-flex justify-content-end" id="kalender">
                     @include('kalender')
                 </div>
                 <div class="col" id="sesiWisata">
                 </div>
             </div>
         </div>
-        <div class="row">
-            <div class="col-3" style="margin-left: 115px;"></div>
-            <div class="col ms-5">
-                <button type="submit" class="btn btn-light ms-5" data-bs-toggle="modal" data-bs-target="#Book" id="bookbtn">Book Now</button>
-                <h6 class="mt-3 mb-4 text-dark" style="margin-left: -70px;">*pemesanan >20 orang booking melalui WA</h6>
+        <div class="row d-flex justify-content-center">
+            <div class="col text-center mx-5">
+                    <button type="submit" class="btn btn-light" data-bs-toggle="modal" data-bs-target="#Book" id="bookbtn">Book Now</button>
+                    <h6 class="mt-3 mb-5">*pemesanan >20 orang booking melalui WA</h6>
             </div>
         </div>
 
@@ -207,15 +224,6 @@
             </div>
         </div>
     </div> --}}
-
-
-
-
-
-
-
-
-
 
 
 @endsection
