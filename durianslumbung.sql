@@ -62,8 +62,7 @@ create table d_trans(
     qty int(5),
     total decimal(10,2) not null,
     h_trans_id varchar(5) references h_trans(h_trans_id),
-    product_id varchar(5) references product(product_id),
-    wisata_id varchar(5) references wisata(wisata_id)
+    product_id varchar(5) references product(product_id)
 );
 
 create table admin(
@@ -85,7 +84,8 @@ create table wisata(
     hari int(1),
     sesi int(1),
     jam varchar(15),
-    qty int(5)
+    qty int(5),
+    price int(10)
 );
 
 create table booked_wisata (
@@ -101,7 +101,7 @@ create table booked_wisata (
 
 create table cart(
     cart_id varchar(5) primary key,
-    product_id varchar(5) references product(product_id),
+    product_id varchar(5),
     price int,
     qty int(5),
     username varchar(50) references user(username)

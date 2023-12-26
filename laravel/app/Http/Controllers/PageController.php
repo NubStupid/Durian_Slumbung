@@ -267,6 +267,7 @@ class PageController extends Controller
         else{
             return view('wisata',[
                 'user' => $user,
+                'olahan' => $olahan,
                 'ctr' => $ctr,
                 'thn' => date("Y"),
                 'bln' => $bulan[date("m")-1],
@@ -280,6 +281,8 @@ class PageController extends Controller
     public function loadWisataViewLogin(){
         $user = request()->attributes->get('user');
         date_default_timezone_set('Asia/Jakarta');
+
+        $olahan = Olahan::all();
 
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
@@ -307,6 +310,8 @@ class PageController extends Controller
     public function loadWisataViewLoggedIn(Request $req){
         $user = request()->attributes->get('user');
         date_default_timezone_set('Asia/Jakarta');
+
+        $olahan = Olahan::all();
 
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
