@@ -67,6 +67,9 @@ Route::get('/register', function () {
         Route::post('/testUbah/{id}',[UserController::class,"ubah"]);
         Route::middleware('role:A')->group(function(){
             Route::get('/adminhomepage',[AdminController::class,"dashboard"]);
+            Route::get('/adminproduct',[AdminController::class,"adminProduct"]);
+            Route::post('/adminproductView',[AdminController::class,"viewProduct"]);
+            Route::post('/searchadminproduct',[AdminController::class,"searchProduct"]);
         });
         Route::middleware('role:M')->group(function(){
             Route::get('/masterhomepage',[AdminController::class,"dashboard"]);
