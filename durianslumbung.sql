@@ -72,12 +72,27 @@ create table admin(
     role varchar(1)
 );
 
+create table olahan(
+    olahan_id varchar(5) primary key,
+    name varchar(50),
+    description varchar(750),
+    img varchar(100)
+);
+
 create table wisata(
     wisata_id varchar(5) primary key,
-    tgl_dipesan date,
+    olahan_id varchar(5) references olahan(olahan_id),
+    hari int(1),
     sesi int(1),
-    qty_orang int(5),
-    username varchar(50) references user(username)
+    jam varchar(15),
+    qty int(5)
+);
+
+create table booked_wisata (
+    wisata_id varchar(5) references wisata(wisata_id),
+    tgl_dipesan date,
+    qty int(5),
+    primary key(wisata_id, tgl_dipesan)
 );
 
 -- create table ads(
@@ -211,19 +226,44 @@ VALUES
     ('admin02', 'adminpass02', 'A'),
     ('mulyono', '123', 'M');
 
--- Insert dummy data for the wisata table
-INSERT INTO wisata (wisata_id, tgl_dipesan, sesi, qty_orang, username)
+-- Insert dummy data for the olahan table
+INSERT INTO olahan (olahan_id, name, description, img)
 VALUES
-    ('W0001', '2023-12-01', 1, 5, 'user01'),
-    ('W0002', '2023-12-02', 2, 8, 'user03'),
-    ('W0003', '2023-12-03', 1, 3, 'user02'),
-    ('W0004', '2023-12-04', 2, 6, 'user02'),
-    ('W0005', '2023-12-05', 1, 4, 'user01'),
-    ('W0006', '2023-12-06', 2, 10, 'user03'),
-    ('W0007', '2023-12-07', 1, 7, 'user03'),
-    ('W0008', '2023-12-08', 2, 12, 'user05'),
-    ('W0009', '2023-12-09', 1, 9, 'user07'),
-    ('W0010', '2023-12-10', 2, 15, 'user09');
+    ('O0001', 'Dodol Durian', 'Dodol durian adalah varian dodol yang menggabungkan kelembutan dan kekenyalan dodol dengan cita rasa khas buah durian. Dodol durian menjadi pilihan sempurna bagi para penggemar durian yang ingin menikmati kelezatan buah "raja buah" ini dalam bentuk kudapan tradisional yang tahan lama dan ideal untuk berbagai perayaan dan momen istimewa.', 'Dodol_Durian.jpg'),
+    ('O0002', 'Kolak Durian', 'Kolak durian adalah hidangan tradisional Indonesia yang memadukan potongan durian dengan kuah gula kelapa, pisang, ubi, dan biji salak. Hidangan ini menghadirkan harmoni antara kekayaan rasa durian yang khas dengan manis lembut dari kuah gula kelapa. Kolak durian sering disajikan dalam berbagai acara dan perayaan, menciptakan pengalaman kuliner yang memuaskan bagi pencinta durian.', 'Kolak_Durian.jpg'),
+    ('O0003', 'Ketan Durian', 'Ketan durian adalah hidangan lezat yang memadukan kelembutan ketan dengan cita rasa khas dan aroma harum durian. Sajian ini terdiri dari ketan yang dimasak dengan santan, disajikan bersama potongan durian lezat, menciptakan pengalaman mengunyah yang nikmat dan populer di berbagai acara.', 'Ketan_Durian.jpg'),
+    ('O0004', 'Pancake Durian', 'Pancake durian adalah sajian lezat yang menggabungkan kelembutan pancake dengan rasa khas dan aroma kuat buah durian. Dibuat dari adonan pancake yang diperkaya dengan durian segar atau puree durian, pancake ini memanjakan lidah para pencinta durian sebagai sarapan atau camilan spesial.', 'Pancake_Durian.jpg'),
+    ('O0005', 'Es Krim Durian', 'Es krim durian adalah perpaduan lezat antara kelembutan es krim dengan aroma dan cita rasa khas dari durian. Dengan tekstur lembut yang menyegarkan, es krim durian memuaskan selera pencinta durian dan menjadi pilihan ideal untuk menikmati kelezatan buah "raja buah" ini dalam hidangan penutup yang menyegarkan, terutama di musim panas.', 'EsKrim_Durian.jpg'),
+    ('O0006', 'Puding Durian', 'Puding durian adalah hidangan pencuci mulut yang menggabungkan kelembutan puding dengan kearomaan dan kelezatan buah durian. Dengan campuran susu, agar-agar, dan durian, puding ini menawarkan pengalaman lezat dan unik dengan aroma khas durian yang kuat.', 'Puding_Durian.jpg');
+
+-- Insert dummy data for the wisata table
+INSERT INTO wisata (wisata_id, olahan_id, hari, sesi, jam, qty)
+VALUES
+    ('W0001', 'O0001', 1, 1, '08.00-10.00', 20),
+    ('W0002', 'O0002', 1, 2, '11.00-13.00', 20),
+    ('W0003', 'O0003', 1, 3, '14.00-16.00', 20),
+    ('W0004', 'O0004', 2, 1, '08.00-10.00', 20),
+    ('W0005', 'O0005', 2, 2, '11.00-13.00', 20),
+    ('W0006', 'O0006', 2, 3, '14.00-16.00', 20),
+    ('W0007', 'O0001', 3, 1, '08.00-10.00', 20),
+    ('W0008', 'O0002', 3, 2, '11.00-13.00', 20),
+    ('W0009', 'O0003', 3, 3, '14.00-16.00', 20),
+    ('W0010', 'O0004', 4, 1, '08.00-10.00', 20),
+    ('W0011', 'O0005', 4, 2, '11.00-13.00', 20),
+    ('W0012', 'O0006', 4, 3, '14.00-16.00', 20),
+    ('W0013', 'O0001', 5, 1, '08.00-10.00', 20),
+    ('W0014', 'O0002', 5, 2, '11.00-13.00', 20),
+    ('W0015', 'O0003', 5, 3, '14.00-16.00', 20),
+    ('W0016', 'O0004', 6, 1, '08.00-10.00', 20),
+    ('W0017', 'O0005', 6, 2, '11.00-13.00', 20),
+    ('W0018', 'O0006', 6, 3, '14.00-16.00', 20);
+
+-- Insert dummy data for the booked_wisata table
+INSERT INTO booked_wisata (wisata_id, tgl_dipesan, qty)
+VALUES
+    ('W0001', '2024-01-01', 12),
+    ('W0005', '2024-01-09', 2),
+    ('W0006', '2024-01-09', 20);
 
 -- Insert dummy data for the cart table
 INSERT INTO cart (cart_id, product_id, price, qty, username)
