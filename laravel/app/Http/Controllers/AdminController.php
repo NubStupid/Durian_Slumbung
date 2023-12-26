@@ -9,6 +9,8 @@ use App\Models\Htrans;
 use App\Models\Dtrans;
 use App\Models\Wisata;
 use App\Models\Categories;
+use App\Models\Admin;
+use App\Models\BookedWisata;
 use Illuminate\Support\Facades\DB;
 
 class AdminController extends Controller
@@ -41,22 +43,29 @@ class AdminController extends Controller
     }
 
     public function wisataReport(){
-        $allWisata = Wisata::orderBy('tgl_dipesan','desc')->get();
-        return view('wisatareport',['wisata'=>$allWisata]);
+        $allBookedWisata = BookedWisata::orderBy('tgl_dipesan','desc')->get();
+        foreach($allBookedWisata as $a){
+            $allWisata[] = $a->Wisata;
+        }
+        return view('wisatareport',['wisata'=>$allWisata,'wisataTGL'=>$allBookedWisata]);
     }
     public function filterWisata(Request $req){
         $data = $req->all();
         $filter = $data["time"];
         if($filter == "today"){
-            $data = Wisata::whereDate('tgl_dipesan',today())->orderBy('tgl_dipesan','desc')->get();
+            $BookedData = BookedWisata::whereDate('tgl_dipesan',today())->orderBy('tgl_dipesan','desc')->get();
         }else if($filter == "this week"){
-            $data = Wisata::whereBetween('tgl_dipesan',[now()->subWeek(),now()])->orderBy('tgl_dipesan','desc')->get();
+            $BookedData = BookedWisata::whereBetween('tgl_dipesan',[now()->subWeek(),now()])->orderBy('tgl_dipesan','desc')->get();
         }else if($filter == "this month"){
-            $data = Wisata::whereMonth('tgl_dipesan',now()->month)->whereYear('tgl_dipesan',now()->year)->orderBy('tgl_dipesan','desc')->get();
+            $BookedData= BookedWisata::whereMonth('tgl_dipesan',now()->month)->whereYear('tgl_dipesan',now()->year)->orderBy('tgl_dipesan','desc')->get();
         }else{
-            $data = Wisata::orderBy('tgl_dipesan','desc')->orderBy('tgl_dipesan','desc')->get();
+            $BookedData= BookedWisata::orderBy('tgl_dipesan','desc')->orderBy('tgl_dipesan','desc')->get();
         }
-        $view = view('wisatareportCard',['wisata'=>$data]);
+        $dataW = [];
+        foreach($BookedData as $a){
+            $dataW[] = $a->Wisata;
+        }
+        $view = view('wisatareportCard',['wisata'=>$dataW,'wisataTGL'=>$BookedData]);
         return $view;
     }
 
@@ -80,6 +89,27 @@ class AdminController extends Controller
         $filter = $data["name"];
         $filtered = Products::where('name','like','%'.$filter.'%')->get();
         $view = view('adminproductCard',['products'=>$filtered]);
+        return $view;
+    }
+
+    public function masterAdmin(){
+        $allAdmin = Admin::where('role','=','A')->get();
+        return view('masterAdmin',['admins'=>$allAdmin]);
+    }
+
+    public function searchAdmin(Request $req){
+        $data = $req->all();
+        $filter = $data["name"];
+        $filtered = Admin::where('username','like','%'.$filter.'%')->where('role','=','A')->get();
+        $view = view('masterAdminCard',['admins'=>$filtered]);
+        return $view;
+    }
+
+    public function viewAdmin(Request $req){
+        $data = $req->all();
+        $a_id = $data["a_id"];
+        $viewed = Admin::where('username',$a_id)->where('role','=','A')->first();
+        $view = view('masterAdminView',['a' => $viewed]);
         return $view;
     }
 }
