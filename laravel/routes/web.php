@@ -88,25 +88,28 @@ Route::get('/register', function () {
         });
         Route::get('/product',[PageController::class,'loadProductsView']) ;
         Route::post('/product',[PageController::class, "searchProduct"]);
+        
+        Route::get('/wisata',[PageController::class,'loadWisataView']);
 
         Route::get('/about', [PageController::class, "loadAboutView"]);
-
-        Route::get('/wisata',[PageController::class,'loadWisataView']);
+        
         // AJAX page wisata
         Route::post('/kalender',[PageController::class,'loadKalender']);
         Route::post('/sesi',[PageController::class,'loadSesi']);
-
+        
         Route::get('/checkout',[TransactionController::class,'checkout']);
         Route::post('/checkout', [TransactionController::class, 'pay']);
-
+        
         Route::get('/payment-success', function(){
             return view('payment-success');
         });
-
+        
         Route::get('/invoice/{id}', [TransactionController::class, 'invoice']);
-
+        
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
+        Route::get('/wisata/wisata',[PageController::class,'loadWisataViewLogin'])->name('wisata');
+        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn'])->name('wisata');
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
         Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
         Route::get('/cart',[PageController::class,"viewCart"]);

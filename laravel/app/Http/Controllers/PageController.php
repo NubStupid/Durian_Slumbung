@@ -255,6 +255,37 @@ class PageController extends Controller
         $prevMonth = date("d", $prevMonth);
         $ctr = array_search($day, $days);
 
+        if($user != ""){
+            return redirect('/wisata/wisata');
+        }
+        else{
+            return view('wisata',[
+                'user' => $user,
+                'ctr' => $ctr,
+                'thn' => date("Y"),
+                'bln' => $bulan[date("m")-1],
+                'lastDay' => $lastDay,
+                'prevMonth' => $prevMonth,
+                'selisih' => 0
+            ]);
+        }
+    }
+
+    public function loadWisataViewLogin(){
+        $user = request()->attributes->get('user');
+        date_default_timezone_set('Asia/Jakarta');
+
+        $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+        $day = date('D', strtotime(date('Y-m-01')));
+
+        $lastDay = strtotime("Last day of " . date("M") . " " . date("Y"));
+        $lastDay = date("d", $lastDay);
+        $prevMonth = strtotime("Last day of " . date("M") . " " . date("Y") . " previous month");
+        $prevMonth = date("d", $prevMonth);
+        $ctr = array_search($day, $days);
+
         return view('wisata',[
             'user' => $user,
             'ctr' => $ctr,
@@ -265,6 +296,33 @@ class PageController extends Controller
             'selisih' => 0
         ]);
     }
+
+    public function loadWisataViewLoggedIn(Request $req){
+        $user = request()->attributes->get('user');
+        date_default_timezone_set('Asia/Jakarta');
+
+        $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+        $day = date('D', strtotime(date('Y-m-01')));
+
+        $lastDay = strtotime("Last day of " . date("M") . " " . date("Y"));
+        $lastDay = date("d", $lastDay);
+        $prevMonth = strtotime("Last day of " . date("M") . " " . date("Y") . " previous month");
+        $prevMonth = date("d", $prevMonth);
+        $ctr = array_search($day, $days);
+
+        return view('wisata',[
+            'user' => $user,
+            'ctr' => $ctr,
+            'thn' => date("Y"),
+            'bln' => $bulan[date("m")-1],
+            'lastDay' => $lastDay,
+            'prevMonth' => $prevMonth,
+            'selisih' => 0
+        ]);
+    }
+    
     public function loadKalender(Request $req){
         try {
             $data = $req->all();
