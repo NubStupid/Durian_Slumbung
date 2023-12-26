@@ -33,9 +33,9 @@
                         @if($data->product_id == $cekdata->product_id)
                             <?php $qtyproduk = $cekdata->qty; ?>
                             <?php $maksqty = $data->max_quantity; ?>
-                            <?php 
+                            <?php
                                 $totalqty += $cekdata->qty;
-                                $total += $cekdata->qty*ceil($cekdata->price); 
+                                $total += $cekdata->qty*ceil($cekdata->price);
                             ?>
                             <input type="hidden" class="maxQty_{{$cekdata->product_id}}" value="{{$maksqty}}">
                             <div class="mx-5 row row-cols-1 my-5" style="background-color:var(--bg-blue-dark);">
@@ -92,7 +92,7 @@
                     <hr>
                     <span class="fw-bold fs-3" id="totalHargaDisplay"></span>
                     <div class="mt-3 d-grid">
-                        <button class="btn btn-success text-center fw-bold px-5 py-1 mb-3 ">Beli (<span id="totalQtyButtonDisplay"></span>)</button>
+                        <a class="btn btn-success text-center fw-bold px-5 py-1 mb-3" href="/checkout">Beli (<span id="totalQtyButtonDisplay"></span>)</a>
                     </div>
                 </div>
             </div>
@@ -143,7 +143,7 @@
 
                 var product_id = $(this).data('product-id');
                 var maksqty = $('.maxQty_' + product_id).val();
-                
+
                 if(value < maksqty){
                     value++;
                     $input.val(value);
@@ -156,8 +156,8 @@
 
                 if (!/^-?\d*\.?\d+$/.test(value)) {
                     value = value.replace(/[^\d-]/g, '');
-                } 
-                
+                }
+
                 var countMinus = (value.match(/-/g) || []).length;
                 if (countMinus > 1 || (countMinus === 1 && value.indexOf('-') !== 0)) {
                     value = value.replace(/-/g, '');
@@ -172,14 +172,14 @@
                 $input.val(value);
             });
         });
-        
+
         // Button hapus item cart
         $('.deleteCartItem').on('click', function(e) {
             e.preventDefault();
             var cartId = $(this).data('cart-id');
             var $rowToDelete = $(this).closest('.row');
             $.ajax({
-                url: '/delete-cart-item/' + cartId, 
+                url: '/delete-cart-item/' + cartId,
                 type: 'DELETE',
                 headers: {
                     'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content') // Add CSRF token
