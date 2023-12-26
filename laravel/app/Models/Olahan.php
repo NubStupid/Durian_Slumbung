@@ -5,17 +5,13 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Wisata extends Model
+class Olahan extends Model
 {
     use HasFactory;
-
+    
     protected $connection = "connect_Durian";
-    protected $table = "wisata";
-    protected $primaryKey = "wisata_id";
+    protected $table = "olahan";
+    protected $primaryKey = "olahan_id";
     public $incrementing = false;
     public $timestamps = false;
-
-    public function BookedWisata(){
-        return $this->hasMany(BookedWisata::class,"wisata_id","wisata_id");
-    }
 }

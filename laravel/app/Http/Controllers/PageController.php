@@ -14,6 +14,9 @@ use App\Models\Rating;
 use App\Models\Comment;
 use App\Models\Cart;
 use App\Models\Likes;
+use App\Models\Olahan;
+use App\Models\BookedWisata;
+use App\Models\Wisata;
 
 class PageController extends Controller
 {
@@ -151,7 +154,7 @@ class PageController extends Controller
                 $comments[$i]["img_like"] = "assets/detail/liked.png";
             }
             $totalLiked = Likes::where('comment_id',$comment["comment_id"])->get()->count();
-            $comments[$i]["likes"] = $totalLiked;   
+            $comments[$i]["likes"] = $totalLiked;
         }
 
         return $comments;
@@ -242,6 +245,9 @@ class PageController extends Controller
     // Wisata
     public function loadWisataView(){
         $user = request()->attributes->get('user');
+
+        $olahan = Olahan::all();
+
         date_default_timezone_set('Asia/Jakarta');
 
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -288,6 +294,7 @@ class PageController extends Controller
 
         return view('wisata',[
             'user' => $user,
+            'olahan' => $olahan,
             'ctr' => $ctr,
             'thn' => date("Y"),
             'bln' => $bulan[date("m")-1],
@@ -360,6 +367,31 @@ class PageController extends Controller
     }
     public function loadSesi(Request $req){
         try {
+            $days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            $day = array_search(date('D', strtotime("{$req->tgl}")), $days) + 1;
+            $wisata = Wisata::where('hari', $day)->get();
+            $sesi = [];
+            foreach($wisata as $w)
+            {
+                $qty = $w->qty;
+                $pesan = BookedWisata::where('tgl_dipesan', $req->tgl)->where('wisata_id', $w->wisata_id)->first();
+                if($pesan != null)
+                    $qty -= $pesan->qty;
+                $s = [
+                    "wisata_id" => $w->wisata_id,
+                    "olahan" => Olahan::find($w->olahan_id)->name,
+                    "sisa_qty" => $qty,
+                ];
+                $sesi[] = $s;
+                // dump($s);
+                // dump($w);
+            }
+            // $sesi = BookedWisata::where('tgl_dipesan', $req->tgl)->get();
+            // foreach($sesi as $s)
+            // {
+            //     // dump($s);
+            //     dump($s->Wisata);
+            // }
             // $data = $req->all();
 
             // $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
@@ -380,9 +412,13 @@ class PageController extends Controller
             //     'lastDay' => $lastDay,
             //     'prevMonth' => $prevMonth
             // ]);
-
+            // dd($day);
+            // dd($sesi);
+            // dd($sesi->Wisata);
+            // dd($sesi->Wisata());
             return view('sesiWisata', [
-                'tgl' => $req->tgl
+                'tgl' => $req->tgl,
+                'sesi' => $sesi
             ]);
             return $req->tgl;
             return "masuk show sesi";
