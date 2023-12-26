@@ -70,18 +70,25 @@
                     <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width:1.5vw; max-height:auto;">
                 </a>
                 {{-- Logo --}}
-                <a href="#" class="bg-gray-light user-logo" id="dropdownBtn" style="border-radius: 50%">
-                    <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width: 3vw; max-height: auto; border-radius: 50%">
-                </a>
+                <div class="dropdown">
+                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
+                        <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width: 3vw; max-height: auto; border-radius: 50%">
+                    </button>
+                    <ul class="dropdown-menu" style="">
+                      <li><a class="dropdown-item" href="#">Action</a></li>
+                      <li><a class="dropdown-item" href="#">Another action</a></li>
+                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    </ul>
+                </div>
             @endif
 
         </div>
         </div>
     </nav>
-    
-    <div class="dropdown-content" id="dropdownContent" style="margin-left: 1420px;">
+{{--     
+    <div class="dropdown-content" id="dropdownContent" style="position: absolute">
         <a href="{{url('/logout')}}" class="btn btn-danger" style="text-decoration: none;">Logout</a>
-    </div>
+    </div> --}}
 
 {{-- Content --}}
 @yield('content')
