@@ -45,7 +45,7 @@
                 <source src="{{asset('assets/wisata/Pembuatan Olahan Durian.mp4')}}" type="video/mp4" class="video">
             </video>
             <div class="position-absolute start-50 top-50 translate-middle text-white">
-                <h1 style="font-size: 58px;" data-aos="fade-down" data-aos-duration="2000" data-aos-once="true" data-aos-offset="-150"><b>Dapur Durian</b></h1>
+                <h1 style="font-size: 58px; margin-top: 150px;" data-aos="fade-down" data-aos-duration="2000" data-aos-once="true" data-aos-offset="-150"><b>Dapur Durian</b></h1>
                 <h3 class="text-center" data-aos="fade-down" data-aos-duration="2000" data-aos-once="true" data-aos-offset="-150" style=""><b>Wisata Pengelolahan Durian</b></h3>
             </div>
         </div>
@@ -133,7 +133,7 @@
                 <?php    
                 }
                 ?>
-                <h6 class="mt-3 mb-4 text-dark" style="margin-left: -70px;">*pemesanan >20 orang booking melalui WA</h6>
+                <div class="mt-4"></div>
             </div>
         </div>
     </div>
@@ -147,32 +147,34 @@
                 </div>
                 <div class="modal-body pb-1">
                     <form action="" method="post" id="booking" enctype="multipart/form-data">
+                        @csrf
                         <div class="row">
                             <div class="row">
                                 <h5><b>Pilih jadwal</b></h5>
                             </div>
-                            <?php
-                                    $t = strtotime("+2 days");
-                                    $t = date("Y-m-d", $t);
-                                ?>
+                            @php
+                                $t = strtotime("+2 days");
+                                $t = date("Y-m-d", $t);
+
+                                $ts = strtotime("+2 months");
+                                $ts = date("Y-m-d", $ts);
+                            @endphp
                             <div class="row">
-                                <input type="date" class="my-2 mx-2" name="jadwal" id="pilihTanggal" onchange=pilihTgl() min='<?=$t?>' required>
+                                <input type="date" class="my-2 mx-2" name="jadwal" id="pilihTanggal" onchange=pilihTgl() min='{{$t}}' max="{{$ts}}" required>
                             </div>
                             <div class="row justify-content-evenly mt-2">
                                 <div class="col-6 text-center">
                                     <select id="pilihSesi" name="pilihSesi" required>
-                                        <option selected disabled>Pilih sesi</option>
+                                        <option value="1">Sesi 1</option>
+                                        <option value="2">Sesi 2</option>
+                                        <option value="3">Sesi 3</option>
                                     </select>
                                 </div>
                                 <div class="col-6 text-center">
                                     <select id="pilihOlahan" name="pilihOlahan" required>
-                                        <option selected disabled>Pilih Olahan</option>
-                                        {{-- <?php
-                                            $stmt = $pdo->query("SELECT * FROM olahan");
-                                            while($data = $stmt->fetch()) {
-                                                echo '<option value="' . $data['nama'] . '">' . $data['nama'] . '</option>';
-                                            }
-                                        ?> --}}
+                                        @foreach($olahan as $o)
+                                        <option selected disabled value="{{$o->olahan_id}}">{{$o->name}}</option>
+                                        @endforeach
                                     </select>
                                 </div>
                             </div>
@@ -194,7 +196,7 @@
                                     <label for="orang"><h6>Jumlah Orang</h6></label>
                                     <div class="row">
                                         <div class="col-6">
-                                            <input class="w-100 border border-2 border-dark rounded" type="number" name="orang" id="orang" required="" min=10 max=20 onkeyup=updateHarga()>
+                                            <input class="w-100 border border-2 border-dark rounded" type="number" name="orang" id="orang" required="" min=10 max=20 oninput="updateHarga()">
                                         </div>
                                         <div class="col-4">
                                             <h6 class="pt-1">x Rp20.000,00</h6>
@@ -210,6 +212,7 @@
                                 <div class="col" id="warning"></div>
                             </div>
                             <div class="row">
+                                <div class="" style="margin-top: 10px"></div>
                                 <div class="col-6">
                                     <h6>Total harga: </h6>
                                 </div>
@@ -218,16 +221,9 @@
                                 </div> -->
                                 <div class="col-6"><h6>Rp<span id="harga">0</span></h6></div>
                             </div>
-                            <div class="row my-2">
-                                <div class="col">
-                                    <h6 class="mt-4"><b>Upload bukti pembayaran</b></h6>
-                                    <input type="file" id="imgTrf" name="imgTrf" accept="image/*">
-                                    <!-- <div class="col" id="warningGambar"></div> -->
-                                </div>
-                            </div>
                             <div class="row mt-2">
                             <div class="col">
-                                <button type="submit" class="btn btn-primary w-100"><h6 class="m-0 p-1">Submit</h6></button>
+                                <button type="submit" class="btn btn-primary w-100"><h6 class="m-0 p-1">Add To Cart</h6></button>
                             </div>
                         </div>
                         </div>
@@ -236,10 +232,28 @@
             </div>
         </div>
     </div>
+    
+    @if(session('showPopup'))
+    <div class="modal fade" id="popup" tabindex="-1" aria-labelledby="popup" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{asset('assets/misc/berhasiladdtocart.gif')}}" class="my-2" alt="" width="max-content" height="110px">
+              <h5 class="py-2">Berhasil Menambah ke keranjang!</h5>
+              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="ok">Oke!</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    @endif
 @endsection
 @push('script')
     <script>
        $(document).ready(function () {
+            showModal();
+            function showModal() {
+                $('#popup').modal('show');
+            }
             $(window).scroll(function () {
                 var targetElement = $("#targetElement");
                 var scrollPosition = $(window).scrollTop();
@@ -395,12 +409,12 @@
                 $('#sesiWisata').html(response);
             })
         };
+
         // function pilihTgl() {
-        //     // console.log('Function called!');
-        //     // console.log("masuk")
-        //     // console.log()
+        //     console.log('Function called!');
         //     var tgl = document.getElementById("pilihTanggal").value;
         //     var xhr = new XMLHttpRequest();
+        //     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
         //     xhr.onreadystatechange = function() {
         //         if(xhr.readyState == 4 && xhr.status == 200) {
         //             // console.log(tgl);
@@ -410,17 +424,8 @@
         //     }
         //     xhr.open('GET', "pilihSesi.php?tgl='" + tgl + "'", true);
         //     xhr.send();
-        //     // console.log(document.getElementById("pilihTanggal").value)
-        //     // var jum = parseInt(document.getElementById("orang").value)
-        //     // if(jum > 9 && jum < 21) {
-        //     //     document.getElementById("warning").innerHTML = ""
-        //     //     document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
-        //     // } else {
-        //     //     if(!isNaN(jum))
-        //     //         document.getElementById("warning").innerHTML = '<div class="alert alert-danger" role="alert"><h6>Jumlah orang harus 10-20 orang</h6></div>'
-        //     //     document.getElementById("harga").innerHTML = "<h6>0</h6>"
-        //     // }
         // };
+
         // function cek() {
             // console.log('Function called!');
             // console.log("masuk")
