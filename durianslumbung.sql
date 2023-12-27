@@ -52,9 +52,11 @@ create table h_trans(
     invoice_number varchar(20) not null,
     total decimal(10,2) not null,
     username varchar(50) references user(username),
+    payment_url varchar(100),
     created_at timestamp default current_timestamp,
-    updated_at timestamp default current_timestamp,
-    status varchar(10) not null
+    updated_at timestamp,
+    status varchar(10) not null,
+    payment_method varchar(20)
 );
 
 create table d_trans(
@@ -62,7 +64,8 @@ create table d_trans(
     qty int(5),
     total decimal(10,2) not null,
     h_trans_id varchar(5) references h_trans(h_trans_id),
-    product_id varchar(5) references product(product_id)
+    product_id varchar(5) references product(product_id),
+    pengambilan date
 );
 
 create table admin(
@@ -104,6 +107,7 @@ create table cart(
     product_id varchar(5),
     price int,
     qty int(5),
+    tgl_pesan date,
     username varchar(50) references user(username)
 );
 

@@ -16,6 +16,6 @@ class Transaction extends Model
     public $timestamps = true;
 
     protected $fillable = [
-        'h_trans_id','invoice_number','total', 'username', 'status'
+        'h_trans_id','invoice_number','total', 'username', 'status', 'payment_method', 'payment_url'
     ];
 }

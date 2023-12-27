@@ -21,7 +21,10 @@ class AdminController extends Controller
             // dd($trans->dtrans->products);
             $dt = $trans->dtrans;
             foreach ($dt as $i => $d) {
-                $toAdd['product'] = $d->product;
+                if($d->product)
+                    $toAdd['product'] = $d->product;
+                else
+                    $toAdd['product'] = $d->wisata->Olahan;
                 $toAdd['qty'] = $d->qty;
                 $pinfo[] = $toAdd;
             }

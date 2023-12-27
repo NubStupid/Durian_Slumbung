@@ -17,6 +17,7 @@ use App\Models\Likes;
 use App\Models\Olahan;
 use App\Models\BookedWisata;
 use App\Models\Wisata;
+use App\Models\Htrans;
 
 class PageController extends Controller
 {
@@ -242,6 +243,17 @@ class PageController extends Controller
         }
     }
 
+    public function viewHistory(){
+        $cekuser = Session('username');
+        $listhistory = Htrans::where('username', $cekuser)->orderby("created_at","desc")->get();
+        $user = request()->attributes->get('user');
+        // $listproduct = Products::all();
+        return view('history',[
+            "listhistory"=>$listhistory,
+            "user" => $user
+        ]);
+    }
+
     // Wisata
     public function loadWisataView(){
         $user = request()->attributes->get('user');
@@ -334,7 +346,7 @@ class PageController extends Controller
             'selisih' => 0
         ]);
     }
-    
+
     public function loadKalender(Request $req){
         try {
             $data = $req->all();
