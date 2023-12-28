@@ -131,7 +131,7 @@
                         if($d->product_id[0] == 'P')
                             echo $d->Product->name;
                         else
-                            echo $d->Wisata->tgl_dipesan;
+                            echo $d->Wisata->Olahan->name;
                     @endphp
                 </td>
                 <td>{{$d['qty']}}</td>
@@ -140,7 +140,7 @@
                         if($d->product_id[0] == 'P')
                             echo $d->Product->price;
                         else
-                            echo $d->Wisata->tgl_dipesan;
+                            echo $d->Wisata->price;
                     @endphp
                 </td>
                 <td>Rp{{number_format($d['total'],0,",",".")}}</td>

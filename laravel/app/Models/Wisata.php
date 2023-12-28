@@ -15,7 +15,7 @@ class Wisata extends Model
     public $incrementing = false;
     public $timestamps = false;
 
-    public function BookedWisata(){
-        return $this->hasMany(BookedWisata::class,"wisata_id","wisata_id");
+    public function Olahan(){
+        return $this->hasOne(Olahan::class,"olahan_id","olahan_id");
     }
 }
