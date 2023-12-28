@@ -76,6 +76,9 @@ Route::get('/register', function () {
             Route::get('/productsreport',[AdminController::class,'productReport']);
             Route::get('/wisatareport',[AdminController::class,'wisataReport']);
             Route::post('/wisatareport',[AdminController::class,'filterWisata']);
+            Route::get('/masteradmin',[AdminController::class,'masterAdmin']);
+            Route::post('/searchAdmin',[AdminController::class,'searchAdmin']);
+            Route::post('/masterAdminView',[AdminController::class,'viewAdmin']);
         });
         // });
     });
