@@ -159,6 +159,7 @@ class PageController extends Controller
 
         return $comments;
     }
+    
     public function viewProduct($id){
 
         // $productViewed = DB::connection('connect_Customer')->table('products');
@@ -283,6 +284,7 @@ class PageController extends Controller
         date_default_timezone_set('Asia/Jakarta');
 
         $olahan = Olahan::all();
+        $wisata = Wisata::all();
 
         $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
 
@@ -298,6 +300,7 @@ class PageController extends Controller
         return view('wisata',[
             'user' => $user,
             'olahan' => $olahan,
+            'wisata' => $wisata,
             'ctr' => $ctr,
             'thn' => date("Y"),
             'bln' => $bulan[date("m")-1],
@@ -323,16 +326,42 @@ class PageController extends Controller
         $prevMonth = strtotime("Last day of " . date("M") . " " . date("Y") . " previous month");
         $prevMonth = date("d", $prevMonth);
         $ctr = array_search($day, $days);
+        // ------------------------------------------------------------------------
+        $cekuser = Session('username');
+        $qty = $req->orang;
+        $price = 20000 * $qty;
+        $latestCart = Cart::latest('cart_id')->first();
+        $idadd = intval(substr($latestCart->cart_id, 1))+1;
+        $newID = "C" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
 
-        return view('wisata',[
-            'user' => $user,
-            'ctr' => $ctr,
-            'thn' => date("Y"),
-            'bln' => $bulan[date("m")-1],
-            'lastDay' => $lastDay,
-            'prevMonth' => $prevMonth,
-            'selisih' => 0
-        ]);
+        $cekID = Wisata::where('hari', $req->hari)
+        ->where('sesi', $req->sesi)
+        ->first();
+
+        $wisataID = $cekID->wisata_id;
+
+        $id = "W0001";
+        $res = Cart::create(
+            [
+                "cart_id"=>$newID,
+                "product_id"=>$wisataID,
+                "price"=>$price,
+                "qty"=>$qty,
+                "username"=>$cekuser
+            ]
+        );
+        
+        return redirect()->back()->with('showPopup', 'sukses');
+        // return view('wisata',[
+        //     'user' => $user,
+        //     'olahan' => $olahan,
+        //     'ctr' => $ctr,
+        //     'thn' => date("Y"),
+        //     'bln' => $bulan[date("m")-1],
+        //     'lastDay' => $lastDay,
+        //     'prevMonth' => $prevMonth,
+        //     'selisih' => 0
+        // ]);
     }
     
     public function loadKalender(Request $req){

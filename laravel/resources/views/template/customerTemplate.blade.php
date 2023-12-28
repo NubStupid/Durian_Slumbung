@@ -84,11 +84,10 @@
 
         </div>
         </div>
+        <div class="dropdown-content" id="dropdownContent" style="margin-left: 1420px;">
+            <a href="{{url('/logout')}}" class="btn btn-danger" style="text-decoration: none;">Logout</a>
+        </div>
     </nav>
-{{--     
-    <div class="dropdown-content" id="dropdownContent" style="position: absolute">
-        <a href="{{url('/logout')}}" class="btn btn-danger" style="text-decoration: none;">Logout</a>
-    </div> --}}
 
 {{-- Content --}}
 @yield('content')

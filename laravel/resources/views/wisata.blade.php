@@ -45,7 +45,7 @@
                 <source src="{{asset('assets/wisata/Pembuatan Olahan Durian.mp4')}}" type="video/mp4" class="video">
             </video>
             <div class="position-absolute start-50 top-50 translate-middle text-white">
-                <h1 style="font-size: 58px;" data-aos="fade-down" data-aos-duration="2000" data-aos-once="true" data-aos-offset="-150"><b>Dapur Durian</b></h1>
+                <h1 style="font-size: 58px; margin-top: 150px;" data-aos="fade-down" data-aos-duration="2000" data-aos-once="true" data-aos-offset="-150"><b>Dapur Durian</b></h1>
                 <h3 class="text-center" data-aos="fade-down" data-aos-duration="2000" data-aos-once="true" data-aos-offset="-150" style=""><b>Wisata Pengelolahan Durian</b></h3>
             </div>
         </div>
@@ -133,7 +133,7 @@
                 <?php    
                 }
                 ?>
-                <h6 class="mt-3 mb-4 text-dark" style="margin-left: -70px;">*pemesanan >20 orang booking melalui WA</h6>
+                <div class="mt-4"></div>
             </div>
         </div>
     </div>
@@ -147,32 +147,32 @@
                 </div>
                 <div class="modal-body pb-1">
                     <form action="" method="post" id="booking" enctype="multipart/form-data">
+                        @csrf
                         <div class="row">
                             <div class="row">
                                 <h5><b>Pilih jadwal</b></h5>
                             </div>
-                            <?php
-                                    $t = strtotime("+2 days");
-                                    $t = date("Y-m-d", $t);
-                                ?>
+                            @php
+                                $t = strtotime("+2 days");
+                                $t = date("Y-m-d", $t);
+
+                                $ts = strtotime("+2 months");
+                                $ts = date("Y-m-d", $ts);
+                            @endphp
                             <div class="row">
-                                <input type="date" class="my-2 mx-2" name="jadwal" id="pilihTanggal" onchange=pilihTgl() min='<?=$t?>' required>
+                                <input type="date" class="my-2 mx-2" name="jadwal" id="pilihTanggal" onchange=tanggal() min='{{$t}}' max="{{$ts}}" required>
                             </div>
                             <div class="row justify-content-evenly mt-2">
                                 <div class="col-6 text-center">
-                                    <select id="pilihSesi" name="pilihSesi" required>
-                                        <option selected disabled>Pilih sesi</option>
+                                    <select id="pilihSesi" name="pilihSesi" required onchange="tanggal()">
+                                        <option value="1">Sesi 1 (08.00 - 10.00)</option>
+                                        <option value="2">Sesi 2 (11.00 - 13.00)</option>
+                                        <option value="3">Sesi 3 (14.00 - 16.00)</option>
                                     </select>
                                 </div>
                                 <div class="col-6 text-center">
                                     <select id="pilihOlahan" name="pilihOlahan" required>
-                                        <option selected disabled>Pilih Olahan</option>
-                                        {{-- <?php
-                                            $stmt = $pdo->query("SELECT * FROM olahan");
-                                            while($data = $stmt->fetch()) {
-                                                echo '<option value="' . $data['nama'] . '">' . $data['nama'] . '</option>';
-                                            }
-                                        ?> --}}
+                                        <option value="">Nama Olahan</option>
                                     </select>
                                 </div>
                             </div>
@@ -194,7 +194,7 @@
                                     <label for="orang"><h6>Jumlah Orang</h6></label>
                                     <div class="row">
                                         <div class="col-6">
-                                            <input class="w-100 border border-2 border-dark rounded" type="number" name="orang" id="orang" required="" min=10 max=20 onkeyup=updateHarga()>
+                                            <input class="w-100 border border-2 border-dark rounded" type="number" name="orang" id="orang" required="" min=10 max=20 oninput="updateHarga()">
                                         </div>
                                         <div class="col-4">
                                             <h6 class="pt-1">x Rp20.000,00</h6>
@@ -210,6 +210,7 @@
                                 <div class="col" id="warning"></div>
                             </div>
                             <div class="row">
+                                <div class="" style="margin-top: 10px"></div>
                                 <div class="col-6">
                                     <h6>Total harga: </h6>
                                 </div>
@@ -218,16 +219,12 @@
                                 </div> -->
                                 <div class="col-6"><h6>Rp<span id="harga">0</span></h6></div>
                             </div>
-                            <div class="row my-2">
-                                <div class="col">
-                                    <h6 class="mt-4"><b>Upload bukti pembayaran</b></h6>
-                                    <input type="file" id="imgTrf" name="imgTrf" accept="image/*">
-                                    <!-- <div class="col" id="warningGambar"></div> -->
-                                </div>
-                            </div>
                             <div class="row mt-2">
                             <div class="col">
-                                <button type="submit" class="btn btn-primary w-100"><h6 class="m-0 p-1">Submit</h6></button>
+                                <input type="hidden" name="olahan" id="olahan">
+                                <input type="hidden" name="sesi" id="sesi">
+                                <input type="hidden" name="hari" id="hari">
+                                <button type="submit" class="btn btn-primary w-100"><h6 class="m-0 p-1">Add To Cart</h6></button>
                             </div>
                         </div>
                         </div>
@@ -236,10 +233,28 @@
             </div>
         </div>
     </div>
+    
+    @if(session('showPopup'))
+    <div class="modal fade" id="popup" tabindex="-1" aria-labelledby="popup" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{asset('assets/misc/berhasiladdtocart.gif')}}" class="my-2" alt="" width="max-content" height="110px">
+              <h5 class="py-2">Berhasil Menambah ke keranjang!</h5>
+              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="ok">Oke!</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    @endif
 @endsection
 @push('script')
     <script>
        $(document).ready(function () {
+            showModal();
+            function showModal() {
+                $('#popup').modal('show');
+            }
             $(window).scroll(function () {
                 var targetElement = $("#targetElement");
                 var scrollPosition = $(window).scrollTop();
@@ -286,6 +301,108 @@
                 }, 100); // Adjust the duration as needed
             });
         });
+
+        // function sesi(){
+        //     // console.log("Function Called");
+        //     var selectedSesi = document.getElementById('pilihSesi').value;
+        //     console.log(selectedSesi);
+        //     var olahan = document.getElementById('pilihOlahan').value;
+        // }
+
+        function tanggal() {
+            var selectedDate = document.getElementById('pilihTanggal').value;
+            var dateObject = new Date(selectedDate);
+            var dayOfWeek = dateObject.getDay();
+            var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var dayName = dayNames[dayOfWeek];
+            // console.log(dayName);
+            var hari = 0;
+            if(dayName == 'Sunday'){
+                hari = 0;
+            }
+            else if(dayName == 'Monday'){
+                hari = 1;
+            }
+            else if(dayName == 'Tuesday'){
+                hari = 2;
+            }
+            else if(dayName == 'Wednesday'){
+                hari = 3;
+            }
+            else if(dayName == 'Thursday'){
+                hari = 4;
+            }
+            else if(dayName == 'Friday'){
+                hari = 5;
+            }
+            else if(dayName == 'Saturday'){
+                hari = 6;
+            }
+            // console.log(hari);
+
+            var optionElement1 = document.createElement('option');
+            var optionElement2 = document.createElement('option');
+            var optionElement3 = document.createElement('option');
+            var selectElement = document.getElementById('pilihOlahan');
+            selectElement.innerHTML = '';
+            var dayName = ""; // You should define dayName based on your logic
+
+            // Clear existing options
+            selectElement.innerHTML = '';
+
+            if (hari == 1 || hari == 3 || hari == 5) {
+                optionElement1.value = "O0001";
+                optionElement1.textContent = "Dodol Durian";
+                optionElement2.value = "O0002";
+                optionElement2.textContent = "Kolak Durian";
+                optionElement3.value = "O0003";
+                optionElement3.textContent = "Ketan Durian";
+                optionElement1.disabled = true;
+                optionElement2.disabled = true;
+                optionElement3.disabled = true;
+                selectElement.appendChild(optionElement1);
+                selectElement.appendChild(optionElement2);
+                selectElement.appendChild(optionElement3);
+            } 
+            else if (hari == 2 || hari == 4 || hari == 6){
+                optionElement1.value = "O0004";
+                optionElement1.textContent = "Pancake Durian";
+                optionElement2.value = "O0005";
+                optionElement2.textContent = "Es Krim Durian";
+                optionElement3.value = "O0006";
+                optionElement3.textContent = "Puding Durian";
+                optionElement1.disabled = true;
+                optionElement2.disabled = true;
+                optionElement3.disabled = true;
+                selectElement.appendChild(optionElement1);
+                selectElement.appendChild(optionElement2);
+                selectElement.appendChild(optionElement3);
+            }
+            else {
+                optionElement1.value = "";
+                optionElement1.textContent = "-";
+                optionElement1.disabled = true;
+                selectElement.appendChild(optionElement1);
+            }
+
+            var sesi = document.getElementById("pilihSesi").value;
+            var selectElement = document.getElementById('pilihOlahan');
+
+            if(sesi == 1){
+                selectElement.selectedIndex = 0; 
+            }
+            else if(sesi == 2){ 
+                selectElement.selectedIndex = 1; 
+            }
+            else if(sesi == 3){
+                selectElement.selectedIndex = 2; 
+            }
+
+            // console.log(selectElement.value + " " + sesi);
+            document.getElementById('olahan').value = selectElement;
+            document.getElementById('sesi').value = sesi;
+            document.getElementById('hari').value = hari;
+        }
 
         function updateHarga() {
             var jum = parseInt(document.getElementById("orang").value)
@@ -395,12 +512,12 @@
                 $('#sesiWisata').html(response);
             })
         };
+
         // function pilihTgl() {
-        //     // console.log('Function called!');
-        //     // console.log("masuk")
-        //     // console.log()
+        //     console.log('Function called!');
         //     var tgl = document.getElementById("pilihTanggal").value;
         //     var xhr = new XMLHttpRequest();
+        //     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
         //     xhr.onreadystatechange = function() {
         //         if(xhr.readyState == 4 && xhr.status == 200) {
         //             // console.log(tgl);
@@ -410,17 +527,8 @@
         //     }
         //     xhr.open('GET', "pilihSesi.php?tgl='" + tgl + "'", true);
         //     xhr.send();
-        //     // console.log(document.getElementById("pilihTanggal").value)
-        //     // var jum = parseInt(document.getElementById("orang").value)
-        //     // if(jum > 9 && jum < 21) {
-        //     //     document.getElementById("warning").innerHTML = ""
-        //     //     document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
-        //     // } else {
-        //     //     if(!isNaN(jum))
-        //     //         document.getElementById("warning").innerHTML = '<div class="alert alert-danger" role="alert"><h6>Jumlah orang harus 10-20 orang</h6></div>'
-        //     //     document.getElementById("harga").innerHTML = "<h6>0</h6>"
-        //     // }
         // };
+
         // function cek() {
             // console.log('Function called!');
             // console.log("masuk")
