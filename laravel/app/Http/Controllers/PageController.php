@@ -333,11 +333,18 @@ class PageController extends Controller
         $latestCart = Cart::latest('cart_id')->first();
         $idadd = intval(substr($latestCart->cart_id, 1))+1;
         $newID = "C" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
+
+        $cekID = Wisata::where('hari', $req->hari)
+        ->where('sesi', $req->sesi)
+        ->first();
+
+        $wisataID = $cekID->wisata_id;
+
         $id = "W0001";
         $res = Cart::create(
             [
                 "cart_id"=>$newID,
-                "product_id"=>$id,
+                "product_id"=>$wisataID,
                 "price"=>$price,
                 "qty"=>$qty,
                 "username"=>$cekuser

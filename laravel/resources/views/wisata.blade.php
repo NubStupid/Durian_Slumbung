@@ -160,21 +160,19 @@
                                 $ts = date("Y-m-d", $ts);
                             @endphp
                             <div class="row">
-                                <input type="date" class="my-2 mx-2" name="jadwal" id="pilihTanggal" onchange=pilihTgl() min='{{$t}}' max="{{$ts}}" required>
+                                <input type="date" class="my-2 mx-2" name="jadwal" id="pilihTanggal" onchange=tanggal() min='{{$t}}' max="{{$ts}}" required>
                             </div>
                             <div class="row justify-content-evenly mt-2">
                                 <div class="col-6 text-center">
-                                    <select id="pilihSesi" name="pilihSesi" required>
-                                        <option value="1">Sesi 1</option>
-                                        <option value="2">Sesi 2</option>
-                                        <option value="3">Sesi 3</option>
+                                    <select id="pilihSesi" name="pilihSesi" required onchange="tanggal()">
+                                        <option value="1">Sesi 1 (08.00 - 10.00)</option>
+                                        <option value="2">Sesi 2 (11.00 - 13.00)</option>
+                                        <option value="3">Sesi 3 (14.00 - 16.00)</option>
                                     </select>
                                 </div>
                                 <div class="col-6 text-center">
                                     <select id="pilihOlahan" name="pilihOlahan" required>
-                                        @foreach($olahan as $o)
-                                        <option selected disabled value="{{$o->olahan_id}}">{{$o->name}}</option>
-                                        @endforeach
+                                        <option value="">Nama Olahan</option>
                                     </select>
                                 </div>
                             </div>
@@ -223,6 +221,9 @@
                             </div>
                             <div class="row mt-2">
                             <div class="col">
+                                <input type="hidden" name="olahan" id="olahan">
+                                <input type="hidden" name="sesi" id="sesi">
+                                <input type="hidden" name="hari" id="hari">
                                 <button type="submit" class="btn btn-primary w-100"><h6 class="m-0 p-1">Add To Cart</h6></button>
                             </div>
                         </div>
@@ -300,6 +301,108 @@
                 }, 100); // Adjust the duration as needed
             });
         });
+
+        // function sesi(){
+        //     // console.log("Function Called");
+        //     var selectedSesi = document.getElementById('pilihSesi').value;
+        //     console.log(selectedSesi);
+        //     var olahan = document.getElementById('pilihOlahan').value;
+        // }
+
+        function tanggal() {
+            var selectedDate = document.getElementById('pilihTanggal').value;
+            var dateObject = new Date(selectedDate);
+            var dayOfWeek = dateObject.getDay();
+            var dayNames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+            var dayName = dayNames[dayOfWeek];
+            // console.log(dayName);
+            var hari = 0;
+            if(dayName == 'Sunday'){
+                hari = 0;
+            }
+            else if(dayName == 'Monday'){
+                hari = 1;
+            }
+            else if(dayName == 'Tuesday'){
+                hari = 2;
+            }
+            else if(dayName == 'Wednesday'){
+                hari = 3;
+            }
+            else if(dayName == 'Thursday'){
+                hari = 4;
+            }
+            else if(dayName == 'Friday'){
+                hari = 5;
+            }
+            else if(dayName == 'Saturday'){
+                hari = 6;
+            }
+            // console.log(hari);
+
+            var optionElement1 = document.createElement('option');
+            var optionElement2 = document.createElement('option');
+            var optionElement3 = document.createElement('option');
+            var selectElement = document.getElementById('pilihOlahan');
+            selectElement.innerHTML = '';
+            var dayName = ""; // You should define dayName based on your logic
+
+            // Clear existing options
+            selectElement.innerHTML = '';
+
+            if (hari == 1 || hari == 3 || hari == 5) {
+                optionElement1.value = "O0001";
+                optionElement1.textContent = "Dodol Durian";
+                optionElement2.value = "O0002";
+                optionElement2.textContent = "Kolak Durian";
+                optionElement3.value = "O0003";
+                optionElement3.textContent = "Ketan Durian";
+                optionElement1.disabled = true;
+                optionElement2.disabled = true;
+                optionElement3.disabled = true;
+                selectElement.appendChild(optionElement1);
+                selectElement.appendChild(optionElement2);
+                selectElement.appendChild(optionElement3);
+            } 
+            else if (hari == 2 || hari == 4 || hari == 6){
+                optionElement1.value = "O0004";
+                optionElement1.textContent = "Pancake Durian";
+                optionElement2.value = "O0005";
+                optionElement2.textContent = "Es Krim Durian";
+                optionElement3.value = "O0006";
+                optionElement3.textContent = "Puding Durian";
+                optionElement1.disabled = true;
+                optionElement2.disabled = true;
+                optionElement3.disabled = true;
+                selectElement.appendChild(optionElement1);
+                selectElement.appendChild(optionElement2);
+                selectElement.appendChild(optionElement3);
+            }
+            else {
+                optionElement1.value = "";
+                optionElement1.textContent = "-";
+                optionElement1.disabled = true;
+                selectElement.appendChild(optionElement1);
+            }
+
+            var sesi = document.getElementById("pilihSesi").value;
+            var selectElement = document.getElementById('pilihOlahan');
+
+            if(sesi == 1){
+                selectElement.selectedIndex = 0; 
+            }
+            else if(sesi == 2){ 
+                selectElement.selectedIndex = 1; 
+            }
+            else if(sesi == 3){
+                selectElement.selectedIndex = 2; 
+            }
+
+            // console.log(selectElement.value + " " + sesi);
+            document.getElementById('olahan').value = selectElement;
+            document.getElementById('sesi').value = sesi;
+            document.getElementById('hari').value = hari;
+        }
 
         function updateHarga() {
             var jum = parseInt(document.getElementById("orang").value)
