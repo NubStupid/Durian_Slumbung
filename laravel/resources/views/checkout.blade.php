@@ -24,6 +24,8 @@
                 setlocale(LC_ALL, 'id-ID', 'id_ID');
             @endphp
             <h4 class="me-2">Tanggal Pengambilan: {{strftime("%d %B %Y", $tgl)}}</h4>
+            {{-- <input type="date" name="" id=""> --}}
+            <input type="date" name="tgl" min="2018-01-01" max="2018-12-31">
         </div>
         <div class="container my-4 p-4 rounded" style="background-color: #F0F0F0">
             <table class="table">

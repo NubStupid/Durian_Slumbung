@@ -3,11 +3,13 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Models\Transaction;
-use App\Models\DetailTransaction;
 use Illuminate\Support\Facades\View;
 use Dompdf\Dompdf;
 use Illuminate\Support\Facades\Session;
+
+use App\Models\Cart;
+use App\Models\Transaction;
+use App\Models\DetailTransaction;
 
 class TransactionController extends Controller
 {
@@ -27,24 +29,42 @@ class TransactionController extends Controller
         // if(Session::has('checkout'))
         //     $checkout = Session::get('checkout');
         $tgl = "01-06-2023";
-        $produk[] = [
-            "product_id" => "P0001",
-            "product_name" => "Durian Kecil",
-            "product_price" => 10000,
-            "qty" => 2,
-            "subtotal" => 20000
-        ];
-        $produk[] = [
-            "product_id" => "P0002",
-            "product_name" => "Durian Sedang",
-            "product_price" => 15000,
-            "qty" => 1,
-            "subtotal" => 15000
-        ];
+        $produk = [];
         $totalProduk = [
-            "qty" => 2,
-            "harga" => 35000
+            "qty" => 0,
+            "harga" => 0
         ];
+        $cart = Cart::where('username', Session::get('username'))->get();
+        foreach($cart as $c)
+        {
+            $produk[] = [
+                "product_id" => $c->product_id,
+                "product_name" => $c->Product->name,
+                "product_price" => $c->price,
+                "qty" => $c->qty,
+                "subtotal" => $c->price * $c->qty
+            ];
+            $totalProduk["harga"] += $c->price * $c->qty;
+        }
+        $totalProduk["qty"] = count($cart);
+        // $produk[] = [
+        //     "product_id" => "P0001",
+        //     "product_name" => "Durian Kecil",
+        //     "product_price" => 10000,
+        //     "qty" => 2,
+        //     "subtotal" => 20000
+        // ];
+        // $produk[] = [
+        //     "product_id" => "P0002",
+        //     "product_name" => "Durian Sedang",
+        //     "product_price" => 15000,
+        //     "qty" => 1,
+        //     "subtotal" => 15000
+        // ];
+        // $totalProduk = [
+        //     "qty" => 2,
+        //     "harga" => 35000
+        // ];
 
         $wisata[] = [
             "wisata_id" => "W0001",
