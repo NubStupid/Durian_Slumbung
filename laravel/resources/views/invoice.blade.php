@@ -101,6 +101,9 @@
         </tr>
     </table>
     <table class="w-100">
+        @php
+            setlocale(LC_ALL, 'id-ID', 'id_ID');
+        @endphp
         <tr>
             <td class="w-50 semi-bold">BILLED TO:</td>
             <td class="text-end">{{$order['invoice_number']}}</td>
@@ -108,13 +111,18 @@
         </tr>
         <tr>
             {{-- <td class="w-50">User Yang Login</td> --}}
-            <td class="w-50">Blobo Blubu</td>
-            <td class="text-end">24 Nov 2023</td>
+            {{-- <td class="w-50">Blobo Blubu</td> --}}
+            <td class="w-50">{{Session::get('username')}}</td>
+            {{-- <td class="text-end">24 Nov 2023</td> --}}
+            <td class="text-end">{{strftime("%d %b %Y", strtotime("{$order['created_at']}"))}}</td>
+            {{-- <td class="text-end">{{strftime("%d %B %Y", strtotime("$order['created_at']"))}}</td> --}}
             {{-- <td class="text-end">DD MM YYYY</td> --}}
         </tr>
         <tr>
             {{-- <td class="w-50">No Tlp User</td> --}}
-            <td class="w-50">0812487123</td>
+            {{-- <td class="w-50">0812487123</td> --}}
+            {{-- <td class="w-50">{{dump($no_tlp)}}</td> --}}
+            <td class="w-50">{{$no_tlp}}</td>
         </tr>
     </table>
     <table class="w-100 mt">
@@ -179,7 +187,8 @@
         <tr>
             <td class="w-50"></td>
             <td>Metode Pembayaran</td>
-            <td class="text-end">VA BCA</td>
+            {{-- <td class="text-end">VA BCA</td> --}}
+            <td class="text-end">{{$order['payment_method']}}</td>
         </tr>
     </table>
 </body>

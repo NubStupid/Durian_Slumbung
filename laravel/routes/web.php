@@ -117,6 +117,7 @@ Route::get('/register', function () {
         Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
         Route::get('/cart',[PageController::class,"viewCart"]);
         Route::delete('/delete-cart-item/{id}',[PageController::class,"deleteCartItem"]);
+        Route::get('/history',[PageController::class,"viewHistory"]);
         Route::post('/product/like',[RatingController::class,"insertUpdateRating"]);
         Route::post('/product/delete',[RatingController::class,"deleteRating"]);
         Route::post('/comments', [CommentController::class, 'addComment']);
