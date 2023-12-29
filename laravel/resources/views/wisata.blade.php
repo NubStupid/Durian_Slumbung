@@ -160,41 +160,33 @@
                                 $ts = date("Y-m-d", $ts);
                             @endphp
                             <div class="row">
-                                <input type="date" class="my-2 mx-2" name="jadwal" id="pilihTanggal" onchange=tanggal() min='{{$t}}' max="{{$ts}}" required>
+                                <div class="col-12">
+                                    <input type="date" class="my-2 form-control w-100" name="jadwal" id="pilihTanggal" onchange=tanggal() min='{{$t}}' max="{{$ts}}" required>
+                                </div>
                             </div>
                             <div class="row justify-content-evenly mt-2">
                                 <div class="col-6 text-center">
-                                    <select id="pilihSesi" name="pilihSesi" required onchange="tanggal()">
-                                        <option value="1">Sesi 1 (08.00 - 10.00)</option>
-                                        <option value="2">Sesi 2 (11.00 - 13.00)</option>
-                                        <option value="3">Sesi 3 (14.00 - 16.00)</option>
+                                    <select id="pilihSesi" class="form-select" name="pilihSesi" required onchange="tanggal()">
+                                        <option value="1">Sesi 1(08.00 - 10.00)</option>
+                                        <option value="2">Sesi 2(11.00 - 13.00)</option>
+                                        <option value="3">Sesi 3(14.00 - 16.00)</option>
                                     </select>
                                 </div>
                                 <div class="col-6 text-center">
-                                    <select id="pilihOlahan" name="pilihOlahan" required>
+                                    <select id="pilihOlahan" class="form-select" name="pilihOlahan" required>
                                         <option value="">Nama Olahan</option>
                                     </select>
                                 </div>
                             </div>
                         </div>
+                        <br>
                         <div class="row">
-                            <h5 class="mt-4"><b>Data Diri</b></h5>
-                            <div class="row">
-                                <div class="col">
-                                    <label for="nama"><h6>Nama</h6></label>
-                                    <input class="w-100 border border-2 border-dark rounded" type="text" name="nama" id="nama" required=""><br>
-                                </div>
-                                <div class="col">
-                                    <label for="nowa"><h6>No. Whatsapp</h6></label>
-                                    <input class="w-100 border border-2 border-dark rounded" type="number" name="nowa" id="nowa" required=""><br>
-                                </div>
-                            </div>
                             <div class="row">
                                 <div class="col">
                                     <label for="orang"><h6>Jumlah Orang</h6></label>
                                     <div class="row">
                                         <div class="col-6">
-                                            <input class="w-100 border border-2 border-dark rounded" type="number" name="orang" id="orang" required="" min=10 max=20 oninput="updateHarga()">
+                                            <input class="w-100 rounded form-control" type="number" name="orang" id="orang" required min=1 max=20 oninput="updateHarga()">
                                         </div>
                                         <div class="col-4">
                                             <h6 class="pt-1">x Rp20.000,00</h6>
@@ -224,7 +216,7 @@
                                 <input type="hidden" name="olahan" id="olahan">
                                 <input type="hidden" name="sesi" id="sesi">
                                 <input type="hidden" name="hari" id="hari">
-                                <button type="submit" class="btn btn-primary w-100"><h6 class="m-0 p-1">Add To Cart</h6></button>
+                                <button type="submit" class="btn btn-success w-100"><h6 class="m-0 p-1">Add To Cart</h6></button>
                             </div>
                         </div>
                         </div>
@@ -406,7 +398,7 @@
 
         function updateHarga() {
             var jum = parseInt(document.getElementById("orang").value)
-            if(jum > 9 && jum < 21) {
+            if(jum > 0 && jum < 21) {
                 const options = {
                     style: 'decimal',
                     currency: 'IDR',
@@ -419,7 +411,7 @@
                 // document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
             } else {
                 if(!isNaN(jum))
-                    document.getElementById("warning").innerHTML = '<div class="alert alert-danger mt-1" role="alert"><h6 class="my-auto">Jumlah orang harus 10-20 orang</h6></div>'
+                    document.getElementById("warning").innerHTML = '<div class="alert alert-danger mt-1" role="alert"><h6 class="my-auto">Jumlah orang harus 1-20</h6></div>'
                 document.getElementById("harga").innerHTML = "0"
             }
         };
