@@ -16,7 +16,7 @@ class DetailTransaction extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'd_trans_id','qty','total', 'h_trans_id', 'product_id'
+        'd_trans_id','qty','total', 'h_trans_id', 'product_id', 'pengambilan'
     ];
 
     public function Product(){

@@ -18,7 +18,7 @@
               <a class="nav-link active" aria-current="page" href="#">Cart</a>
             </li>
             <li class="nav-item mx-3">
-              <a class="nav-link text-dark" href="#">History</a>
+              <a class="nav-link text-dark" href="/history">History</a>
             </li>
           </ul>
     </div>

@@ -17,4 +17,8 @@ class Dtrans extends Model
     public function product(){
         return $this->hasOne(Products::class,'product_id','product_id');
     }
+
+    public function wisata(){
+        return $this->hasOne(Wisata::class,'wisata_id','product_id');
+    }
 }
