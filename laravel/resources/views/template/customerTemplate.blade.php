@@ -88,6 +88,7 @@
             <a href="{{url('/logout')}}" class="btn btn-danger" style="text-decoration: none;">Logout</a>
         </div>
     </nav>
+    
 
 {{-- Content --}}
 @yield('content')
