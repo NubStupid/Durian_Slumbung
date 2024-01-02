@@ -68,7 +68,10 @@ Route::get('/register', function () {
         Route::middleware('role:A')->group(function(){
             Route::get('/adminhomepage',[AdminController::class,"dashboard"]);
             Route::get('/adminproduct',[AdminController::class,"adminProduct"]);
+            Route::post('/adminproduct',[AdminController::class,"addProduct"]);
             Route::post('/adminproductView',[AdminController::class,"viewProduct"]);
+            Route::post('/updateproduct/{id}', [AdminController::class, "updateProduct"]);
+            Route::delete('/deleteproduct/{id}', [AdminController::class, "deleteProduct"]);
             Route::post('/searchadminproduct',[AdminController::class,"searchProduct"]);
         });
         Route::middleware('role:M')->group(function(){
@@ -111,8 +114,8 @@ Route::get('/register', function () {
 
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
-        Route::get('/wisata/wisata',[PageController::class,'loadWisataViewLogin'])->name('wisata');
-        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn'])->name('wisata');
+        Route::get('/wisata/wisata',[PageController::class,'loadWisataViewLogin']);
+        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn']);
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
         Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
         Route::get('/cart',[PageController::class,"viewCart"]);
