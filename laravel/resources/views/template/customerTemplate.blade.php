@@ -59,7 +59,7 @@
                 $activeProfile = "profile";
                 $hrefProfile = "#";
             }
-            
+
         @endphp
         <div class="d-flex justify-content-center ms-5" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
@@ -90,11 +90,11 @@
                 <div class="dropdown me-5">
                     <button data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none;
                     padding: 0; font: inherit; cursor: pointer; outline: inherit; color: inherit;">
-                        @isset(Auth::user()->img_url)
+                        @if(Auth::check() && Auth::user()->img_url)
                             <img src={{ Auth::user()->img_url }} alt="kusung" style="max-width: 3vw; max-height: auto; border-radius: 50%">
                         @else
                             <img src="https://t4.ftcdn.net/jpg/04/38/19/57/360_F_438195737_KifWlRKIKOYEwrbEXwUwLnVQoIeQM1iW.jpg" alt="kusung" style="max-width: 3vw; max-height: auto; border-radius: 50%">
-                        @endisset
+                        @endif
                     </button>
                     <ul class="dropdown-menu me-5 px-3" style="text-decoration: none;">
                       <li><a class="py-1" href={{ url('/profile')}} style="text-decoration: none;"><button class="btn btn-outline-primary w-100 my-1">Profile</button></a></li>
@@ -107,7 +107,7 @@
         </div>
         </div>
     </nav>
-    
+
 
 {{-- Content --}}
 @yield('content')

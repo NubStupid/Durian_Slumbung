@@ -12,10 +12,12 @@ class PusherBroadcast implements ShouldBroadcast
     use Dispatchable, InteractsWithSockets, SerializesModels;
 
     public string $message;
+    public string $username;
 
-    public function __construct(string $message)
+    public function __construct(string $message,string $username)
     {
         $this->message = $message;
+        $this->username = $username;
     }
 
     public function broadcastOn(): array

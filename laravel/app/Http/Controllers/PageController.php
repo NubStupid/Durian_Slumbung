@@ -162,7 +162,7 @@ class PageController extends Controller
 
         return $comments;
     }
-    
+
     public function viewProduct($id){
 
         // $productViewed = DB::connection('connect_Customer')->table('products');
@@ -310,7 +310,6 @@ class PageController extends Controller
         $prevMonth = strtotime("Last day of " . date("M") . " " . date("Y") . " previous month");
         $prevMonth = date("d", $prevMonth);
         $ctr = array_search($day, $days);
-
         return view('wisata',[
             'user' => $user,
             'olahan' => $olahan,
@@ -479,7 +478,7 @@ class PageController extends Controller
         $user = request()->attributes->get('user');
         return view('aboutpage',['user'=>$user]);
     }
-    
+
     // Profile
     public function loadProfileView(){
         $cekuser = Session('username');
@@ -491,50 +490,50 @@ class PageController extends Controller
     public function updateUsername(Request $req) {
         $user = Auth::user()->username;
         $tempuser = $req->input('tempuser');
-    
+
         $cekuser = Users::where('username', $tempuser)->first();
-    
+
         if ($cekuser) {
             return back()->with('error', 'Username sudah ada!');
         }
-    
+
         $cekuser = Users::where('username', $user)->first();
-    
+
         if($cekuser->password !== $req->input('passuser')){
             return back()->with('error', 'Password Salah!');
         }
-        
+
         $cekuser->username = $tempuser;
         $cekuser->save();
 
         $cekuser = Users::where('username', $tempuser)->first();
         Auth::login($cekuser);
-        
+
         return back()->with('successemail', 'Username berhasil diperbarui!');
     }
-    
+
     public function updateNoTelp(Request $req) {
         $user = Auth::user()->username;
         $temptelp = $req->input('temptelp');
         $cektelp = Users::where('telp', $temptelp)->first();
-    
+
         if ($cektelp) {
             return back()->with('error', 'Nomor telepon sudah ada!');
         }
-    
+
         if (empty($temptelp) || !is_numeric($temptelp) || strlen($temptelp) !== 11) {
             return back()->with('error', 'Nomor telepon tidak valid. Harus berupa angka dan terdiri dari 11 digit.');
         }
 
         $cekUser = Users::where('username', $user)->first();
-    
+
         if (!$cekUser || $cekUser->password !== $req->input('passtelp')) {
             return back()->with('error', 'Password salah. Tidak dapat mengubah nomor telepon.');
         }
-    
+
         $cekUser->telp =  $temptelp;
         $cekUser->save();
-    
+
         return back()->with('successtelp', 'Nomor telepon berhasil diperbarui!');
     }
     // public function updateGambar(Request $req){
@@ -552,7 +551,7 @@ class PageController extends Controller
     //         Storage::disk('public')->delete($cekUser->img_url);
     //         $cekUser->img_url = "storage/".$gambarPath;
     //         $cekUser->save();
-    
+
     //         return redirect()->back()->with('success', 'Gambar berhasil diunggah!');
     //     } else {
     //         return redirect()->back()->with('error', 'Gagal menyimpan gambar.');
@@ -565,7 +564,7 @@ class PageController extends Controller
         ], [
             'image_base64.required' => 'Masukkan File Gambar!',
         ]);
-        
+
         $imageBase64 = $request->image_base64;
         list($type, $imageBase64) = explode(';', $imageBase64);
         list(, $imageBase64) = explode(',', $imageBase64);
@@ -578,7 +577,7 @@ class PageController extends Controller
         $hapus = $cekUser->img_url;
 
         if (Storage::disk('public')->put($gambarPath, $imageBase64)) {
-            
+
             if ($hapus) {
                 Storage::disk('public')->delete($hapus);
             }
