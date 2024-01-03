@@ -11,6 +11,7 @@ use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PusherController;
 use App\Http\Controllers\Auth\ProviderController;
 use Illuminate\Support\Facades\Auth;
 
@@ -82,6 +83,9 @@ Route::get('/register', function () {
             Route::get('/masteradmin',[AdminController::class,'masterAdmin']);
             Route::post('/searchAdmin',[AdminController::class,'searchAdmin']);
             Route::post('/masterAdminView',[AdminController::class,'viewAdmin']);
+            Route::get('/masterChat', [PusherController::class,'index']);
+            Route::post('/broadcast',  [PusherController::class,'broadcast']);
+            Route::post('/receive',  [PusherController::class,'receive']);
         });
         // });
     });
