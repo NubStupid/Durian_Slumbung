@@ -12,7 +12,7 @@
 
             <!-- Header -->
             <div class="top p-4">
-                <img src="https://assets.edlin.app/images/rossedlin/03/rossedlin-03-100.jpg" alt="Avatar"
+                <img src="https://t4.ftcdn.net/jpg/04/38/19/57/360_F_438195737_KifWlRKIKOYEwrbEXwUwLnVQoIeQM1iW.jpg" alt="Avatar"
                     class="w-12 h-12 rounded-full mr-4">
                 <div>
                     <p class="text-lg font-semibold">
@@ -57,6 +57,7 @@
     $.post("/receive", {
       _token:  '{{csrf_token()}}',
       message: data.message,
+      username: data.username
     })
      .done(function (res) {
        $(".messages > .message").last().after(res);
@@ -67,7 +68,6 @@
   //Broadcast messages
   $("form").submit(function (event) {
     event.preventDefault();
-
     $.ajax({
       url:     "/broadcast",
       method:  'POST',

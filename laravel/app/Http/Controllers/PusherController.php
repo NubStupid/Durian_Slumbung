@@ -13,19 +13,19 @@ class PusherController extends Controller
 {
     public function index()
     {
-        $otherMaster = Admin::where('role','=','M')->where('username',"!=",auth()->user())->first();
+        $otherMaster = Admin::where('role','=','M')->where('username',"!=",session()->get('username'))->first();
         return view('chatMaster',['toChat'=>$otherMaster]);
     }
 
     public function broadcast(Request $request)
     {
-        broadcast(new PusherBroadcast($request->get('message')))->toOthers();
+        broadcast(new PusherBroadcast($request->get('message'),session()->get('username')))->toOthers();
 
-        return view('broadcast', ['message' => $request->get('message')]);
+        return view('broadcast', ['message' => $request->get('message'),'user'=>session()->get('username')]);
     }
 
     public function receive(Request $request)
     {
-        return view('receive', ['message' => $request->get('message')]);
+        return view('receive', ['message' => $request->get('message'),'user'=>$request->get('username')]);
     }
 }
