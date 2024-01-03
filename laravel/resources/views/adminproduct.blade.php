@@ -60,7 +60,7 @@
     </div>
     <div id="form" class="col-span-2 border-2 rounded-lg border-black p-5 me-5" style="width:100%">
         <div class="text-3xl font-bold mb-5">Create a Product</div>
-    <form action="" method="post">
+    <form action="" method="post" enctype="multipart/form-data">
         @csrf
         <div class="my-1">
             Name : <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" name="name" id="name" required>
@@ -81,7 +81,7 @@
             QTY : <input type="number" placeholder="Type here" class="input input-bordered w-full max-w-xs" name="qty" id="qty" required>
         </div>
         <div class="my-1">
-            Image : <input type="file" class="file-input w-full max-w-xs" name="img" id="img" required>
+            Image : <input type="file" class="file-input w-full max-w-xs" name="img[]" id="img" required>
         </div>
         <div class="my-1">
             Description : <br> <textarea class="textarea textarea-bordered textarea-md w-full max-w-xs" placeholder="Bio" name="desc" id="desc" required></textarea>
@@ -142,13 +142,12 @@
         $('#product').addClass('hidden');
         $('#product').removeClass('visible');
     }
-
     function updateProduct(p_id) {
         var name = $('#nameUpdate').val();
         var price = $('#priceUpdate').val();
         var category = $('#categoryUpdate').val();
         var qty = $('#qtyUpdate').val();
-        var img = $('#imgUpdate').val();
+        var img = $('input[name="imgUpdate"]').val();
         var desc = $('#descUpdate').val();
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
 
@@ -157,9 +156,10 @@
             price: price,
             category: category,
             qty: qty,
-            img: "https://picsum.photos/id/125/200/300",
+            img: img,
             desc: desc
         };
+
         console.log(data);
         console.log(csrfToken);
         $.ajax({

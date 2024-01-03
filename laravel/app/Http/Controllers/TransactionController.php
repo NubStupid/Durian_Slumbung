@@ -77,8 +77,8 @@ class TransactionController extends Controller
         {
             $wisata[] = [
                 "wisata_id" => $c->product_id,
-                "wisata_name" => $c->Wisata->Olahan->name,
-                "date" => $c->tgl_pesan,
+                "wisata_name" => $c->Product->name,
+                "date" => $c->price,
                 "wisata_price" => $c->price,
                 "qty" => $c->qty,
                 "subtotal" => $c->price * $c->qty

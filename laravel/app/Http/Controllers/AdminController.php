@@ -121,11 +121,19 @@ class AdminController extends Controller
         $idadd = intval(substr($latestProduct->product_id, 1))+1;
         $newID = "P" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
 
+        $namaFolderPhoto = ""; $namaFilePhoto = "";
+        foreach ($req->file("img") as $photo) {
+            $namaFilePhoto  = "D".$newID.".".$photo->getClientOriginalExtension();
+            $namaFolderPhoto = "photo/";
+
+            $photo->storeAs($namaFolderPhoto,$namaFilePhoto, 'public');
+        }
+
         $name = $req->name;
         $price = $req->price;
         $category = $req->category;
         $qty = $req->qty;
-        $img = $req->img;
+        $img = $namaFilePhoto;
         $desc = $req->desc;
 
         $res = Products::create([
@@ -135,7 +143,7 @@ class AdminController extends Controller
             'category_id' => $category,
             'qty' => $qty,
             'description' => $desc,
-            'img_url' => "https://picsum.photos/id/125/200/300",
+            'img_url' => $img,
             'rate' => 0
         ]);
 
@@ -155,7 +163,7 @@ class AdminController extends Controller
         $product->price = $req->price;
         $product->category_id = $req->category;
         $product->qty = $req->qty;
-        $product->img_url = $req->img;
+        $product->img_url = "DP0011.jpg";
         $product->description = $req->desc;
         $product->save();
 
