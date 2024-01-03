@@ -75,7 +75,7 @@
                 @endisset
             </div>
         </div>
-        <button class="btn btn-outline-success fw-bold px-5 mt-2">Ganti Password</button>
+        <button class="btn btn-outline-success fw-bold px-5 mt-2" data-bs-toggle="modal" data-bs-target="#updatePassword">Ganti Password</button>
     </div>
     <div class="col-1"></div>
 </div>
@@ -132,16 +132,16 @@
             </div>
         </div>
     </div>
-    <!-- Modal Update NoTelepon -->
-    <div class="modal fade" id="updateNoTelp" tabindex="-1" role="dialog" aria-labelledby="updateTelephoneLabel" aria-hidden="true">
+    <!-- Modal Update Password -->
+    <div class="modal fade" id="updatePassword" tabindex="-1" role="dialog" aria-labelledby="updatePasswordLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="updateModalLabel">Ganti Nomor Telepon</h5>
+                    <h5 class="modal-title" id="updateModalLabel">Ganti Password</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('update.notelp') }}" method="POST">
+                    <form action="{{ route('update.password') }}" method="POST">
                         @csrf
                         <div class="form-group">
                             <label for="passlama">Password Lama</label>
@@ -229,7 +229,7 @@
     </div>
     @endif --}}
 
-    @if(session('error')||session('successpass')||session('successgambar')||session('successemail')||session('successtelp'))
+    @if(session('error')||session('successpass')||session('successgambar')||session('successemail')||session('successtelp')||session('successpassword'))
     <div class="modal fade" id="HasilUpdate" tabindex="-1" aria-labelledby="HasilUpdate" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
           <div class="modal-content">
@@ -249,6 +249,9 @@
                 @elseif(session('successtelp'))
                     <img src="{{asset('assets/misc/berhasileditnotelp.gif')}}" class="my-4" alt="" width="70vw" height="max-content">
                     <h5 class="py-2">Berhasil Mengupdate Nomor Telepon!</h5>
+                @elseif(session('successpassword'))
+                    <img src="{{asset('assets/misc/berhasileditnotelp.gif')}}" class="my-4" alt="" width="70vw" height="max-content">
+                    <h5 class="py-2">Berhasil Mengupdate Password!</h5>
                 @endif
               <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
             </div>
