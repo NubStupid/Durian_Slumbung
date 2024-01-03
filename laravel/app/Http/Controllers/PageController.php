@@ -354,28 +354,24 @@ class PageController extends Controller
 
         $wisataID = $cekID->wisata_id;
 
-        $id = "W0001";
-        $res = Cart::create(
-            [
-                "cart_id"=>$newID,
-                "product_id"=>$wisataID,
-                "price"=>$price,
-                "qty"=>$qty,
-                "username"=>$cekuser
-            ]
-        );
-        
-        return redirect()->back()->with('showPopup', 'sukses');
-        // return view('wisata',[
-        //     'user' => $user,
-        //     'olahan' => $olahan,
-        //     'ctr' => $ctr,
-        //     'thn' => date("Y"),
-        //     'bln' => $bulan[date("m")-1],
-        //     'lastDay' => $lastDay,
-        //     'prevMonth' => $prevMonth,
-        //     'selisih' => 0
-        // ]);
+        $cekAvail = Wisata::where('wisata_id', $wisataID)->first();
+        $stok = $cekAvail->qty;
+
+        if($stok >= $qty){
+            $res = Cart::create(
+                [
+                    "cart_id"=>$newID,
+                    "product_id"=>$wisataID,
+                    "price"=>$price,
+                    "qty"=>$qty,
+                    "username"=>$cekuser
+                ]
+            );
+            return redirect()->back()->with('showPopup', 'sukses');
+        }
+        else{
+            return redirect()->back()->with('gagal', 'habis');
+        }
     }
 
     public function loadKalender(Request $req){

@@ -60,30 +60,34 @@
     </div>
     <div id="form" class="col-span-2 border-2 rounded-lg border-black p-5 me-5" style="width:100%">
         <div class="text-3xl font-bold mb-5">Create a Product</div>
+    <form action="" method="post">
+        @csrf
         <div class="my-1">
-            Name : <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+            Name : <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" name="name" id="name" required>
         </div>
         <div class="my-1">
-            Price : <input type="number" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+            Price : <input type="number" placeholder="Type here" class="input input-bordered w-full max-w-xs" name="price" id="price" required>
         </div>
         <div class="my-1">
-            Category : <select class="select select-bordered w-full max-w-xs">
+            Category : 
+            <select class="select select-bordered w-full max-w-xs" name="category" id="category" required>
                 <option disabled selected>Select A Category</option>
-                @foreach ($category as $c )
+                @foreach ($category as $c)
                     <option value="{{$c['category_id']}}">{{$c['name']}}</option>
                 @endforeach
-              </select>
+            </select>
         </div>
         <div class="my-1">
-            QTY : <input type="number" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+            QTY : <input type="number" placeholder="Type here" class="input input-bordered w-full max-w-xs" name="qty" id="qty" required>
         </div>
         <div class="my-1">
-            Image : <input type="file" class="file-input w-full max-w-xs" />
+            Image : <input type="file" class="file-input w-full max-w-xs" name="img" id="img" required>
         </div>
         <div class="my-1">
-            Description : <br> <textarea class="textarea textarea-bordered textarea-md w-full max-w-xs" placeholder="Bio"></textarea>
+            Description : <br> <textarea class="textarea textarea-bordered textarea-md w-full max-w-xs" placeholder="Bio" name="desc" id="desc" required></textarea>
         </div>
-        <button class="btn btn-success">Add Product</button>
+        <button type="submit" class="btn btn-outline btn-success" name="btnAdd" data-bs-toggle="modal" data-bs-target="#popup">Add Product</button>
+    </form>
     </div>
     <div id="product" class="col-span-2 border-2 rounded-lg border-black p-5 me-5" style="width:100%">
         <div class="text-3xl font-bold">Update a Product</div>
@@ -92,6 +96,7 @@
         </div>
     </div>
 </div>
+
 @endsection
 @push('script')
 <script>
@@ -138,11 +143,55 @@
         $('#product').removeClass('visible');
     }
 
-    function updateProduct(p_id){
-        console.log(p_id);
+    function updateProduct(p_id) {
+        var name = $('#nameUpdate').val();
+        var price = $('#priceUpdate').val();
+        var category = $('#categoryUpdate').val();
+        var qty = $('#qtyUpdate').val();
+        var img = $('#imgUpdate').val();
+        var desc = $('#descUpdate').val();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        var data = {
+            name: name,
+            price: price,
+            category: category,
+            qty: qty,
+            img: "https://picsum.photos/id/125/200/300",
+            desc: desc
+        };
+        console.log(data);
+        console.log(csrfToken);
+        $.ajax({
+            url: `/updateproduct/${p_id}`,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: data,
+            success: function (data) {
+                console.log('Product updated successfully');
+                $('#productContent').html(data);
+                $('#productContentView').html('Updated successfully');
+            }
+        });
     }
-    function deleteProduct(p_id){
-        console.log(p_id);
+    function deleteProduct(p_id) {
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+        
+        $.ajax({
+            url: `/deleteproduct/${p_id}`,
+            type: 'DELETE',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            success: function (data) {
+                console.log('Product deleted successfully:', p_id);
+
+                $('#productContent').html(data);
+                $('#productContentView').html('Deleted successfully');
+            }
+        });
     }
     $(document).ready(function(){
         create();
