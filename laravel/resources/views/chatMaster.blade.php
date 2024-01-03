@@ -6,7 +6,7 @@
 @endsection
 
 @section('content')
-    <body class="bg-gray-100">
+    <body class="bg-gray-100 pb-10">
 
         <div class="chat max-w-3xl mx-auto bg-white rounded-lg overflow-hidden shadow-lg mt-16 grid grid-rows-1 my-10">
 
@@ -27,7 +27,9 @@
 
             <!-- Chat -->
             <div class="messages p-4">
-                @include('receive', ['message' => "New Chat"])
+                <div class="left message flex items-center p-4">
+                    <p class="text-gray-800 font-bold text-2xl">Current chat session (Cleared when refreshed)</p>
+                </div>
             </div>
             <!-- End Chat -->
 

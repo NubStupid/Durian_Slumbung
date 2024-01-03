@@ -119,7 +119,7 @@ Route::get('/register', function () {
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
         Route::get('/wisata/wisata',[PageController::class,'loadWisataViewLogin']);
-        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn']);
+        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn'])->name('wisata');
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
         Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
         Route::get('/cart',[PageController::class,"viewCart"]);
