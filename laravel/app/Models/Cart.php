@@ -20,4 +20,8 @@ class Cart extends Model
     public function Product(){
         return $this->belongsTo(Products::Class,"product_id","product_id");
     }
+
+    public function Wisata(){
+        return $this->belongsTo(Wisata::class, "product_id", "wisata_id");
+    }
 }
