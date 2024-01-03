@@ -31,4 +31,10 @@ class Users extends Authenticatable
     //             ->withPivot('field_ga_ada','field_ga_ada_2')
     //             ->as("nama hehe");
     // }
+    // public function getImage(){
+    //     if($this->img_url){
+    //         return url('/storage'. $this->img_url);
+    //     }
+    //     return "https://t4.ftcdn.net/jpg/04/38/19/57/360_F_438195737_KifWlRKIKOYEwrbEXwUwLnVQoIeQM1iW.jpg";
+    // }
 }

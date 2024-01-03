@@ -93,6 +93,12 @@ Route::get('/register', function () {
         Route::post('/product',[PageController::class, "searchProduct"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
+        
+        Route::get('/profile', [PageController::class, 'loadProfileView']);
+        Route::post('/profile/update-username', [PageController::class, 'updateUsername'])->name('update.username');
+        Route::post('/profile/update-telp', [PageController::class, 'updateNoTelp'])->name('update.notelp');
+        Route::post('/profile/update-gambar', [PageController::class, 'updateGambar'])->name('update.gambar');
+        // Route::post('update-gambar', [PageController::class, 'updateGambar']);
 
         Route::get('/about', [PageController::class, "loadAboutView"]);
 
@@ -134,6 +140,9 @@ Route::get('/logout', function (Request $request) {
         Auth::guard('admin')->logout();
     }
     session()->forget('role');
+    $request->session()->invalidate();
+ 
+    $request->session()->regenerateToken();
     return redirect('login');
 });
 

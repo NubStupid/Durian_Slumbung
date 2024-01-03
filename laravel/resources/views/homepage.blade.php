@@ -13,14 +13,14 @@
     <script> 
         AOS.init();
     </script>
-    <div class="d-flex justify-content-center my-5">
+    <div class="d-flex justify-content-center my-5" style="overflow: hidden;">
         <div class="container-md p-0 m-0">
             <video preload="TRUE" muted loop autoplay playsinline style="width: 100%;">
                 <source src="{{asset('assets/homepage/Home_Video.mp4')}}" type="video/mp4" class="video">
             </video>
             <div class="position-absolute start-50 top-50 translate-middle text-white">
                 <h1 style="font-size: 58px;" data-aos="fade-down" data-aos-duration="2000" data-aos-once="true" data-aos-offset="-150"><b>DURIAN SLUMBUNG</b></h1>
-                <h3 class="text-center" data-aos="fade-down" data-aos-duration="2000" data-aos-once="true" data-aos-offset="-150" style=""><b>Durian Kebanggaan Kami</b></h3>
+                <h3 class="text-center" data-aos="fade-down" data-aos-duration="2000" data-aos-once="true" data-aos-offset="-150"><b>Durian Kebanggaan Kami</b></h3>
             </div>
         </div>
     </div>
