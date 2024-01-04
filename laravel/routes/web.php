@@ -12,6 +12,7 @@ use Illuminate\Http\Request;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\PusherController;
+use App\Http\Controllers\AIController;
 use App\Http\Controllers\Auth\ProviderController;
 use Illuminate\Support\Facades\Auth;
 
@@ -86,6 +87,8 @@ Route::get('/register', function () {
             Route::get('/masterChat', [PusherController::class,'index']);
             Route::post('/broadcast',  [PusherController::class,'broadcast']);
             Route::post('/receive',  [PusherController::class,'receive']);
+            Route::get('/write',[AIController::class,'viewChat']);
+            Route::post('/write/generate',[AIController::class,'promptChat']);
         });
         // });
     });
@@ -100,7 +103,7 @@ Route::get('/register', function () {
         Route::post('/product',[PageController::class, "searchProduct"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
-        
+
         Route::get('/profile', [PageController::class, 'loadProfileView']);
         Route::post('/profile/update-username', [PageController::class, 'updateUsername'])->name('update.username');
         Route::post('/profile/update-telp', [PageController::class, 'updateNoTelp'])->name('update.notelp');
@@ -148,7 +151,7 @@ Route::get('/logout', function (Request $request) {
     }
     session()->forget('role');
     $request->session()->invalidate();
- 
+
     $request->session()->regenerateToken();
     return redirect('login');
 });
