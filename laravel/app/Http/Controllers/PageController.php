@@ -355,7 +355,7 @@ class PageController extends Controller
         // ------------------------------------------------------------------------
         $cekuser = Session('username');
         $qty = $req->orang;
-        $price = 20000 * $qty;
+        $price = 20000;
         $latestCart = Cart::latest('cart_id')->first();
         $idadd = intval(substr($latestCart->cart_id, 1))+1;
         $newID = "C" . str_pad($idadd, 4, '0', STR_PAD_LEFT);

@@ -153,6 +153,17 @@ class TransactionController extends Controller
 
     public function pay(Request $req)
     {
+        $data['_token'] = $req->_token;
+        $data['total'] = $req->total;
+        // $data['_token'] = $req->_token;
+        $data['h_trans_id'] = $this->generateHtrans();
+        $data['invoice_number'] = $this->generateInv();
+        // $data['subtotal'] = $req->subtotal;
+        $data['username'] = Session::get('username');
+        $data['status'] = 'pending';
+        // dd($data);
+        $order = Transaction::create($data);
+
         if($req->produk)
         {
             foreach($req->produk as $p)
@@ -161,7 +172,7 @@ class TransactionController extends Controller
                 $det['d_trans_id'] = $this->generateDtrans();
                 $det['qty'] = $p['qty'];
                 $det['total'] = $p['subtotal'];
-                $det['h_trans_id'] = $this->generateHtrans();
+                $det['h_trans_id'] = $order->h_trans_id;
                 $det['product_id'] = $p['id'];
                 $det['pengambilan'] = $req->tgl;
 
@@ -179,7 +190,7 @@ class TransactionController extends Controller
                 $det['d_trans_id'] = $this->generateDtrans();
                 $det['qty'] = $w['qty'];
                 $det['total'] = $w['subtotal'];
-                $det['h_trans_id'] = $this->generateHtrans();
+                $det['h_trans_id'] = $order->h_trans_id;
                 $det['product_id'] = $w['id'];
                 $det['pengambilan'] = date("Y-m-d",  strtotime($w['date']));
 
@@ -193,16 +204,16 @@ class TransactionController extends Controller
 
 
         // dd($req->all());
-        $data['_token'] = $req->_token;
-        $data['total'] = $req->total;
         // $data['_token'] = $req->_token;
-        $data['h_trans_id'] = $this->generateHtrans();
-        $data['invoice_number'] = $this->generateInv();
-        // $data['subtotal'] = $req->subtotal;
-        $data['username'] = Session::get('username');
-        $data['status'] = 'pending';
-        // dd($data);
-        $order = Transaction::create($data);
+        // $data['total'] = $req->total;
+        // // $data['_token'] = $req->_token;
+        // $data['h_trans_id'] = $this->generateHtrans();
+        // $data['invoice_number'] = $this->generateInv();
+        // // $data['subtotal'] = $req->subtotal;
+        // $data['username'] = Session::get('username');
+        // $data['status'] = 'pending';
+        // // dd($data);
+        // $order = Transaction::create($data);
 
         $cart = Cart::where("username", Session::get('username'))->delete();
 
