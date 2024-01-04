@@ -536,6 +536,26 @@ class PageController extends Controller
 
         return back()->with('successtelp', 'Nomor telepon berhasil diperbarui!');
     }
+    public function updatePassword(Request $req) {
+        $user = Auth::user()->username;
+        $newPassword = $req->input('passbaru');
+        $confirmPassword = $req->input('passconfirm');
+
+        if ($newPassword !== $confirmPassword) {
+            return back()->with('error', 'Password harus sama.');
+        }
+
+        $cekUser = Users::where('username', $user)->first();
+
+        if (!$cekUser || $cekUser->password !== $req->input('passlama')) {
+            return back()->with('error', 'Password salah. Tidak dapat mengubah nomor telepon.');
+        }
+
+        $cekUser->password = $newPassword;
+        $cekUser->save();
+
+        return back()->with('successpassword', 'Password berhasil diperbarui!');
+    }
     // public function updateGambar(Request $req){
     //     $cekgambar = request()->validate([
     //         'tempgambar' => 'image|max:2048',
