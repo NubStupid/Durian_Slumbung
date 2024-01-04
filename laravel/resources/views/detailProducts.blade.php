@@ -39,16 +39,16 @@
         padding: 20px; /* Adjust padding as needed */
     }
 
-    
+
 </style>
 <script>
     function like(comment) {
         var currentSrc = $(comment).attr('src');
         var csrfToken = $('meta[name="csrf-token"]').attr('content');
-        
+
         // Define the new image source
         var newSrc = (currentSrc === "{{ asset('assets/detail/like.png') }}") ? "{{ asset('assets/detail/liked.png') }}" : "{{ asset('assets/detail/like.png') }}";
-        
+
         // Change the image source
         $(comment).attr('src', newSrc);
 
@@ -57,18 +57,37 @@
                 'X-CSRF-TOKEN': csrfToken
             }
         });
-
-        $.post('/likes/add', {
-            comment_id: $(comment).data('comment-id') // Pass comment_id using data attribute
-        })
-        .done(function(response) {
-            // console.log(response);
-        })
-        .fail(function(error) {
-            // Handle errors
-            // console.error('Error:', error);
-            // console.log('Response Text:', error.responseText);
-        });
+        let comment_id = $(comment).attr("id");
+        let username = "{{Session::get('username')}}";
+        if(newSrc === "{{ asset('assets/detail/like.png') }}"){
+            $.post('/likes/delete', {
+                comment_id: comment_id,
+                username:username
+            })
+            .done(function(response) {
+                $("."+comment_id+"_likes").html(response)
+                console.log(response);
+            })
+            .fail(function(error) {
+                // Handle errors
+                // console.error('Error:', error);
+                // console.log('Response Text:', error.responseText);
+            });
+        }else{
+            $.post('/likes/add', {
+                comment_id: comment_id,
+                username:username
+            })
+            .done(function(response) {
+                $("."+comment_id+"_likes").html(response)
+                console.log(response);
+            })
+            .fail(function(error) {
+                // Handle errors
+                // console.error('Error:', error);
+                // console.log('Response Text:', error.responseText);
+            });
+        }
     }
 
 
@@ -212,7 +231,7 @@
             <div class="modal-body text-center">
                 <img src="{{asset('assets/misc/berhasiladdtocart.gif')}}" class="my-2" alt="" width="max-content" height="110px">
               <h5 class="py-2">Berhasil Menambah ke keranjang!</h5>
-              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Sip!</button>
+              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
             </div>
           </div>
         </div>
@@ -241,6 +260,7 @@
         loadData();
         showModal();
 
+        // Button Decrease Qty
         $('.decreaseQty').click(function(e) {
             e.preventDefault();
             var qty = $('.qty').val();
@@ -249,17 +269,17 @@
             if(value>1){
                 value--;
                 $('.qty').val(value);
-                let harga = {{$product->price}};
+                let harga = Math.ceil({{$product->price}});
                 var subtotal = harga*value;
                 if (!isNaN(subtotal))
-                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
+                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(Math.ceil(subtotal));
             }
             $( ".qty" ).trigger( "change" );
         });
-        
-        
+
+        // Button Increase Qty
         $('.increaseQty').click(function(e) {
-            
+
             e.preventDefault();
             var qty = $('.qty').val();
             var value = parseInt(qty);
@@ -267,21 +287,23 @@
             let maksqty = {{$product->qty}};
             if(value<maksqty){
                 value++;
-                let harga = {{$product->price}};
+                let harga = Math.ceil({{$product->price}});
                 var subtotal = harga*value;
                 if (!isNaN(subtotal))
-                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
-                
+                    document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(Math.ceil(subtotal));
+
                 $('.qty').val(value);
             }
             $( ".qty" ).trigger( "change" );
         });
+
+        // Tiap on input pengecekan qty
         $('.qty').on('input', function() {
             var value = $(this).val();
 
             if (!/^-?\d*\.?\d+$/.test(value)) {
                 value = value.replace(/[^\d-]/g, '');
-            } 
+            }
             let maksqty = {{$product->qty}};
             var countMinus = (value.match(/-/g) || []).length;
             if (countMinus > 1 || (countMinus === 1 && value.indexOf('-') !== 0)) {
@@ -299,9 +321,13 @@
             loadData();
             $(this).val(value);
         });
+
+        // Saat total qty diubah
         $('.qty').on('change', function (){
             cekbutton();
         });
+
+        // Saat total qty diset 0 dan user pencet diluar input box maka berubah jadi 1
         $('.qty').on('blur', function() {
             var value = $(this).val();
             if(value === '0') {
@@ -310,7 +336,7 @@
             loadData();
         });
     });
-    
+
     function cekqty() {
         var qtyValue = document.querySelector('.qty').value;
         document.getElementById('getQty').value = qtyValue;
@@ -322,14 +348,15 @@
         var qty = $('.qty').val();
         var value = parseInt(qty);
         value = isNaN(value) ? 0 : value;
-        let harga = {{$product->price}};
+        
+        let harga = Math.ceil({{$product->price}});
         let maksqty = {{$product->qty}};
         var subtotal = harga*value;
         if(subtotal>harga*maksqty){
             subtotal = harga * maksqty;
         }
         if (!isNaN(subtotal))
-            document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(subtotal);
+            document.getElementById("subtotal").innerHTML = new Intl.NumberFormat("id-ID").format(Math.ceil(subtotal));
 
         if (value <=1) {
             $('.decreaseQty').prop('disabled', true);

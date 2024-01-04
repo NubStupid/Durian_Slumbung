@@ -13,6 +13,7 @@ use App\Models\Categories;
 use App\Models\Rating;
 use App\Models\Comment;
 use App\Models\Cart;
+use App\Models\Likes;
 
 class PageController extends Controller
 {
@@ -141,6 +142,20 @@ class PageController extends Controller
         // dd($comments);
         return $comments;
     }
+    public function getUserLikedComment($user,$comments){
+        foreach ($comments as $i => $comment) {
+            $isLiked =  Likes::where('comment_id', $comment["comment_id"])->where('username',$user)->get();
+            if(count($isLiked)==0){
+                $comments[$i]["img_like"] = "assets/detail/like.png";
+            }else{
+                $comments[$i]["img_like"] = "assets/detail/liked.png";
+            }
+            $totalLiked = Likes::where('comment_id',$comment["comment_id"])->get()->count();
+            $comments[$i]["likes"] = $totalLiked;   
+        }
+
+        return $comments;
+    }
     public function viewProduct($id){
 
         // $productViewed = DB::connection('connect_Customer')->table('products');
@@ -152,6 +167,7 @@ class PageController extends Controller
         $user = request()->attributes->get('user');
         $rating = $this->getRating($id);
         $comments = $this->getProductComments($id);
+        $comments = $this->getUserLikedComment($user,$comments);
         return view('detailProducts',[
             "product"=>$productViewed,
             "products"=>$get3SimilarProduct,
@@ -208,6 +224,19 @@ class PageController extends Controller
             return redirect()->back()->with('success', 'Quantity updated in the cart.');
         }
         return redirect("detailProducts");
+    }
+    public function deleteCartItem($id) {
+        $user = Cart::where('cart_id', $id)->first();
+        if ($user) {
+            $listcart = Cart::where('username', $user->username)->get();
+            Cart::where('cart_id', $id)->delete();
+            if(count($listcart)==0){
+                return response()->json(['message' => 'cart kosong']);
+            }
+            else{
+                return response()->json(['message' => 'Item deleted successfully']);
+            }
+        }
     }
 
     // Wisata

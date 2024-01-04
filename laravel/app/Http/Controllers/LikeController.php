@@ -34,9 +34,7 @@ class LikeController extends Controller
 
         $updateLike = Likes::where('comment_id', $data['comment_id'])->get();
         $likeCount = $updateLike->count();
-
-        $view = view('commentCard', ['comments' => $likeCount]);
-        return $view;
+        return $likeCount;
     }
 
 
@@ -44,17 +42,14 @@ class LikeController extends Controller
     public function deleteLike(Request $req)
     {
         $data = $req->all();
-        
+
         $ifExist = Likes::where('comment_id', $data['comment_id'])
                        ->where('username', $data['username'])
-                       ->first();
-    
-        if ($ifExist != null) {
-            $ifExist->delete();
-            return "Success";
-        } else {
-            return "Failed";
-        }
+                       ->delete();
+
+        $updateLike = Likes::where('comment_id', $data['comment_id'])->get();
+        $likeCount = $updateLike->count();
+        return $likeCount;
     }
-    
+
 }
