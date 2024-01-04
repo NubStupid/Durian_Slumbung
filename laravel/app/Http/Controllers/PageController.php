@@ -14,6 +14,10 @@ use App\Models\Rating;
 use App\Models\Comment;
 use App\Models\Cart;
 use App\Models\Likes;
+use App\Models\Olahan;
+use App\Models\BookedWisata;
+use App\Models\Wisata;
+use App\Models\Htrans;
 
 class PageController extends Controller
 {
@@ -151,11 +155,12 @@ class PageController extends Controller
                 $comments[$i]["img_like"] = "assets/detail/liked.png";
             }
             $totalLiked = Likes::where('comment_id',$comment["comment_id"])->get()->count();
-            $comments[$i]["likes"] = $totalLiked;   
+            $comments[$i]["likes"] = $totalLiked;
         }
 
         return $comments;
     }
+    
     public function viewProduct($id){
 
         // $productViewed = DB::connection('connect_Customer')->table('products');
@@ -239,10 +244,232 @@ class PageController extends Controller
         }
     }
 
+    public function viewHistory(){
+        $cekuser = Session('username');
+        $listhistory = Htrans::where('username', $cekuser)->orderby("created_at","desc")->get();
+        $user = request()->attributes->get('user');
+        // $listproduct = Products::all();
+        return view('history',[
+            "listhistory"=>$listhistory,
+            "user" => $user
+        ]);
+    }
+
     // Wisata
     public function loadWisataView(){
         $user = request()->attributes->get('user');
-        return view('wisata',['user'=>$user]);
+
+        $olahan = Olahan::all();
+
+        date_default_timezone_set('Asia/Jakarta');
+
+        $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+        $day = date('D', strtotime(date('Y-m-01')));
+
+        $lastDay = strtotime("Last day of " . date("M") . " " . date("Y"));
+        $lastDay = date("d", $lastDay);
+        $prevMonth = strtotime("Last day of " . date("M") . " " . date("Y") . " previous month");
+        $prevMonth = date("d", $prevMonth);
+        $ctr = array_search($day, $days);
+
+        if($user != ""){
+            return redirect('/wisata/wisata');
+        }
+        else{
+            return view('wisata',[
+                'user' => $user,
+                'olahan' => $olahan,
+                'ctr' => $ctr,
+                'thn' => date("Y"),
+                'bln' => $bulan[date("m")-1],
+                'lastDay' => $lastDay,
+                'prevMonth' => $prevMonth,
+                'selisih' => 0
+            ]);
+        }
+    }
+
+    public function loadWisataViewLogin(){
+        $user = request()->attributes->get('user');
+        date_default_timezone_set('Asia/Jakarta');
+
+        $olahan = Olahan::all();
+        $wisata = Wisata::all();
+
+        $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+        $day = date('D', strtotime(date('Y-m-01')));
+
+        $lastDay = strtotime("Last day of " . date("M") . " " . date("Y"));
+        $lastDay = date("d", $lastDay);
+        $prevMonth = strtotime("Last day of " . date("M") . " " . date("Y") . " previous month");
+        $prevMonth = date("d", $prevMonth);
+        $ctr = array_search($day, $days);
+
+        return view('wisata',[
+            'user' => $user,
+            'olahan' => $olahan,
+            'wisata' => $wisata,
+            'ctr' => $ctr,
+            'thn' => date("Y"),
+            'bln' => $bulan[date("m")-1],
+            'lastDay' => $lastDay,
+            'prevMonth' => $prevMonth,
+            'selisih' => 0
+        ]);
+    }
+
+    public function loadWisataViewLoggedIn(Request $req){
+        $user = request()->attributes->get('user');
+        date_default_timezone_set('Asia/Jakarta');
+
+        $olahan = Olahan::all();
+
+        $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+
+        $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+        $day = date('D', strtotime(date('Y-m-01')));
+
+        $lastDay = strtotime("Last day of " . date("M") . " " . date("Y"));
+        $lastDay = date("d", $lastDay);
+        $prevMonth = strtotime("Last day of " . date("M") . " " . date("Y") . " previous month");
+        $prevMonth = date("d", $prevMonth);
+        $ctr = array_search($day, $days);
+        // ------------------------------------------------------------------------
+        $cekuser = Session('username');
+        $qty = $req->orang;
+        $price = 20000 * $qty;
+        $latestCart = Cart::latest('cart_id')->first();
+        $idadd = intval(substr($latestCart->cart_id, 1))+1;
+        $newID = "C" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
+
+        $cekID = Wisata::where('hari', $req->hari)
+        ->where('sesi', $req->sesi)
+        ->first();
+
+        $wisataID = $cekID->wisata_id;
+
+        $cekAvail = Wisata::where('wisata_id', $wisataID)->first();
+        $stok = $cekAvail->qty;
+
+        if($stok >= $qty){
+            $res = Cart::create(
+                [
+                    "cart_id"=>$newID,
+                    "product_id"=>$wisataID,
+                    "price"=>$price,
+                    "qty"=>$qty,
+                    "username"=>$cekuser
+                ]
+            );
+            return redirect()->back()->with('showPopup', 'sukses');
+        }
+        else{
+            return redirect()->back()->with('gagal', 'habis');
+        }
+    }
+
+    public function loadKalender(Request $req){
+        try {
+            $data = $req->all();
+
+            $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            $month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+            $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+            $day = date('D', strtotime("{$data['thn']}-{$data['bln']}-01"));
+            $lastDay = strtotime("Last day of {$month[$data['bln']-1]} {$data['thn']}");
+            $lastDay = date("d", $lastDay);
+            $prevMonth = strtotime("Last day of {$month[$data['bln']-1]} {$data['thn']} previous month");
+            $prevMonth = date("d", $prevMonth);
+            $ctr = array_search($day, $days);
+
+            // $date1=date_create("2013-03");
+            // $date2=date_create("2013-11");
+            // $diff=date_diff($date1,$date2);
+            // dump($diff);
+
+            return view('kalender',[
+                'ctr' => $ctr,
+                'thn' => $data['thn'],
+                'bln' => $bulan[$data['bln']-1],
+                'lastDay' => $lastDay,
+                'prevMonth' => $prevMonth,
+                'selisih' => $data['selisih']
+            ]);
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+
+            // Return an error response
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
+    }
+    public function loadSesi(Request $req){
+        try {
+            $days = ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'];
+            $day = array_search(date('D', strtotime("{$req->tgl}")), $days) + 1;
+            $wisata = Wisata::where('hari', $day)->get();
+            $sesi = [];
+            foreach($wisata as $w)
+            {
+                $qty = $w->qty;
+                $pesan = BookedWisata::where('tgl_dipesan', $req->tgl)->where('wisata_id', $w->wisata_id)->first();
+                if($pesan != null)
+                    $qty -= $pesan->qty;
+                $s = [
+                    "wisata_id" => $w->wisata_id,
+                    "olahan" => Olahan::find($w->olahan_id)->name,
+                    "sisa_qty" => $qty,
+                ];
+                $sesi[] = $s;
+                // dump($s);
+                // dump($w);
+            }
+            // $sesi = BookedWisata::where('tgl_dipesan', $req->tgl)->get();
+            // foreach($sesi as $s)
+            // {
+            //     // dump($s);
+            //     dump($s->Wisata);
+            // }
+            // $data = $req->all();
+
+            // $bulan = ['Januari', 'Februari', 'Maret', 'April', 'Mei', 'Juni', 'Juli', 'Agustus', 'September', 'Oktober', 'November', 'Desember'];
+            // $month = ["January","February","March","April","May","June","July","August","September","October","November","December"];
+
+            // $days = array('Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun');
+            // $day = date('D', strtotime("{$data['thn']}-{$data['bln']}-01"));
+            // $lastDay = strtotime("Last day of {$month[$data['bln']-1]} {$data['thn']}");
+            // $lastDay = date("d", $lastDay);
+            // $prevMonth = strtotime("Last day of {$month[$data['bln']-1]} {$data['thn']} previous month");
+            // $prevMonth = date("d", $prevMonth);
+
+            // return view('kalender',[
+            //     'day' => $day,
+            //     'days' => $days,
+            //     'thn' => $data['thn'],
+            //     'bln' => $bulan[$data['bln']-1],
+            //     'lastDay' => $lastDay,
+            //     'prevMonth' => $prevMonth
+            // ]);
+            // dd($day);
+            // dd($sesi);
+            // dd($sesi->Wisata);
+            // dd($sesi->Wisata());
+            return view('sesiWisata', [
+                'tgl' => $req->tgl,
+                'sesi' => $sesi
+            ]);
+            return $req->tgl;
+            return "masuk show sesi";
+        } catch (\Exception $e) {
+            // Log the exception for debugging
+
+            // Return an error response
+            return response()->json(['error' => 'Internal Server Error'], 500);
+        }
     }
 
     // About

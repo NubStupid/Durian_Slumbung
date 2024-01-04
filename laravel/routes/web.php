@@ -67,12 +67,21 @@ Route::get('/register', function () {
         Route::post('/testUbah/{id}',[UserController::class,"ubah"]);
         Route::middleware('role:A')->group(function(){
             Route::get('/adminhomepage',[AdminController::class,"dashboard"]);
+            Route::get('/adminproduct',[AdminController::class,"adminProduct"]);
+            Route::post('/adminproduct',[AdminController::class,"addProduct"]);
+            Route::post('/adminproductView',[AdminController::class,"viewProduct"]);
+            Route::post('/updateproduct/{id}', [AdminController::class, "updateProduct"]);
+            Route::delete('/deleteproduct/{id}', [AdminController::class, "deleteProduct"]);
+            Route::post('/searchadminproduct',[AdminController::class,"searchProduct"]);
         });
         Route::middleware('role:M')->group(function(){
             Route::get('/masterhomepage',[AdminController::class,"dashboard"]);
             Route::get('/productsreport',[AdminController::class,'productReport']);
             Route::get('/wisatareport',[AdminController::class,'wisataReport']);
             Route::post('/wisatareport',[AdminController::class,'filterWisata']);
+            Route::get('/masteradmin',[AdminController::class,'masterAdmin']);
+            Route::post('/searchAdmin',[AdminController::class,'searchAdmin']);
+            Route::post('/masterAdminView',[AdminController::class,'viewAdmin']);
         });
         // });
     });
@@ -86,9 +95,13 @@ Route::get('/register', function () {
         Route::get('/product',[PageController::class,'loadProductsView']) ;
         Route::post('/product',[PageController::class, "searchProduct"]);
 
+        Route::get('/wisata',[PageController::class,'loadWisataView']);
+
         Route::get('/about', [PageController::class, "loadAboutView"]);
 
-        Route::get('/wisata',[PageController::class,'loadWisataView']);
+        // AJAX page wisata
+        Route::post('/kalender',[PageController::class,'loadKalender']);
+        Route::post('/sesi',[PageController::class,'loadSesi']);
 
         Route::get('/checkout',[TransactionController::class,'checkout']);
         Route::post('/checkout', [TransactionController::class, 'pay']);
@@ -101,10 +114,13 @@ Route::get('/register', function () {
 
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
+        Route::get('/wisata/wisata',[PageController::class,'loadWisataViewLogin']);
+        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn']);
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
         Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
         Route::get('/cart',[PageController::class,"viewCart"]);
         Route::delete('/delete-cart-item/{id}',[PageController::class,"deleteCartItem"]);
+        Route::get('/history',[PageController::class,"viewHistory"]);
         Route::post('/product/like',[RatingController::class,"insertUpdateRating"]);
         Route::post('/product/delete',[RatingController::class,"deleteRating"]);
         Route::post('/comments', [CommentController::class, 'addComment']);

@@ -75,7 +75,12 @@
         <tr>
             {{-- <td class="w-50"></td> --}}
 
-            <td class="w-50 logo">Durian Slumbung</td>
+            {{-- <td class="w-50 logo">Durian Slumbung</td> --}}
+            <td class="w-50">
+                {{-- {{dump(file_get_contents(public_path('LogoDurianSlumbung.png')))}} --}}
+                <img src="data:image/png;base64,{{ base64_encode(file_get_contents(public_path('assets/pdf/Logo.png'))) }}" style="width: 100%">
+            </td>
+            {{-- <td class="w-50 logo">Durian Slumbung</td> --}}
             {{-- <td class="w-50"><img src="public" width="200" /></td> --}}
 
 
@@ -96,6 +101,9 @@
         </tr>
     </table>
     <table class="w-100">
+        @php
+            setlocale(LC_ALL, 'id-ID', 'id_ID');
+        @endphp
         <tr>
             <td class="w-50 semi-bold">BILLED TO:</td>
             <td class="text-end">{{$order['invoice_number']}}</td>
@@ -103,27 +111,46 @@
         </tr>
         <tr>
             {{-- <td class="w-50">User Yang Login</td> --}}
-            <td class="w-50">Blobo Blubu</td>
-            <td class="text-end">24 Nov 2023</td>
+            {{-- <td class="w-50">Blobo Blubu</td> --}}
+            <td class="w-50">{{Session::get('username')}}</td>
+            {{-- <td class="text-end">24 Nov 2023</td> --}}
+            <td class="text-end">{{strftime("%d %b %Y", strtotime("{$order['created_at']}"))}}</td>
+            {{-- <td class="text-end">{{strftime("%d %B %Y", strtotime("$order['created_at']"))}}</td> --}}
             {{-- <td class="text-end">DD MM YYYY</td> --}}
         </tr>
         <tr>
             {{-- <td class="w-50">No Tlp User</td> --}}
-            <td class="w-50">0812487123</td>
+            {{-- <td class="w-50">0812487123</td> --}}
+            {{-- <td class="w-50">{{dump($no_tlp)}}</td> --}}
+            <td class="w-50">{{$no_tlp}}</td>
         </tr>
     </table>
     <table class="w-100 mt">
         <tr class="border-y text-center">
-            <td class="semi-bold" style="width: 40%">Item</td>
+            <td class="semi-bold" style="width: 40%; padding-bottom: 5px; padding-top: 5px">Item</td>
             <td class="semi-bold">Quantity</td>
             <td class="semi-bold">Unit Price</td>
             <td class="semi-bold">Subtotal</td>
         </tr>
         @foreach ($detail as $d)
             <tr class="text-center">
-                <td class="text-start ps">Produk</td>
+                <td class="text-start ps">
+                    @php
+                        if($d->product_id[0] == 'P')
+                            echo $d->Product->name;
+                        else
+                            echo $d->Wisata->Olahan->name;
+                    @endphp
+                </td>
                 <td>{{$d['qty']}}</td>
-                <td>50.000</td>
+                <td>
+                    @php
+                        if($d->product_id[0] == 'P')
+                            echo $d->Product->price;
+                        else
+                            echo $d->Wisata->price;
+                    @endphp
+                </td>
                 <td>Rp{{number_format($d['total'],0,",",".")}}</td>
             </tr>
         @endforeach
@@ -160,7 +187,8 @@
         <tr>
             <td class="w-50"></td>
             <td>Metode Pembayaran</td>
-            <td class="text-end">VA BCA</td>
+            {{-- <td class="text-end">VA BCA</td> --}}
+            <td class="text-end">{{$order['payment_method']}}</td>
         </tr>
     </table>
 </body>

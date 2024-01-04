@@ -12,7 +12,11 @@
     <div class="grid grid-cols-2 justify-items-center">
         @foreach($latestTrans as $trans)
             <div class="card card-side bg-base-100 h-72 shadow-xl w-4/5 m-10">
-                <figure><img src="{{$trans['product']['img_url']}}" alt="iProduct"/></figure>
+                @if ($trans['product']['img_url'])
+                    <figure><img src="{{$trans['product']['img_url']}}" alt="iProduct"/></figure>
+                @else
+                    <figure><img src="{{asset('assets/wisata/olahan/'.$trans['product']['img'])}}" alt="iProduct"/></figure>
+                @endif
                 <div class="card-body">
                 <h1 class="card-title text-3xl">{{$trans['product']['name']}}</h1>
                 <p> QTY : {{$trans['qty']}} pcs</p>
