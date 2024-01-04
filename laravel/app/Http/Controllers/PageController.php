@@ -189,10 +189,14 @@ class PageController extends Controller
         $listcart = Cart::where('username', $cekuser)->get();
         $user = request()->attributes->get('user');
         $listproduct = Products::all();
+        $listwisata = Wisata::all();
+        $listolahan = Olahan::all();
         return view('cart',[
             "listcart"=>$listcart,
             "listproduct" => $listproduct,
-            "user" => $user
+            "user" => $user,
+            "listwisata" => $listwisata,
+            "listolahan" => $listolahan
         ]);
     }
 
