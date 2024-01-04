@@ -232,6 +232,19 @@ class PageController extends Controller
         }
         return redirect("detailProducts");
     }
+    public function updateQty(Request $req) {
+        $qty = $req->input('tempQty');
+        $id = $req->input('cekid');
+        if($qty==0){
+            return back()->with('error', 'Quantity tidak boleh 0!');
+        }
+        else{
+            Cart::where('cart_id', $id)
+                        ->update(['qty' => $qty]);
+    
+            return back()->with('successupdate', 'Password berhasil diperbarui!');
+        }
+    }
     public function deleteCartItem($id) {
         $user = Cart::where('cart_id', $id)->first();
         if ($user) {
@@ -610,4 +623,5 @@ class PageController extends Controller
             return redirect()->back()->with('error', 'Gagal menyimpan gambar.');
         }
     }
+    
 }
