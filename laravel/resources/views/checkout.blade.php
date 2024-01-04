@@ -80,7 +80,7 @@
                         @endphp
                         <tr class="table-group-divider" style="border-color: #CFCFCF;">
                             <td style="background-color: #F0F0F0">Pengolahan {{$w['wisata_name']}}</td>
-                            <td class="text-center" style="background-color: #F0F0F0">{{$w['date']}}</td>
+                            <td class="text-center" style="background-color: #F0F0F0">{{date("Y-m-d", strtotime($w['date']))}}</td>
                             <td class="text-center" style="background-color: #F0F0F0">{{number_format($w['wisata_price'],0,",",".")}}</td>
                             <td class="text-center" style="background-color: #F0F0F0">{{$w['qty']}}</td>
                             <td class="text-end" style="background-color: #F0F0F0">Rp{{number_format($w['subtotal'],0,",",".")}}</td>

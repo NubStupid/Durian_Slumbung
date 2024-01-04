@@ -241,7 +241,7 @@ class PageController extends Controller
         else{
             Cart::where('cart_id', $id)
                         ->update(['qty' => $qty]);
-    
+
             return back()->with('successupdate', 'Password berhasil diperbarui!');
         }
     }
@@ -376,6 +376,7 @@ class PageController extends Controller
                     "product_id"=>$wisataID,
                     "price"=>$price,
                     "qty"=>$qty,
+                    "tgl_pesan"=>$req->jadwal,
                     "username"=>$cekuser
                 ]
             );
@@ -623,5 +624,5 @@ class PageController extends Controller
             return redirect()->back()->with('error', 'Gagal menyimpan gambar.');
         }
     }
-    
+
 }
