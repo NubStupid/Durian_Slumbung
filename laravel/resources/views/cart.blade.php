@@ -87,11 +87,10 @@
                     @endforeach
                 @endforeach
             </div>
-
             <div class="col-3">
                 <div class="mt-5 me-4 border ps-3 pt-3 pe-3">
                     <h3>Ringkasan Belanja</h3>
-                    <h5 class="mt-3">Total Harga ( <span id="totalQtyDisplay"></span> barang) </h5>
+                    <h5 class="mt-3">Total Harga (<span id="totalQtyDisplay"></span> barang) </h5>
                     <hr>
                     <span class="fw-bold fs-3" id="totalHargaDisplay"></span>
                     <div class="mt-3 d-grid">

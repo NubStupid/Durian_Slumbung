@@ -6,13 +6,15 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Storage;
 
 use App\Models\Products;
 use App\Models\Categories;
 use App\Models\Rating;
 use App\Models\Comment;
 use App\Models\Cart;
+use App\Models\Users;
 use App\Models\Likes;
 use App\Models\Olahan;
 use App\Models\BookedWisata;
@@ -160,7 +162,7 @@ class PageController extends Controller
 
         return $comments;
     }
-    
+
     public function viewProduct($id){
 
         // $productViewed = DB::connection('connect_Customer')->table('products');
@@ -308,7 +310,6 @@ class PageController extends Controller
         $prevMonth = strtotime("Last day of " . date("M") . " " . date("Y") . " previous month");
         $prevMonth = date("d", $prevMonth);
         $ctr = array_search($day, $days);
-
         return view('wisata',[
             'user' => $user,
             'olahan' => $olahan,
@@ -352,28 +353,24 @@ class PageController extends Controller
 
         $wisataID = $cekID->wisata_id;
 
-        $id = "W0001";
-        $res = Cart::create(
-            [
-                "cart_id"=>$newID,
-                "product_id"=>$wisataID,
-                "price"=>$price,
-                "qty"=>$qty,
-                "username"=>$cekuser
-            ]
-        );
-        
-        return redirect()->back()->with('showPopup', 'sukses');
-        // return view('wisata',[
-        //     'user' => $user,
-        //     'olahan' => $olahan,
-        //     'ctr' => $ctr,
-        //     'thn' => date("Y"),
-        //     'bln' => $bulan[date("m")-1],
-        //     'lastDay' => $lastDay,
-        //     'prevMonth' => $prevMonth,
-        //     'selisih' => 0
-        // ]);
+        $cekAvail = Wisata::where('wisata_id', $wisataID)->first();
+        $stok = $cekAvail->qty;
+
+        if($stok >= $qty){
+            $res = Cart::create(
+                [
+                    "cart_id"=>$newID,
+                    "product_id"=>$wisataID,
+                    "price"=>$price,
+                    "qty"=>$qty,
+                    "username"=>$cekuser
+                ]
+            );
+            return redirect()->back()->with('showPopup', 'sukses');
+        }
+        else{
+            return redirect()->back()->with('gagal', 'habis');
+        }
     }
 
     public function loadKalender(Request $req){
@@ -480,5 +477,137 @@ class PageController extends Controller
     public function loadAboutView(){
         $user = request()->attributes->get('user');
         return view('aboutpage',['user'=>$user]);
+    }
+
+    // Profile
+    public function loadProfileView(){
+        $cekuser = Session('username');
+        $userdata = Users::where('username',$cekuser)->first();
+        $param['user'] = $userdata;
+        return view('profilepage',$param);
+    }
+
+    public function updateUsername(Request $req) {
+        $user = Auth::user()->username;
+        $tempuser = $req->input('tempuser');
+
+        $cekuser = Users::where('username', $tempuser)->first();
+
+        if ($cekuser) {
+            return back()->with('error', 'Username sudah ada!');
+        }
+
+        $cekuser = Users::where('username', $user)->first();
+
+        if($cekuser->password !== $req->input('passuser')){
+            return back()->with('error', 'Password Salah!');
+        }
+
+        $cekuser->username = $tempuser;
+        $cekuser->save();
+
+        $cekuser = Users::where('username', $tempuser)->first();
+        Auth::login($cekuser);
+
+        return back()->with('successemail', 'Username berhasil diperbarui!');
+    }
+
+    public function updateNoTelp(Request $req) {
+        $user = Auth::user()->username;
+        $temptelp = $req->input('temptelp');
+        $cektelp = Users::where('telp', $temptelp)->first();
+
+        if ($cektelp) {
+            return back()->with('error', 'Nomor telepon sudah ada!');
+        }
+
+        if (empty($temptelp) || !is_numeric($temptelp) || strlen($temptelp) !== 11) {
+            return back()->with('error', 'Nomor telepon tidak valid. Harus berupa angka dan terdiri dari 11 digit.');
+        }
+
+        $cekUser = Users::where('username', $user)->first();
+
+        if (!$cekUser || $cekUser->password !== $req->input('passtelp')) {
+            return back()->with('error', 'Password salah. Tidak dapat mengubah nomor telepon.');
+        }
+
+        $cekUser->telp =  $temptelp;
+        $cekUser->save();
+
+        return back()->with('successtelp', 'Nomor telepon berhasil diperbarui!');
+    }
+    public function updatePassword(Request $req) {
+        $user = Auth::user()->username;
+        $newPassword = $req->input('passbaru');
+        $confirmPassword = $req->input('passconfirm');
+
+        if ($newPassword !== $confirmPassword) {
+            return back()->with('error', 'Password harus sama.');
+        }
+
+        $cekUser = Users::where('username', $user)->first();
+
+        if (!$cekUser || $cekUser->password !== $req->input('passlama')) {
+            return back()->with('error', 'Password salah. Tidak dapat mengubah nomor telepon.');
+        }
+
+        $cekUser->password = $newPassword;
+        $cekUser->save();
+
+        return back()->with('successpassword', 'Password berhasil diperbarui!');
+    }
+    // public function updateGambar(Request $req){
+    //     $cekgambar = request()->validate([
+    //         'tempgambar' => 'image|max:2048',
+    //     ],[
+    //         'tempgambar.image' => 'File harus berupa gambar.',
+    //         'tempgambar.max' => 'Ukuran gambar tidak boleh lebih dari 2MB.',
+    //     ]);
+
+    //     $gambarPath = request()->file('tempgambar')->store('profile','public');
+
+    //     if ($gambarPath) {
+    //         $cekUser = Users::where('username', Auth::user()->username)->first();
+    //         Storage::disk('public')->delete($cekUser->img_url);
+    //         $cekUser->img_url = "storage/".$gambarPath;
+    //         $cekUser->save();
+
+    //         return redirect()->back()->with('success', 'Gambar berhasil diunggah!');
+    //     } else {
+    //         return redirect()->back()->with('error', 'Gagal menyimpan gambar.');
+    //     }
+    // }
+    public function updateGambar(Request $request)
+    {
+        $validatedData = $request->validate([
+            'image_base64' => 'required',
+        ], [
+            'image_base64.required' => 'Masukkan File Gambar!',
+        ]);
+
+        $imageBase64 = $request->image_base64;
+        list($type, $imageBase64) = explode(';', $imageBase64);
+        list(, $imageBase64) = explode(',', $imageBase64);
+        $imageBase64 = base64_decode($imageBase64);
+
+        $imageName = time() . '.png';
+        $gambarPath = 'profile/' . $imageName;
+
+        $cekUser = Users::where('username', Auth::user()->username)->first();
+        $hapus = $cekUser->img_url;
+
+        if (Storage::disk('public')->put($gambarPath, $imageBase64)) {
+
+            if ($hapus) {
+                Storage::disk('public')->delete($hapus);
+            }
+
+            $cekUser->img_url = "storage/" . $gambarPath;
+            $cekUser->save();
+
+            return redirect()->back()->with('successgambar', 'Gambar berhasil diunggah!');
+        } else {
+            return redirect()->back()->with('error', 'Gagal menyimpan gambar.');
+        }
     }
 }

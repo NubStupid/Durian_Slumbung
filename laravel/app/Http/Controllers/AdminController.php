@@ -115,4 +115,71 @@ class AdminController extends Controller
         $view = view('masterAdminView',['a' => $viewed]);
         return $view;
     }
+
+    public function addProduct(Request $req){
+        $latestProduct = Products::latest('product_id')->first();
+        $idadd = intval(substr($latestProduct->product_id, 1))+1;
+        $newID = "P" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
+
+        $namaFolderPhoto = ""; $namaFilePhoto = "";
+        foreach ($req->file("img") as $photo) {
+            $namaFilePhoto  = "D".$newID.".".$photo->getClientOriginalExtension();
+            $namaFolderPhoto = "photo/";
+
+            $photo->storeAs($namaFolderPhoto,$namaFilePhoto, 'public');
+        }
+
+        $name = $req->name;
+        $price = $req->price;
+        $category = $req->category;
+        $qty = $req->qty;
+        $img = $namaFilePhoto;
+        $desc = $req->desc;
+
+        $res = Products::create([
+            'product_id' => $newID,
+            'name' => $name,
+            'price' => $price,
+            'category_id' => $category,
+            'qty' => $qty,
+            'description' => $desc,
+            'img_url' => $img,
+            'rate' => 0
+        ]);
+
+        return redirect()->back()->with('sukses', 'sukses');
+
+    }
+
+    public function updateProduct(Request $req, $id)
+    {
+        $product = Products::find($id);
+
+        if (!$product) {
+            return response()->json(['message' => 'Product not found'], 404);
+        }
+
+        $product->name = $req->name;
+        $product->price = $req->price;
+        $product->category_id = $req->category;
+        $product->qty = $req->qty;
+        $product->img_url = "DP0011.jpg";
+        $product->description = $req->desc;
+        $product->save();
+
+        $allProduct = Products::all();
+        $allCategory = Categories::all();
+
+        return view('adminproductCard',['products'=>$allProduct,'category'=>$allCategory]);
+    }
+
+    public function deleteProduct($id){
+        $product = Products::find($id);
+        $product->delete($id);
+
+        $allProduct = Products::all();
+        $allCategory = Categories::all();
+
+        return view('adminproductCard',['products'=>$allProduct,'category'=>$allCategory]);
+    }
 }

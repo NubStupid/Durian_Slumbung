@@ -146,7 +146,6 @@
                 <p class ="fw-semibold"style="text-indent:1.5em;">Rp. {{number_format($product->price,0,",",".")}}</p><br>
                 <span class="fw-semibold fs-4 ps-3">Qty</span>
                 <p style="text-indent:1.5em;"><span class="fw-semibold" id="qty">{{intval($product->qty)}} Pcs</span></p><br>
-
             </div>
         </div>
 
