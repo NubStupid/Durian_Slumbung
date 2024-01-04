@@ -44,7 +44,7 @@
                                 </div>
                                 <div class="col-md-9">
                                     <div class="row">
-                                        <div class="col-6 mt-3">
+                                        <div class="col-8 mt-3">
                                             <h3>
                                                 {{$data->name}}
                                             </h3>
@@ -56,27 +56,14 @@
                                             </h5>
                                         </div>
                                         <div class="col-4">
-                                            <div class="p-5"></div>
-                                            <div class="p-5"></div>
-                                            <div class="p-4"></div>
-                                            <div class="row mt-auto">
-                                                <div class="col-3 my-auto">
-                                                    <button class="circle py-auto decreaseQty" id="dec_{{$cekdata->product_id}}"><b>-</b></button>
-                                                </div>
-                                                <div class="col-6">
-                                                    <input type="text" name="" class="form-control p-2 fs-5 qty_{{$cekdata->product_id}}" placeholder="0" value="{{$cekdata->qty}}" style="text-align:center;" onchange="cekbutton()">
-                                                </div>
-                                                <div class="col-3 my-auto">
-                                                    <button class="circle py-auto increaseQty" id="inc_{{$cekdata->product_id}}"><b>+</b></button>
-                                                </div>
+                                            <div class="pb-5 pt-3 d-flex justify-content-end me-3">
+                                                <button class="ms-5 border border-0" data-bs-target="#updateQty" data-bs-toggle="modal" data-qty="{{ $cekdata->qty }}" data-maxqty="{{ $data->qty }}" data-id="{{ $cekdata->cart_id }}"><img src="{{asset('assets/cart/edit.png')}}" alt="Edit" width="max-content" height="40vh"></button>
                                             </div>
-                                        </div>
-                                        <div class="col-2">
-                                            <div class="p-5"></div>
                                             <div class="p-5"></div>
                                             <div class="p-4"></div>
-                                            <div class="mt-auto pe-5 d-flex">
-                                                <button class="mx-3 deleteCartItem border border-0" data-cart-id="{{$cekdata->cart_id}}"><img src="{{asset('assets/cart/trashicon.png')}}" alt="Trash Icon" width="max-content" height="40px"></button>
+                                            <div class="mt-auto pe-2 d-flex">
+                                                <input type="text" name="" class="form-control p-2 fs-5 qty_{{$cekdata->product_id}} me-3" placeholder="0" value="{{$cekdata->qty}}" style="text-align:center;" onchange="cekbutton()" readonly >
+                                                <button class=" mx-3 deleteCartItem border border-0" data-cart-id="{{$cekdata->cart_id}}"><img src="{{asset('assets/cart/trashicon.png')}}" alt="Trash Icon" width="max-content" height="50vh"></button>
                                             </div>
                                         </div>
                                     </div>
@@ -84,6 +71,27 @@
                             </div>
                             @break
                         @endif
+                        <div class="modal fade" id="updateQty" tabindex="-1" role="dialog" aria-labelledby="updateQtyLabel" aria-hidden="true">
+                            <div class="modal-dialog" role="document">
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <h5 class="modal-title" id="updateModalLabel">Update Qty</h5>
+                                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                    </div>
+                                    <div class="modal-body">
+                                        <form action="{{ route('update.qty') }}" method="POST">
+                                            @csrf
+                                            <div class="form-group">
+                                                <label for="newQty">Qty</label>
+                                                <input type="number" class="form-control" id="tempQty" name="tempQty" min="0" max="{{ $data->qty }}">
+                                                <input type="hidden" name="cekid" id="cekid">
+                                            </div>
+                                            <button type="submit" class="btn btn-primary my-2">Update Qty</button>
+                                        </form>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
                     @endforeach
                 @endforeach
             </div>
@@ -116,6 +124,32 @@
         </div>
     </div>
     @endif
+    @if(session('successupdate'))
+    <div class="modal fade" id="HasilUpdate" tabindex="-1" aria-labelledby="HasilAdd" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{asset('assets/misc/berhasiladdtocart.gif')}}" class="my-2" alt="" width="max-content" height="110px">
+              <h5 class="py-2">Berhasil Mengupdate Quantity!</h5>
+              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    @endif
+    @if(session('error'))
+    <div class="modal fade" id="HasilUpdate" tabindex="-1" aria-labelledby="HasilUpdate" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-centered">
+          <div class="modal-content">
+            <div class="modal-body text-center">
+                <img src="{{asset('assets/misc/gagaladdtocart.gif')}}" class="my-2" alt="" width="150vw" height="max-content">
+                <h5 class="py-2">{{ session('error') }}</h5>
+                <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
+            </div>
+          </div>
+        </div>
+    </div>
+    @endif
 @endsection
 @push('script')
     <script>
@@ -123,6 +157,17 @@
             if({{count($listcart)}}!=0){
                 displayRingkasan();
             }
+            $('#HasilUpdate').modal('show');
+
+            $('#updateQty').on('show.bs.modal', function (event) {
+                var button = $(event.relatedTarget);
+                var qty = button.data('qty');
+                var maxQty = button.data('maxqty');
+                var id = button.data('id');
+                var modal = $(this);
+                modal.find('#tempQty').val(qty).attr('max', maxQty);
+                modal.find('#cekid').val(id);
+            });
 
             // Button Decrease qty
             $('.decreaseQty').click(function(e) {
