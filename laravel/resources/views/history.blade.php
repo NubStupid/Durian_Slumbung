@@ -15,7 +15,7 @@
     <div class="text-center d-flex justify-content-center mt-5 mb-2">
         <ul class="nav nav-underline fs-4">
             <li class="nav-item mx-3">
-              <a class="nav-link text-dark" href="/cart">Cart</a>
+              <a class="nav-link text-dark" href="{{url("/cart")}}">Cart</a>
             </li>
             <li class="nav-item mx-3">
               <a class="nav-link active" aria-current="page" href="#">History</a>

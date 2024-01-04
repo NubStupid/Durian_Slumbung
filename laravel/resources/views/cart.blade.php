@@ -18,7 +18,7 @@
               <a class="nav-link active" aria-current="page" href="#">Cart</a>
             </li>
             <li class="nav-item mx-3">
-              <a class="nav-link text-dark" href="/history">History</a>
+              <a class="nav-link text-dark" href="{{url("/history")}}">History</a>
             </li>
           </ul>
     </div>
@@ -95,7 +95,7 @@
                     <hr>
                     <span class="fw-bold fs-3" id="totalHargaDisplay"></span>
                     <div class="mt-3 d-grid">
-                        <a class="btn btn-success text-center fw-bold px-5 py-1 mb-3" href="/checkout">Beli (<span id="totalQtyButtonDisplay"></span>)</a>
+                        <a class="btn btn-success text-center fw-bold px-5 py-1 mb-3" href="{{url("/checkout")}}">Beli (<span id="totalQtyButtonDisplay"></span>)</a>
                     </div>
                 </div>
             </div>
