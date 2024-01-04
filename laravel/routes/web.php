@@ -11,6 +11,7 @@ use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PusherController;
 use App\Http\Controllers\Auth\ProviderController;
 use Illuminate\Support\Facades\Auth;
 
@@ -82,6 +83,9 @@ Route::get('/register', function () {
             Route::get('/masteradmin',[AdminController::class,'masterAdmin']);
             Route::post('/searchAdmin',[AdminController::class,'searchAdmin']);
             Route::post('/masterAdminView',[AdminController::class,'viewAdmin']);
+            Route::get('/masterChat', [PusherController::class,'index']);
+            Route::post('/broadcast',  [PusherController::class,'broadcast']);
+            Route::post('/receive',  [PusherController::class,'receive']);
         });
         // });
     });
@@ -96,6 +100,13 @@ Route::get('/register', function () {
         Route::post('/product',[PageController::class, "searchProduct"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
+        
+        Route::get('/profile', [PageController::class, 'loadProfileView']);
+        Route::post('/profile/update-username', [PageController::class, 'updateUsername'])->name('update.username');
+        Route::post('/profile/update-telp', [PageController::class, 'updateNoTelp'])->name('update.notelp');
+        Route::post('/profile/update-gambar', [PageController::class, 'updateGambar'])->name('update.gambar');
+        Route::post('/profile/update-password', [PageController::class, 'updatePassword'])->name('update.password');
+        // Route::post('update-gambar', [PageController::class, 'updateGambar']);
 
         Route::get('/about', [PageController::class, "loadAboutView"]);
 
@@ -115,7 +126,7 @@ Route::get('/register', function () {
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
         Route::get('/wisata/wisata',[PageController::class,'loadWisataViewLogin']);
-        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn']);
+        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn'])->name('wisata');
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
         Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
         Route::get('/cart',[PageController::class,"viewCart"]);
@@ -137,6 +148,9 @@ Route::get('/logout', function (Request $request) {
         Auth::guard('admin')->logout();
     }
     session()->forget('role');
+    $request->session()->invalidate();
+ 
+    $request->session()->regenerateToken();
     return redirect('login');
 });
 

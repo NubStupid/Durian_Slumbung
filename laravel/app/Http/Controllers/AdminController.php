@@ -154,7 +154,7 @@ class AdminController extends Controller
     public function updateProduct(Request $req, $id)
     {
         $product = Products::find($id);
-        
+
         if (!$product) {
             return response()->json(['message' => 'Product not found'], 404);
         }
@@ -176,7 +176,7 @@ class AdminController extends Controller
     public function deleteProduct($id){
         $product = Products::find($id);
         $product->delete($id);
-        
+
         $allProduct = Products::all();
         $allCategory = Categories::all();
 

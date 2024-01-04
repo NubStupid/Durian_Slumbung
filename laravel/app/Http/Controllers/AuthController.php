@@ -52,6 +52,7 @@ class AuthController extends Controller
         if($user && $user->getAuthPassword() == $credentials['password']){
             session()->put('username', $user->username);
             session()->put('role', $user->role);
+            Auth::login($user);
             if($user->role == "M"){
                 return redirect('masterhomepage');
             }
@@ -61,6 +62,7 @@ class AuthController extends Controller
         if($user && $user->getAuthPassword() == $credentials['password']){
             session()->put('username', $user->username);
             session()->put('role', "user");
+            Auth::login($user);
             return redirect()->back();
         }else{
             return redirect(route('login'))->with("pesanLogin", "Gagal Login!")->withInput();
@@ -137,7 +139,8 @@ class AuthController extends Controller
                 [
                     "username" => $req->username,
                     "password" => $req->password,
-                    "telp" => $req->notelp
+                    "telp" => $req->notelp,
+                    "img_url" => "https://t4.ftcdn.net/jpg/04/38/19/57/360_F_438195737_KifWlRKIKOYEwrbEXwUwLnVQoIeQM1iW.jpg"
                 ]
             );
             return redirect('login')->with('success_message', 'Registration successful. Please login.');
