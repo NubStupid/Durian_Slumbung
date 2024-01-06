@@ -79,7 +79,6 @@
     </div>
     <div class="col-1"></div>
 </div>
-
     {{-- Modal Username --}}
     <div class="modal fade" id="updateUsername" tabindex="-1" role="dialog" aria-labelledby="updateUsernameLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -95,7 +94,6 @@
                             <label for="newUsername">New Username</label>
                             <input type="text" class="form-control" id="tempuser" name="tempuser">
                         </div>
-
                         <div class="form-group">
                             <label for="confirmPassword">Confirm Password</label>
                             <input type="password" class="form-control" id="passuser" name="passuser">
@@ -106,7 +104,6 @@
             </div>
         </div>
     </div>
-
     {{-- Modal NoTelepon --}}
     <div class="modal fade" id="updateNoTelp" tabindex="-1" role="dialog" aria-labelledby="updateTelephoneLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -276,7 +273,6 @@
         var $modal = $('#modal');
         var image = document.getElementById('image');
         var cropper;
-
         $("body").on("change", ".image", function(e){
             var files = e.target.files;
             var done = function (url) {
@@ -302,7 +298,6 @@
                 }
             }
         });
-
         $modal.on('shown.bs.modal', function () {
             cropper = new Cropper(image, {
                 aspectRatio: 1,
@@ -310,7 +305,6 @@
                 autoCropArea: 0.5,
                 preview: '.preview'
             });
-
         }).on('hidden.bs.modal', function () {
             cropper.destroy();
             cropper = null;
@@ -321,7 +315,6 @@
                 width: 300,
                 height: 300,
             });
-
             canvas.toBlob(function(blob) {
                 url = URL.createObjectURL(blob);
                 var reader = new FileReader();

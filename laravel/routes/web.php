@@ -114,6 +114,13 @@ Route::get('/register', function () {
         Route::post('/profile/update-password', [PageController::class, 'updatePassword'])->name('update.password');
         // Route::post('update-gambar', [PageController::class, 'updateGambar']);
 
+        Route::get('/profile', [PageController::class, 'loadProfileView']);
+        Route::post('/profile/update-username', [PageController::class, 'updateUsername'])->name('update.username');
+        Route::post('/profile/update-telp', [PageController::class, 'updateNoTelp'])->name('update.notelp');
+        Route::post('/profile/update-gambar', [PageController::class, 'updateGambar'])->name('update.gambar');
+        Route::post('/profile/update-password', [PageController::class, 'updatePassword'])->name('update.password');
+        // Route::post('update-gambar', [PageController::class, 'updateGambar']);
+
         Route::get('/about', [PageController::class, "loadAboutView"]);
 
         // AJAX page wisata
@@ -155,7 +162,6 @@ Route::get('/logout', function (Request $request) {
     }
     session()->forget('role');
     $request->session()->invalidate();
-
     $request->session()->regenerateToken();
     return redirect('login');
 });
