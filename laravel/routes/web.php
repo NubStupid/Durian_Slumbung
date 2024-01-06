@@ -92,6 +92,8 @@ Route::get('/register', function () {
             Route::get('/masterChat', [PusherController::class,'index']);
             Route::post('/broadcast',  [PusherController::class,'broadcast']);
             Route::post('/receive',  [PusherController::class,'receive']);
+            Route::get('/write',[AIController::class,'viewChat']);
+            Route::post('/write/generate',[AIController::class,'promptChat']);
         });
         // });
     });
@@ -106,13 +108,6 @@ Route::get('/register', function () {
         Route::post('/product',[PageController::class, "searchProduct"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
-
-        Route::get('/profile', [PageController::class, 'loadProfileView']);
-        Route::post('/profile/update-username', [PageController::class, 'updateUsername'])->name('update.username');
-        Route::post('/profile/update-telp', [PageController::class, 'updateNoTelp'])->name('update.notelp');
-        Route::post('/profile/update-gambar', [PageController::class, 'updateGambar'])->name('update.gambar');
-        Route::post('/profile/update-password', [PageController::class, 'updatePassword'])->name('update.password');
-        // Route::post('update-gambar', [PageController::class, 'updateGambar']);
 
         Route::get('/profile', [PageController::class, 'loadProfileView']);
         Route::post('/profile/update-username', [PageController::class, 'updateUsername'])->name('update.username');
@@ -143,6 +138,7 @@ Route::get('/register', function () {
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
         Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
         Route::get('/cart',[PageController::class,"viewCart"]);
+        Route::post('/cart/update-qty',[PageController::class,"updateQty"])->name('update.qty');
         Route::delete('/delete-cart-item/{id}',[PageController::class,"deleteCartItem"]);
         Route::get('/history',[PageController::class,"viewHistory"]);
         Route::post('/product/like',[RatingController::class,"insertUpdateRating"]);

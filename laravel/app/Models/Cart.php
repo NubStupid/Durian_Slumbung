@@ -14,10 +14,14 @@ class Cart extends Model
     public $timestamps = false;
 
     protected $fillable = [
-        'cart_id','product_id','price','qty', 'username'
+        'cart_id','product_id','price','qty', 'tgl_pesan', 'username'
     ];
 
     public function Product(){
         return $this->belongsTo(Products::Class,"product_id","product_id");
+    }
+
+    public function Wisata(){
+        return $this->belongsTo(Wisata::class, "product_id", "wisata_id");
     }
 }

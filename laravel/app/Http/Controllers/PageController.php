@@ -189,10 +189,14 @@ class PageController extends Controller
         $listcart = Cart::where('username', $cekuser)->get();
         $user = request()->attributes->get('user');
         $listproduct = Products::all();
+        $listwisata = Wisata::all();
+        $listolahan = Olahan::all();
         return view('cart',[
             "listcart"=>$listcart,
             "listproduct" => $listproduct,
-            "user" => $user
+            "user" => $user,
+            "listwisata" => $listwisata,
+            "listolahan" => $listolahan
         ]);
     }
 
@@ -231,6 +235,19 @@ class PageController extends Controller
             return redirect()->back()->with('success', 'Quantity updated in the cart.');
         }
         return redirect("detailProducts");
+    }
+    public function updateQty(Request $req) {
+        $qty = $req->input('tempQty');
+        $id = $req->input('cekid');
+        if($qty==0){
+            return back()->with('error', 'Quantity tidak boleh 0!');
+        }
+        else{
+            Cart::where('cart_id', $id)
+                        ->update(['qty' => $qty]);
+
+            return back()->with('successupdate', 'Password berhasil diperbarui!');
+        }
     }
     public function deleteCartItem($id) {
         $user = Cart::where('cart_id', $id)->first();
@@ -342,7 +359,7 @@ class PageController extends Controller
         // ------------------------------------------------------------------------
         $cekuser = Session('username');
         $qty = $req->orang;
-        $price = 20000 * $qty;
+        $price = 20000;
         $latestCart = Cart::latest('cart_id')->first();
         $idadd = intval(substr($latestCart->cart_id, 1))+1;
         $newID = "C" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
@@ -363,6 +380,7 @@ class PageController extends Controller
                     "product_id"=>$wisataID,
                     "price"=>$price,
                     "qty"=>$qty,
+                    "tgl_pesan"=>$req->jadwal,
                     "username"=>$cekuser
                 ]
             );
@@ -610,4 +628,5 @@ class PageController extends Controller
             return redirect()->back()->with('error', 'Gagal menyimpan gambar.');
         }
     }
+
 }
