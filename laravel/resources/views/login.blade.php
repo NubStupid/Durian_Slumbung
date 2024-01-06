@@ -174,23 +174,23 @@
                                     <div class="row my-3">
                                         <input type="password" name="password" id="password" class="form-control regisButton"><br>
                                     </div>
-                                    {{-- <div class="row position-absolute">
+                                    <div class="row position-absolute">
                                         @error('confirm_password')
                                             <span style="color: red;">
                                                 {{ $message }}
                                             </span>
                                         @enderror
-                                    </div> --}}
+                                    </div>
                                     <div class="row my-3">
                                         <input type="password" name="confirm_password" id="confirm_password" class="regisButton form-control">
                                     </div>
-                                    {{-- <div class="row position-absolute">
+                                    <div class="row position-absolute">
                                         @error('notelp')
                                             <span style="color: red;">
                                                 {{ $message }}
                                             </span>
                                         @enderror
-                                    </div> --}}
+                                    </div>
                                     <div class="row my-2">
                                         <input type="text" name="notelp" id="notelp" value="{{ old('notelp') }}" class="regisButton form-control">
                                     </div>

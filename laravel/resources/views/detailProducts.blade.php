@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
     ::-webkit-scrollbar {
+        
         display: none;
     }
     .comment-section-outer {
@@ -146,7 +147,6 @@
                 <p class ="fw-semibold"style="text-indent:1.5em;">Rp. {{number_format($product->price,0,",",".")}}</p><br>
                 <span class="fw-semibold fs-4 ps-3">Qty</span>
                 <p style="text-indent:1.5em;"><span class="fw-semibold" id="qty">{{intval($product->qty)}} Pcs</span></p><br>
-
             </div>
         </div>
 
@@ -348,7 +348,7 @@
         var qty = $('.qty').val();
         var value = parseInt(qty);
         value = isNaN(value) ? 0 : value;
-        
+
         let harga = Math.ceil({{$product->price}});
         let maksqty = {{$product->qty}};
         var subtotal = harga*value;

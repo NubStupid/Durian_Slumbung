@@ -1,6 +1,6 @@
 <div class="col card p-2 mx-5 my-3" style="width: 18rem;">
     <div class="row d-flex justify-content-center">
-        <img src={{$products[$i-1]->img_url}} class="card-img-top" alt="..." style="max-width:10rem;max-height:auto;">
+        <img src="https://picsum.photos/id/125/200/300" class="card-img-top" alt="..." style="max-width:10rem;max-height:auto;">
     </div>
     <div class="card-body">
         <h5 class="card-title row">

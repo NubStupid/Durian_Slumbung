@@ -11,6 +11,20 @@
     .dropdown-content a {
         display: block;
     }
+    .dropdown-menu {
+        display: block;
+        visibility: hidden;
+        opacity:0;
+        transform: translateY(50px);
+        transition:.2s ease all;
+    }
+    .dropdown-menu.show {
+        display: block;
+        visibility: visible;
+        opacity:1;
+        transform: translateY(0px);
+        transition:.2s ease all;
+    }
     </style>
 @endpush
 @section('container')
@@ -25,6 +39,7 @@
             $activeWisata ="";      $hrefWisata ="/wisata";
             $activeAbout = "";      $hrefAbout = "/about";
             $activeCart = "";       $hrefCart = "/cart";
+            $activeProfile = "";    $hrefProfile = "/profile";
             if($title == "Home"){
                 $activeHome = "active";
                 $hrefHome = "#";
@@ -40,9 +55,13 @@
             }else if($title == "Cart"){
                 $activeCart = "active";
                 $hrefCart = "#";
+            }else if($title == "Profile"){
+                $activeProfile = "profile";
+                $hrefProfile = "#";
             }
+
         @endphp
-        <div class="d-flex justify-content-center" id="navbarSupportedContent">
+        <div class="d-flex justify-content-center ms-5" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                 <li class="nav-item mx-2">
                     <a class="nav-link text-white {{$activeHome}}" aria-current="page" href={{url($hrefHome)}}>Home</a>
@@ -60,35 +79,35 @@
         </div>
 
         <div class="d-flex me-3 align-items-center">
-            @if($user == null)
-
+            @if($user == null && !Auth::check())
                 <a href="{{url('/login')}}" class="btn bg-gray-light border border-2">Login</a>
-
             @else
                 {{-- Shopping Cart --}}
                 <a href="{{url($hrefCart)}}" class="me-4 pe-2">
                     <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width:1.5vw; max-height:auto;">
                 </a>
                 {{-- Logo --}}
-                <div class="dropdown">
-                    <button type="button" class="btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">
-                        <img src="{{asset('assets/navbar/shopping-cart.png')}}" alt="" style="max-width: 3vw; max-height: auto; border-radius: 50%">
+                <div class="dropdown me-5">
+                    <button data-bs-toggle="dropdown" aria-expanded="false" style="background: none; border: none;
+                    padding: 0; font: inherit; cursor: pointer; outline: inherit; color: inherit;">
+                        @if(Auth::check() && Auth::user()->img_url)
+                            <img src={{ Auth::user()->img_url }} alt="kusung" style="max-width: 3vw; max-height: auto; border-radius: 50%">
+                        @else
+                            <img src="https://t4.ftcdn.net/jpg/04/38/19/57/360_F_438195737_KifWlRKIKOYEwrbEXwUwLnVQoIeQM1iW.jpg" alt="kusung" style="max-width: 3vw; max-height: auto; border-radius: 50%">
+                        @endif
                     </button>
-                    <ul class="dropdown-menu" style="">
-                      <li><a class="dropdown-item" href="#">Action</a></li>
-                      <li><a class="dropdown-item" href="#">Another action</a></li>
-                      <li><a class="dropdown-item" href="#">Something else here</a></li>
+                    <ul class="dropdown-menu me-5 px-3" style="text-decoration: none;">
+                      <li><a class="py-1" href={{ url('/profile')}} style="text-decoration: none;"><button class="btn btn-outline-primary w-100 my-1">Profile</button></a></li>
+                      <li><a class="py-1" href={{url('/logout')}} style="text-decoration: none;"><button class="btn btn-outline-danger w-100 my-1">Logout</button></a></li>
                     </ul>
                 </div>
+                <div class="me-5"></div>
             @endif
 
         </div>
         </div>
-        <div class="dropdown-content" id="dropdownContent" style="margin-left: 1420px;">
-            <a href="{{url('/logout')}}" class="btn btn-danger" style="text-decoration: none;">Logout</a>
-        </div>
     </nav>
-    
+
 
 {{-- Content --}}
 @yield('content')

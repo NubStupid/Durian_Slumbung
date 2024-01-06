@@ -18,7 +18,7 @@
               <a class="nav-link active" aria-current="page" href="#">Cart</a>
             </li>
             <li class="nav-item mx-3">
-              <a class="nav-link text-dark" href="/history">History</a>
+              <a class="nav-link text-dark" href="{{url("/history")}}">History</a>
             </li>
           </ul>
     </div>
@@ -94,7 +94,7 @@
                     <hr>
                     <span class="fw-bold fs-3" id="totalHargaDisplay"></span>
                     <div class="mt-3 d-grid">
-                        <a class="btn btn-success text-center fw-bold px-5 py-1 mb-3" href="/checkout">Beli (<span id="totalQtyButtonDisplay"></span>)</a>
+                        <a class="btn btn-success text-center fw-bold px-5 py-1 mb-3" href="{{url("/checkout")}}">Beli (<span id="totalQtyButtonDisplay"></span>)</a>
                     </div>
                 </div>
             </div>
@@ -122,58 +122,6 @@
             if({{count($listcart)}}!=0){
                 displayRingkasan();
             }
-
-            // Button Decrease qty
-            $('.decreaseQty').click(function(e) {
-                e.preventDefault();
-                var $input = $(this).closest('.row').find('.qty');
-                var qty = $input.val();
-                var value = parseInt(qty);
-                value = isNaN(value) ? 0 : value;
-                if(value > 1){
-                    value--;
-                    $input.val(value);
-                }
-            });
-
-            $('.increaseQty').click(function(e) {
-                e.preventDefault();
-                var $input = $(this).closest('.row').find('.qty');
-                var qty = $input.val();
-                var value = parseInt(qty);
-                value = isNaN(value) ? 0 : value;
-
-                var product_id = $(this).data('product-id');
-                var maksqty = $('.maxQty_' + product_id).val();
-
-                if(value < maksqty){
-                    value++;
-                    $input.val(value);
-                }
-            });
-
-            $('.qty').on('input', function() {
-                var $input = $(this);
-                var value = $input.val();
-
-                if (!/^-?\d*\.?\d+$/.test(value)) {
-                    value = value.replace(/[^\d-]/g, '');
-                }
-
-                var countMinus = (value.match(/-/g) || []).length;
-                if (countMinus > 1 || (countMinus === 1 && value.indexOf('-') !== 0)) {
-                    value = value.replace(/-/g, '');
-                }
-                if(value < 1){
-                    value = 0;
-                } else if(value > maksqty){
-                    value = maksqty;
-                } else if(value.length === 2 && value.charAt(0) === '0' && value.charAt(1) !== '0') {
-                    value = value.substring(1);
-                }
-                $input.val(value);
-            });
-        });
 
         // Button hapus item cart
         $('.deleteCartItem').on('click', function(e) {

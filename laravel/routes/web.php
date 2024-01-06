@@ -11,6 +11,8 @@ use App\Http\Middleware\Guest;
 use Illuminate\Http\Request;
 use App\Http\Controllers\CommentController;
 use App\Http\Controllers\LikeController;
+use App\Http\Controllers\PusherController;
+use App\Http\Controllers\AIController;
 use App\Http\Controllers\Auth\ProviderController;
 use Illuminate\Support\Facades\Auth;
 
@@ -65,6 +67,8 @@ Route::get('/register', function () {
         Route::post('/testTambah',[UserController::class,"tambah"]);
         Route::get('/testUbah/{id}',[UserController::class,"loadFormUbah"]);
         Route::post('/testUbah/{id}',[UserController::class,"ubah"]);
+        Route::get('/write',[AIController::class,'viewChat']);
+        Route::post('/write/generate',[AIController::class,'promptChat']);
         Route::middleware('role:A')->group(function(){
             Route::get('/adminhomepage',[AdminController::class,"dashboard"]);
             Route::get('/adminproduct',[AdminController::class,"adminProduct"]);
@@ -80,8 +84,14 @@ Route::get('/register', function () {
             Route::get('/wisatareport',[AdminController::class,'wisataReport']);
             Route::post('/wisatareport',[AdminController::class,'filterWisata']);
             Route::get('/masteradmin',[AdminController::class,'masterAdmin']);
+            Route::post('/masteradmin',[AdminController::class,'addAdmin']);
             Route::post('/searchAdmin',[AdminController::class,'searchAdmin']);
             Route::post('/masterAdminView',[AdminController::class,'viewAdmin']);
+            Route::post('/updateadmin/{id}', [AdminController::class, "updateAdmin"]);
+            Route::delete('/deleteadmin/{id}', [AdminController::class, "deleteAdmin"]);
+            Route::get('/masterChat', [PusherController::class,'index']);
+            Route::post('/broadcast',  [PusherController::class,'broadcast']);
+            Route::post('/receive',  [PusherController::class,'receive']);
         });
         // });
     });
@@ -96,6 +106,13 @@ Route::get('/register', function () {
         Route::post('/product',[PageController::class, "searchProduct"]);
 
         Route::get('/wisata',[PageController::class,'loadWisataView']);
+
+        Route::get('/profile', [PageController::class, 'loadProfileView']);
+        Route::post('/profile/update-username', [PageController::class, 'updateUsername'])->name('update.username');
+        Route::post('/profile/update-telp', [PageController::class, 'updateNoTelp'])->name('update.notelp');
+        Route::post('/profile/update-gambar', [PageController::class, 'updateGambar'])->name('update.gambar');
+        Route::post('/profile/update-password', [PageController::class, 'updatePassword'])->name('update.password');
+        // Route::post('update-gambar', [PageController::class, 'updateGambar']);
 
         Route::get('/about', [PageController::class, "loadAboutView"]);
 
@@ -115,7 +132,7 @@ Route::get('/register', function () {
     });
     Route::middleware(['authen:user','role:user'])->group(function () {
         Route::get('/wisata/wisata',[PageController::class,'loadWisataViewLogin']);
-        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn']);
+        Route::post('/wisata/wisata',[PageController::class,'loadWisataViewLoggedIn'])->name('wisata');
         Route::get('/product/view/{id}',[PageController::class,"viewProduct"]);
         Route::post('/product/view/{id}',[PageController::class,"addCart"])->name('add-cart');
         Route::get('/cart',[PageController::class,"viewCart"]);
@@ -137,6 +154,9 @@ Route::get('/logout', function (Request $request) {
         Auth::guard('admin')->logout();
     }
     session()->forget('role');
+    $request->session()->invalidate();
+
+    $request->session()->regenerateToken();
     return redirect('login');
 });
 
