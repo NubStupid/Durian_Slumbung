@@ -11,7 +11,7 @@
     .preview {
         text-align: center;
         overflow: hidden;
-        width: 160px; 
+        width: 160px;
         height: 160px;
         margin: 10px;
         border: 1px solid red;
@@ -79,7 +79,6 @@
     </div>
     <div class="col-1"></div>
 </div>
-    
     {{-- Modal Username --}}
     <div class="modal fade" id="updateUsername" tabindex="-1" role="dialog" aria-labelledby="updateUsernameLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -95,7 +94,6 @@
                             <label for="newUsername">New Username</label>
                             <input type="text" class="form-control" id="tempuser" name="tempuser">
                         </div>
-                        
                         <div class="form-group">
                             <label for="confirmPassword">Confirm Password</label>
                             <input type="password" class="form-control" id="passuser" name="passuser">
@@ -106,7 +104,6 @@
             </div>
         </div>
     </div>
-    
     {{-- Modal NoTelepon --}}
     <div class="modal fade" id="updateNoTelp" tabindex="-1" role="dialog" aria-labelledby="updateTelephoneLabel" aria-hidden="true">
         <div class="modal-dialog" role="document">
@@ -161,73 +158,6 @@
             </div>
         </div>
     </div>
-    
-
-    {{-- @if(session('successtelp'))
-    <div class="modal fade" id="HasilUpdate" tabindex="-1" aria-labelledby="HasilUpdate" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-body text-center">
-                <img src="{{asset('assets/misc/berhasileditnotelp.gif')}}" class="my-4" alt="" width="70vw" height="max-content">
-              <h5 class="py-2">Berhasil Mengupdate Nomor Telepon!</h5>
-              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
-            </div>
-          </div>
-        </div>
-    </div>
-    @endif
-    @if(session('successemail'))
-    <div class="modal fade" id="HasilUpdate" tabindex="-1" aria-labelledby="HasilUpdate" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-body text-center">
-                <img src="{{asset('assets/misc/berhasileditusername.gif')}}" class="my-4" alt="" width="70vw" height="max-content">
-              <h5 class="py-2">Berhasil Mengupdate Username!</h5>
-              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
-            </div>
-          </div>
-        </div>
-    </div>
-    @endif
-    @if(session('successgambar'))
-    <div class="modal fade" id="HasilUpdate" tabindex="-1" aria-labelledby="HasilUpdate" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-body text-center">
-                <img src="{{asset('assets/misc/berhasileditfoto.gif')}}" class="my-4" alt="" width="70vw" height="max-content">
-              <h5 class="py-2">Berhasil Mengupdate Profile Picture!</h5>
-              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
-            </div>
-          </div>
-        </div>
-    </div>
-    @endif
-    @if(session('successpass'))
-    <div class="modal fade" id="HasilUpdate" tabindex="-1" aria-labelledby="HasilUpdate" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-body text-center">
-                <img src="{{asset('assets/misc/berhasileditfoto.gif')}}" class="my-4" alt="" width="70vw" height="max-content">
-              <h5 class="py-2">Berhasil Mengupdate Profile Picture!</h5>
-              <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
-            </div>
-          </div>
-        </div>
-    </div>
-    @endif
-    @if(session('error'))
-    <div class="modal fade" id="HasilUpdate" tabindex="-1" aria-labelledby="HasilUpdate" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-centered">
-          <div class="modal-content">
-            <div class="modal-body text-center">
-                <img src="{{asset('assets/misc/gagaladdtocart.gif')}}" class="my-2" alt="" width="150vw" height="max-content">
-                <h5 class="py-2">{{ session('error') }}</h5>
-                <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
-            </div>
-          </div>
-        </div>
-    </div>
-    @endif --}}
 
     @if(session('error')||session('successpass')||session('successgambar')||session('successemail')||session('successtelp')||session('successpassword'))
     <div class="modal fade" id="HasilUpdate" tabindex="-1" aria-labelledby="HasilUpdate" aria-hidden="true">
@@ -268,7 +198,7 @@
                 <img src="{{asset('assets/misc/gagaladdtocart.gif')}}" class="my-2" alt="" width="150vw" height="max-content">
                 <h5 class="py-2">
                 @foreach ($errors->all() as $error)
-                    {{ $error }} 
+                    {{ $error }}
                 @endforeach
                 </h5>
               <button type="button" class="btn btn-secondary mx-5 w-0" data-bs-dismiss="modal" aria-label="Close" id="okayButton">Oke!</button>
@@ -324,7 +254,7 @@
         <img class="img-fluid pb-2" src={{ Auth::user()->img_url}} alt="Profile Picture">
         <form action="{{ route('update.gambar') }}" method="POST" enctype="multipart/form-data">
             @csrf
-            <input type="file" name="tempgambar" id="img" style="display:none;" accept=".jpeg,.jpg,.png" onchange="this.form.submit()" > 
+            <input type="file" name="tempgambar" id="img" style="display:none;" accept=".jpeg,.jpg,.png" onchange="this.form.submit()" >
             <label class="btn btn-outline-success w-100 fw-bold" for="img">Ganti Gambar!</label>
         </form>
     </div> --}}
@@ -343,21 +273,20 @@
         var $modal = $('#modal');
         var image = document.getElementById('image');
         var cropper;
-  
         $("body").on("change", ".image", function(e){
             var files = e.target.files;
             var done = function (url) {
                 $modal.modal('show');
                 image.src = url;
             };
-  
+
             var reader;
             var file;
             var url;
-  
+
             if (files && files.length > 0) {
                 file = files[0];
-  
+
                 if (URL) {
                     done(URL.createObjectURL(file));
                 } else if (FileReader) {
@@ -369,7 +298,6 @@
                 }
             }
         });
-  
         $modal.on('shown.bs.modal', function () {
             cropper = new Cropper(image, {
                 aspectRatio: 1,
@@ -377,7 +305,6 @@
                 autoCropArea: 0.5,
                 preview: '.preview'
             });
-            
         }).on('hidden.bs.modal', function () {
             cropper.destroy();
             cropper = null;
@@ -388,13 +315,12 @@
                 width: 300,
                 height: 300,
             });
-  
             canvas.toBlob(function(blob) {
                 url = URL.createObjectURL(blob);
                 var reader = new FileReader();
                 reader.readAsDataURL(blob);
                 reader.onloadend = function() {
-                    var base64data = reader.result; 
+                    var base64data = reader.result;
                     $("input[name='image_base64']").val(base64data);
                     $(".show-image").show();
                     $(".show-image").attr("src",base64data);
@@ -403,6 +329,6 @@
             });
         });
     </script>
-    
-    
+
+
 @endpush

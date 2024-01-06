@@ -15,6 +15,7 @@ class Admin extends Authenticatable
     public $incrementing = false;
     public $timestamps = false;
 
+    protected $fillable = ["username", "password", "role"];
     // public function getAuthPassword(){
     //     return $this->password; diisi field yangmau overwrite di cred password di auth
     // }

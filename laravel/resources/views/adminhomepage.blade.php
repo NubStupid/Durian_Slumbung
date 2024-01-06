@@ -13,7 +13,7 @@
         @foreach($latestTrans as $trans)
             <div class="card card-side bg-base-100 h-72 shadow-xl w-4/5 m-10">
                 @if ($trans['product']['img_url'])
-                    <figure><img src="{{$trans['product']['img_url']}}" alt="iProduct"/></figure>
+                    <figure><img src="https://picsum.photos/id/125/200/300" alt="iProduct"/></figure>
                 @else
                     <figure><img src="{{asset('assets/wisata/olahan/'.$trans['product']['img'])}}" alt="iProduct"/></figure>
                 @endif

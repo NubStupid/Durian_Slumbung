@@ -33,6 +33,7 @@
 
 
 
+                <li class="px-5 my-3"><a href="{{url('/write')}}" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">DurianAI</a></li>
                 <li class="px-5 my-3"><a href="{{url('logout')}}" class="btn btn bg-green-primary rounded-lg text-white pt-2 pb-1 px-2">Logout</a></li>
 
                 </ul>

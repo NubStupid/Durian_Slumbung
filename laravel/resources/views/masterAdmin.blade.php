@@ -59,15 +59,18 @@
         </div>
     </div>
     <div id="form" class="col-span-2 border-2 rounded-lg border-black p-5 me-5" style="width:100%">
-        <div class="text-3xl font-bold mb-5">Create Admin</div>
-        <div class="my-1">
-            Username : <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+        <form action="" method="post">
+            @csrf
+            <div class="text-3xl font-bold mb-5">Create Admin</div>
+            <div class="my-1">
+                Username : <input type="text" name="username"  placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+            </div>
+            <div class="my-1">
+                Password : <input type="text" name="password" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
+            </div>
+            <button type="submit" class="btn btn-success">Add Admin</button>
+        </form>
         </div>
-        <div class="my-1">
-            Password : <input type="text" placeholder="Type here" class="input input-bordered w-full max-w-xs" />
-        </div>
-        <button class="btn btn-success">Add Admin</button>
-    </div>
     <div id="product" class="col-span-2 border-2 rounded-lg border-black p-5 me-5" style="width:100%">
         <div class="text-3xl font-bold">Update Admin</div>
         <div id="adminContentView">
@@ -121,8 +124,31 @@
         $('#product').removeClass('visible');
     }
 
-    function updateAdmin(p_id){
-        console.log(p_id);
+    function updateAdmin(p_id) {
+        var user = $('#usUpdate').val();
+        var pass = $('#psUpdate').val();
+        var csrfToken = $('meta[name="csrf-token"]').attr('content');
+
+        var data = {
+            username: user,
+            password: pass
+        };
+
+        console.log(data);
+        console.log(csrfToken);
+        $.ajax({
+            url: `/updateadmin/${p_id}`,
+            type: 'POST',
+            headers: {
+                'X-CSRF-TOKEN': csrfToken
+            },
+            data: data,
+            success: function (data) {
+                console.log('Admin updated successfully');
+                $('#productContent').html(data);
+                $('#productContentView').html('Updated successfully');
+            }
+        });
     }
     function deleteAdmin(p_id){
         console.log(p_id);

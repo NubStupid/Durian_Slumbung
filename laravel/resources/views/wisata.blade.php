@@ -130,7 +130,7 @@
                 else{
                 ?>
                 <button type="submit" class="btn btn-light ms-5" data-bs-toggle="modal" data-bs-target="#Book" id="bookbtn">Book Now</button>
-                <?php    
+                <?php
                 }
                 ?>
                 <div class="mt-4"></div>
@@ -219,7 +219,7 @@
             </div>
         </div>
     </div>
-    
+
     @if(session('showPopup'))
     <div class="modal fade" id="popup" tabindex="-1" aria-labelledby="popup" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered">
@@ -353,7 +353,7 @@
                 selectElement.options[0].text += " - Dodol Durian";
                 selectElement.options[1].text += " - Kolak Durian";
                 selectElement.options[2].text += " - Ketan Durian";
-            } 
+            }
             else if (hari == 2 || hari == 4 || hari == 6){
                 selectElement.options[0].text += " - Pancake Durian";
                 selectElement.options[1].text += " - Es Krim Durian";
@@ -367,7 +367,6 @@
 
             var sesi = document.getElementById("pilihSesi").value;
 
-            // console.log(selectElement.value + " " + sesi);
             document.getElementById('sesi').value = sesi;
             document.getElementById('hari').value = hari;
         }
@@ -383,8 +382,7 @@
                 }
                 document.getElementById("warning").innerHTML = ""
                 document.getElementById("harga").innerHTML = new Intl.NumberFormat('id-ID', options).format((jum * 20000))
-                // document.getElementById("harga").innerHTML = (jum * 20000)
-                // document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
+
             } else {
                 if(!isNaN(jum))
                     document.getElementById("warning").innerHTML = '<div class="alert alert-danger mt-1" role="alert"><h6 class="my-auto">Jumlah orang harus 1-20</h6></div>'
@@ -408,17 +406,8 @@
                 tahun++;
             idx = idx % 12 + 1;
 
-            // var date1 = new Date($('#firstPayDate').val());
-            // var date2 = new Date($('#loanTrm').val());
-            // var datediff = date2 - date1;
             var now = new Date(), newMonth = new Date(tahun, idx-1), nowMonth = new Date(now.getFullYear(), (now.getMonth())), selisih = Math.round(((newMonth - nowMonth) % 31536000000)/2628000000);
-            // console.log(tahun + "-" + idx);
-            // console.log(now.getFullYear() + "-" + (now.getMonth()+1));
-            // console.log(newMonth)
-            // console.log(nowMonth)
-            // console.log(Math.round(((newMonth - nowMonth) % 31536000000)/2628000000))
-            // if(selisih >= 0 && selisih < 3)
-            // {
+
             var prev = document.getElementById("clicked")
             $("sesiOlahan").html("");
             if(prev != null && prev.classList.contains('btn-dark')) {
@@ -439,17 +428,6 @@
             },function (response) {
                 $('#kalender').html(response);
             })
-            // }
-            // if(selisih == 0)
-            //     $("#btnLeft").prop("disabled",true);
-            // else if(selisih == 3)
-            //     $("#btnRight").prop("disabled",true);
-            // else
-            // {
-            //     $("#btnLeft").prop("disabled",false);
-            //     $("#btnRight").prop("disabled",false);
-            // }
-            // console.log(new Date($('#firstPayDate').val()));
 
         };
         function showBook(e) {
@@ -480,48 +458,5 @@
                 $('#sesiWisata').html(response);
             })
         };
-
-        // function pilihTgl() {
-        //     console.log('Function called!');
-        //     var tgl = document.getElementById("pilihTanggal").value;
-        //     var xhr = new XMLHttpRequest();
-        //     xhr.setRequestHeader('X-CSRF-TOKEN', document.querySelector('meta[name="csrf-token"]').content);
-        //     xhr.onreadystatechange = function() {
-        //         if(xhr.readyState == 4 && xhr.status == 200) {
-        //             // console.log(tgl);
-        //             var def = '<option selected disabled>Pilih sesi</option>';
-        //             document.getElementById("pilihSesi").innerHTML = def + xhr.responseText;
-        //         }
-        //     }
-        //     xhr.open('GET', "pilihSesi.php?tgl='" + tgl + "'", true);
-        //     xhr.send();
-        // };
-
-        // function cek() {
-            // console.log('Function called!');
-            // console.log("masuk")
-            // console.log()
-            // var tgl = document.getElementById("pilihTanggal").value;
-
-            // var xhr = new XMLHttpRequest();
-            // xhr.onreadystatechange = function() {
-            //     if(xhr.readyState == 4 && xhr.status == 200) {
-            //         document.getElementById("warningGambar").innerHTML = xhr.responseText;
-            //     }
-            // }
-            // xhr.open('GET', "cekGambar.php", true);
-            // xhr.send();
-            // console.log(document.getElementById("pilihTanggal").value)
-            // var jum = parseInt(document.getElementById("orang").value)
-            // if(jum > 9 && jum < 21) {
-            //     document.getElementById("warning").innerHTML = ""
-            //     document.getElementById("harga").innerHTML = "<h6>" + (jum * 20000) + "</h6>"
-            // } else {
-            //     if(!isNaN(jum))
-            //         document.getElementById("warning").innerHTML = '<div class="alert alert-danger" role="alert"><h6>Jumlah orang harus 10-20 orang</h6></div>'
-            //     document.getElementById("harga").innerHTML = "<h6>0</h6>"
-            // }
-        // };
-
     </script>
 @endpush

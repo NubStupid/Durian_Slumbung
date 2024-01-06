@@ -11,6 +11,7 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
 <style>
     ::-webkit-scrollbar {
+        
         display: none;
     }
     .comment-section-outer {
@@ -347,7 +348,7 @@
         var qty = $('.qty').val();
         var value = parseInt(qty);
         value = isNaN(value) ? 0 : value;
-        
+
         let harga = Math.ceil({{$product->price}});
         let maksqty = {{$product->qty}};
         var subtotal = harga*value;

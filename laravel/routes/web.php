@@ -67,6 +67,8 @@ Route::get('/register', function () {
         Route::post('/testTambah',[UserController::class,"tambah"]);
         Route::get('/testUbah/{id}',[UserController::class,"loadFormUbah"]);
         Route::post('/testUbah/{id}',[UserController::class,"ubah"]);
+        Route::get('/write',[AIController::class,'viewChat']);
+        Route::post('/write/generate',[AIController::class,'promptChat']);
         Route::middleware('role:A')->group(function(){
             Route::get('/adminhomepage',[AdminController::class,"dashboard"]);
             Route::get('/adminproduct',[AdminController::class,"adminProduct"]);
@@ -82,8 +84,11 @@ Route::get('/register', function () {
             Route::get('/wisatareport',[AdminController::class,'wisataReport']);
             Route::post('/wisatareport',[AdminController::class,'filterWisata']);
             Route::get('/masteradmin',[AdminController::class,'masterAdmin']);
+            Route::post('/masteradmin',[AdminController::class,'addAdmin']);
             Route::post('/searchAdmin',[AdminController::class,'searchAdmin']);
             Route::post('/masterAdminView',[AdminController::class,'viewAdmin']);
+            Route::post('/updateadmin/{id}', [AdminController::class, "updateAdmin"]);
+            Route::delete('/deleteadmin/{id}', [AdminController::class, "deleteAdmin"]);
             Route::get('/masterChat', [PusherController::class,'index']);
             Route::post('/broadcast',  [PusherController::class,'broadcast']);
             Route::post('/receive',  [PusherController::class,'receive']);
@@ -153,7 +158,6 @@ Route::get('/logout', function (Request $request) {
     }
     session()->forget('role');
     $request->session()->invalidate();
-
     $request->session()->regenerateToken();
     return redirect('login');
 });

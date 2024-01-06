@@ -118,7 +118,14 @@ class AdminController extends Controller
 
     public function addProduct(Request $req){
         $latestProduct = Products::latest('product_id')->first();
-        $idadd = intval(substr($latestProduct->product_id, 1))+1;
+        $idadd = 0;
+        if($latestProduct == null){
+            $newID = "P0001";
+        }
+        else{
+            $idadd = intval(substr($latestProduct->product_id, 1))+1;
+        }
+
         $newID = "P" . str_pad($idadd, 4, '0', STR_PAD_LEFT);
 
         $namaFolderPhoto = ""; $namaFilePhoto = "";
@@ -151,6 +158,20 @@ class AdminController extends Controller
 
     }
 
+    public function addAdmin(Request $req){
+        $username = $req->username;
+        $password = $req->password;
+
+        $res = Admin::create([
+            'username' => $username,
+            'password' => $password,
+            'role' => 'A'
+        ]);
+
+        return redirect()->back()->with('sukses', 'sukses');
+
+    }
+
     public function updateProduct(Request $req, $id)
     {
         $product = Products::find($id);
@@ -172,6 +193,21 @@ class AdminController extends Controller
 
         return view('adminproductCard',['products'=>$allProduct,'category'=>$allCategory]);
     }
+    public function updateAdmin(Request $req, $user)
+    {
+        $admin = Admin::find($user);
+
+        if (!$admin) {
+            return response()->json(['message' => 'Admin not found'], 404);
+        }
+
+        $admin->username = $req->username;
+        $admin->password = $req->password;
+        $admin->save();
+
+        $alladmin = Admin::all();
+        return view('masterAdminCard',['admin'=>$alladmin]);
+    }
 
     public function deleteProduct($id){
         $product = Products::find($id);
@@ -181,5 +217,13 @@ class AdminController extends Controller
         $allCategory = Categories::all();
 
         return view('adminproductCard',['products'=>$allProduct,'category'=>$allCategory]);
+    }
+    public function deleteAdmin($id){
+        $admin = Admin::find($id);
+        $admin->delete($id);
+
+        $alladmin = Admin::all();
+
+        return view('masterAdminCard',['admin'=>$admin]);
     }
 }
